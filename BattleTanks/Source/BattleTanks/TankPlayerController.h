@@ -20,6 +20,10 @@ class BATTLETANKS_API ATankPlayerController : public APlayerController
 
 public:
 	
+	// Called when the game starts or when spwned (Ivan added)
+	virtual void BeginPlay() override;
+
 	///Methods:
 	ATank* GetControlledTank() const;
+
 };
