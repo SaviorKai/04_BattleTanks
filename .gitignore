@@ -1,0 +1,4 @@
+# THIS IS NOT THE MAIN GITIGNORE!
+
+# Ignore Assets in Root
+Assets/*
