@@ -23,5 +23,28 @@ void ATankPlayerController::BeginPlay()
 
 ATank* ATankPlayerController::GetControlledTank() const
 {
-	return Cast<ATank>(GetPawn()); //IVAN NOTE: Cast is used here, to convert the return from 'GetPawn()', which is a APawn, into a ATank (the custom class). This is needed since we've specified the function return value as 'ATank'.
+	return Cast<ATank>(GetPawn()); ///IVAN NOTE: Cast is used here, to convert the return from 'GetPawn()', which is a APawn, into a ATank (the custom class). This is needed since we've specified the function return value as 'ATank'.
 }
+
+
+void ATankPlayerController::AimTowardsCrosshair()
+{
+	if (GetControlledTank == nullptr) { return; }
+
+	//Linetrace to vector in world code here.
+
+	return;
+}
+
+
+void ATankPlayerController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);  ///Super is just a line to tell the compiler to do what its SuperClass does (the mother of the class)
+	
+	//AimTowardsCrosshair();
+
+
+}
+
+
+

@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/PlayerController.h"
-
 #include "Tank.h"
 
 ///Must Be the last Include
@@ -19,11 +18,14 @@ class BATTLETANKS_API ATankPlayerController : public APlayerController
 	GENERATED_BODY()
 
 private:
-	
-	// Called when the game starts or when spwned (Ivan added)
-	virtual void BeginPlay() override;
+	virtual void BeginPlay() override;				/// Called when the game starts or when spwned (Ivan added)
+	virtual void Tick(float DeltaTime) override;	/// Called every tick/step of the game (Ivan added)
 
 	///Methods:
 	ATank* GetControlledTank() const;
+
+	///
+	void AimTowardsCrosshair();
+	
 
 };
