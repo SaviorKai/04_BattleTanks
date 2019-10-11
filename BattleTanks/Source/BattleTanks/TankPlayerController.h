@@ -18,7 +18,7 @@ class BATTLETANKS_API ATankPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
-public:
+private:
 	
 	// Called when the game starts or when spwned (Ivan added)
 	virtual void BeginPlay() override;
