@@ -1,6 +1,10 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankPlayerController.h"
+#include "Engine/World.h"
+#include "DrawDebugHelpers.h"
+
+//#include "Engine.h"
 
 #define OUT
 
@@ -45,6 +49,7 @@ void ATankPlayerController::AimTowardsCrosshair()
 	return;
 }
 
+
 //Out Param Method, true if hit something via a linetrace through crosshair
 bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) const
 {
@@ -55,15 +60,14 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) cons
 	
 	// "De-Project" the screen position of the crosshair to a world direction.
 	FVector CamLookDirection;
-	if (GetLookDirection(ScreenLocation, CamLookDirection))
+	if (GetLookDirection(ScreenLocation, OUT CamLookDirection))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("CamLookDirection: %s"), *CamLookDirection.ToString());
+		// Line trace through this look direction and see what we hit (up to max range).
+		FVector HitLocationPoint;
+		GetLookVectorHitLocation(CamLookDirection, HitLocationPoint);   //TODO: Replace HitLocationPoint with OutHitLocation
+		UE_LOG(LogTemp, Warning, TEXT("HitLocationPoint: %s"), *HitLocationPoint.ToString());
 	}
-	
-
-	// Line trace through this look direction and see what we hit (up to max range).
-
-	OutHitLocation = FVector(1.0);
+		
 	return true;
 }
 
@@ -79,6 +83,38 @@ bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& 
 	);
 
 }
+
+bool ATankPlayerController::GetLookVectorHitLocation(FVector CamLookDirection, FVector& HitLocationPoint) const
+{
+	FVector LineTraceStart = PlayerCameraManager->GetCameraLocation();
+	FVector LineTraceEnd = LineTraceStart + (CamLookDirection * LineTraceRange);		 //IVAN NOTE: '(FRotator.FVector() * Length)' is similar to the LengthDir function
+	
+	///DEBUG DRAW LINE
+	DrawDebugLine(
+		GetWorld(),
+		LineTraceStart,
+		LineTraceEnd,
+		FColor::Red,
+		false,
+		-1,
+		1,
+		10.0
+	);
+	
+	FHitResult HitResult;
+	if (GetWorld()->LineTraceSingleByChannel(
+		OUT HitResult, LineTraceStart, 
+		LineTraceEnd, 
+		ECollisionChannel::ECC_Visibility
+		))
+	{
+		HitLocationPoint = HitResult.Location;
+		return true;
+	}
+	
+	return false;
+}
+
 
 ///Runs Every Frame or Step of the game, Ticking continuously.
 void ATankPlayerController::Tick(float DeltaTime)
