@@ -32,6 +32,7 @@ private:
 	ATank* GetControlledTank() const;
 	void AimTowardsCrosshair();
 	bool GetSightRayHitLocation(FVector& OutHitLocation) const; //Out Param Method, true if hit something
+	bool GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const; //Out Param Method
 	
 
 };

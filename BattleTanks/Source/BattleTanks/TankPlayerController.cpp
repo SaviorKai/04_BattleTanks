@@ -1,7 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankPlayerController.h"
-//#include "Engine.h"
 
 #define OUT
 
@@ -36,7 +35,7 @@ void ATankPlayerController::AimTowardsCrosshair()
 	FVector HitLocation; //OUT Parameter
 	if (GetSightRayHitLocation(OUT HitLocation))
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("Look direction %s"), *HitLocation.ToString());
+		
 	}
 	
 	///Aim Tank to the pointed position
@@ -50,20 +49,36 @@ void ATankPlayerController::AimTowardsCrosshair()
 bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) const
 {
 	/// Find the crosshair position
-	int32 ViewportSizeX
-	int32 ViewportSizeY;
+	int32 ViewportSizeX, ViewportSizeY;
 	GetViewportSize(OUT ViewportSizeX, OUT ViewportSizeY); ///Out paramater
 	FVector2D ScreenLocation = FVector2D(ViewportSizeX * CrossHairLocationX, ViewportSizeY * CrossHairLocationY); ///IVAN NOTE: Yes, int32 can be multiplied by floats!
 	
-	// "De-Project the screen position of the crosshair to a world direction.
-	// Line trace through this look direction and see what we hit (up to max range).
+	// "De-Project" the screen position of the crosshair to a world direction.
+	FVector CamLookDirection;
+	if (GetLookDirection(ScreenLocation, CamLookDirection))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("CamLookDirection: %s"), *CamLookDirection.ToString());
+	}
+	
 
+	// Line trace through this look direction and see what we hit (up to max range).
 
 	OutHitLocation = FVector(1.0);
 	return true;
 }
 
+bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const
+{
+	FVector CameraWorldLocation; //To be discarded, but needed for the Deproject function.
+	
+	return DeprojectScreenPositionToWorld(						///Ivan Note: This is a out paramater BOOL function, which means it can be used as a If statement.
+		ScreenLocation.X,
+		ScreenLocation.Y,
+		OUT CameraWorldLocation,
+		OUT LookDirection
+	);
 
+}
 
 ///Runs Every Frame or Step of the game, Ticking continuously.
 void ATankPlayerController::Tick(float DeltaTime)
