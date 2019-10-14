@@ -17,17 +17,21 @@ class BATTLETANKS_API ATankPlayerController : public APlayerController
 {
 	GENERATED_BODY()
 
-private:
+public:
 	virtual void BeginPlay() override;				/// Called when the game starts or when spwned (Ivan added)
 	virtual void Tick(float DeltaTime) override;	/// Called every tick/step of the game (Ivan added)
 
+private:
+	///Member Vars
+	UPROPERTY(EditAnywhere)
+		float CrossHairLocationX = 0.5;
+	UPROPERTY(EditAnywhere)
+		float CrossHairLocationY = 0.33333;
+
 	///Methods:
 	ATank* GetControlledTank() const;
-
 	void AimTowardsCrosshair();
-
-	//Out Param Method, true if hit something
-	bool GetSightRayHitLocation(FVector& OutHitLocation) const;
+	bool GetSightRayHitLocation(FVector& OutHitLocation) const; //Out Param Method, true if hit something
 	
 
 };

@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankPlayerController.h"
+//#include "Engine.h"
 
 #define OUT
 
@@ -35,7 +36,7 @@ void ATankPlayerController::AimTowardsCrosshair()
 	FVector HitLocation; //OUT Parameter
 	if (GetSightRayHitLocation(OUT HitLocation))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("HitLocation %s"), *HitLocation.ToString());
+		//UE_LOG(LogTemp, Warning, TEXT("Look direction %s"), *HitLocation.ToString());
 	}
 	
 	///Aim Tank to the pointed position
@@ -48,24 +49,18 @@ void ATankPlayerController::AimTowardsCrosshair()
 //Out Param Method, true if hit something via a linetrace through crosshair
 bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) const
 {
+	/// Find the crosshair position
+	int32 ViewportSizeX
+	int32 ViewportSizeY;
+	GetViewportSize(OUT ViewportSizeX, OUT ViewportSizeY); ///Out paramater
+	FVector2D ScreenLocation = FVector2D(ViewportSizeX * CrossHairLocationX, ViewportSizeY * CrossHairLocationY); ///IVAN NOTE: Yes, int32 can be multiplied by floats!
 	
-	///Linetrace out and see if we hit anything.
+	// "De-Project the screen position of the crosshair to a world direction.
+	// Line trace through this look direction and see what we hit (up to max range).
+
+
 	OutHitLocation = FVector(1.0);
-	
-	//If the crosshair trace hits something
-		//Set the out location to the point it hit
-		//return true;
-	//else
-		//return false;
-
-	
 	return true;
-	
-	
-	
-
-
-
 }
 
 
