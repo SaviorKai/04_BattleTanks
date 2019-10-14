@@ -1,7 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "TankPlayerController.h"
+
+#define OUT
 
 void ATankPlayerController::BeginPlay()
 {
@@ -29,19 +30,52 @@ ATank* ATankPlayerController::GetControlledTank() const
 
 void ATankPlayerController::AimTowardsCrosshair()
 {
-	if (GetControlledTank == nullptr) { return; }
+	if (GetControlledTank() == nullptr) { return; } ///Check if we have a tank we're controlling before doing anything.
 
-	//Linetrace to vector in world code here.
+	FVector HitLocation; //OUT Parameter
+	if (GetSightRayHitLocation(OUT HitLocation))
+	{
+		UE_LOG(LogTemp, Warning, TEXT("HitLocation %s"), *HitLocation.ToString());
+	}
+	
+	///Aim Tank to the pointed position
+	
+	
 
 	return;
 }
 
+//Out Param Method, true if hit something via a linetrace through crosshair
+bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) const
+{
+	
+	///Linetrace out and see if we hit anything.
+	OutHitLocation = FVector(1.0);
+	
+	//If the crosshair trace hits something
+		//Set the out location to the point it hit
+		//return true;
+	//else
+		//return false;
 
+	
+	return true;
+	
+	
+	
+
+
+
+}
+
+
+
+///Runs Every Frame or Step of the game, Ticking continuously.
 void ATankPlayerController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);  ///Super is just a line to tell the compiler to do what its SuperClass does (the mother of the class)
 	
-	//AimTowardsCrosshair();
+	AimTowardsCrosshair();
 
 
 }
