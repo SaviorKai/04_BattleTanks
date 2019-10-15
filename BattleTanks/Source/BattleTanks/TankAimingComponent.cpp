@@ -30,6 +30,12 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 
 void UTankAimingComponent::TurnAndAimAt(FVector TargetLocation)
 {
-	UE_LOG(LogTemp, Warning, TEXT("%s is aiming at: %s"), *GetOwner()->GetName(), *TargetLocation.ToString());
+	UE_LOG(LogTemp, Warning, TEXT("%s is aiming at %s. Barrel Posision is: %s"), *GetOwner()->GetName(), *TargetLocation.ToString(), *MyTankBarrel->GetComponentLocation().ToString());
+}
+
+void UTankAimingComponent::SetBarrelReferenceAimComponent(UStaticMeshComponent* TankBarrel)
+{
+	//Set the Private Member Var from input.
+	MyTankBarrel = TankBarrel;
 }
 

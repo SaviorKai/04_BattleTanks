@@ -28,5 +28,9 @@ public:
 	
 	///Methods
 	void TurnAndAimAt(FVector TargetLocation);
+	void SetBarrelReferenceAimComponent(UStaticMeshComponent* TankBarrel);
+
+private:
+	UStaticMeshComponent* MyTankBarrel = nullptr;
 		
 };

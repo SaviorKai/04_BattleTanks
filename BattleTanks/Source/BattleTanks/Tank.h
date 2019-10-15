@@ -21,6 +21,9 @@ public:
 	///Methods
 	void AimAt(FVector TargetLocation);
 
+	UFUNCTION(BlueprintCallable, Category = Setup)					/// Creates this method as a item which can be called in Blueprints.
+		void SetBarrelReference(UStaticMeshComponent* TankBarrel);
+
 protected:			// IVAN NOTE: Protected isn't public nor private.
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
