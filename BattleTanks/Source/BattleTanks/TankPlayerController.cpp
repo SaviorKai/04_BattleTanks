@@ -15,11 +15,7 @@ void ATankPlayerController::BeginPlay()
 	//UE_LOG(LogTemp, Warning, TEXT("Player Controller Begin play called!")); //Debug Log
 
 	auto ControlledTank = GetControlledTank();
-	if (ControlledTank) //Crash Protection (Pointer)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("%s has possessed Actor: %s"), *GetName(), *ControlledTank->GetName());
-	}
-	else
+	if (ControlledTank == nullptr) //Crash Protection (Pointer)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Nullpointer on PlayerController - No Controlled Tank"));
 	}
@@ -39,13 +35,10 @@ void ATankPlayerController::AimTowardsCrosshair()
 	FVector HitLocation; //OUT Parameter
 	if (GetSightRayHitLocation(OUT HitLocation))
 	{
-		
+		///Aim Tank to the pointed position
+		GetControlledTank()->AimAt(HitLocation); //Call the public method on the Tank.cpp Class instance.
 	}
 	
-	///Aim Tank to the pointed position
-	
-	
-
 	return;
 }
 
@@ -63,9 +56,7 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) cons
 	if (GetLookDirection(ScreenLocation, OUT CamLookDirection))
 	{
 		// Line trace through this look direction and see what we hit (up to max range).
-		FVector HitLocationPoint;
-		GetLookVectorHitLocation(CamLookDirection, HitLocationPoint);   //TODO: Replace HitLocationPoint with OutHitLocation
-		UE_LOG(LogTemp, Warning, TEXT("HitLocationPoint: %s"), *HitLocationPoint.ToString());
+		GetLookVectorHitLocation(CamLookDirection, OutHitLocation);   //TODO: Replace HitLocationPoint with OutHitLocation
 	}
 		
 	return true;
@@ -90,6 +81,7 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector CamLookDirection, F
 	FVector LineTraceEnd = LineTraceStart + (CamLookDirection * LineTraceRange);		 //IVAN NOTE: '(FRotator.FVector() * Length)' is similar to the LengthDir function
 	
 	///DEBUG DRAW LINE
+	/*
 	DrawDebugLine(
 		GetWorld(),
 		LineTraceStart,
@@ -100,6 +92,7 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector CamLookDirection, F
 		1,
 		10.0
 	);
+	*/
 	
 	FHitResult HitResult;
 	if (GetWorld()->LineTraceSingleByChannel(
