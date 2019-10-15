@@ -16,7 +16,7 @@ ATank::ATank()
 
 void ATank::AimAt(FVector TargetLocation)
 {
-	TankAimingComponent->TurnAndAimAt(TargetLocation);  /// NOTE: No need to protect pointer as its added in construction.
+	TankAimingComponent->TurnAndAimAt(TargetLocation, LaunchSpeed);  /// NOTE: No need to protect pointer as its added in construction.
 }
 
 void ATank::SetBarrelReference(UStaticMeshComponent* TankBarrel)

@@ -28,9 +28,11 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
-void UTankAimingComponent::TurnAndAimAt(FVector TargetLocation)
+void UTankAimingComponent::TurnAndAimAt(FVector TargetLocation, float LaunchSpeed)
 {
-	UE_LOG(LogTemp, Warning, TEXT("%s is aiming at %s. Barrel Posision is: %s"), *GetOwner()->GetName(), *TargetLocation.ToString(), *MyTankBarrel->GetComponentLocation().ToString());
+	///DEBUG LOGS
+	//UE_LOG(LogTemp, Warning, TEXT("%s is aiming at %s. Barrel Posision is: %s"), *GetOwner()->GetName(), *TargetLocation.ToString(), *MyTankBarrel->GetComponentLocation().ToString());
+	UE_LOG(LogTemp, Warning, TEXT("LaunchSpeed is %f"), LaunchSpeed);
 }
 
 void UTankAimingComponent::SetBarrelReferenceAimComponent(UStaticMeshComponent* TankBarrel)
