@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "TankAimingComponent.h"
 
 ///Must Be the last Include
 #include "Tank.generated.h"
@@ -20,9 +21,15 @@ public:
 	///Methods
 	void AimAt(FVector TargetLocation);
 
-protected:
+protected:			// IVAN NOTE: Protected isn't public nor private.
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	//Create a class instance var *pointer of type UTankAimingComponent, and initialize it to nullptr.
+	UTankAimingComponent* TankAimingComponent = nullptr;
+
+
+
 
 private:	
 	// Called every frame
