@@ -2,6 +2,9 @@
 
 
 #include "TankAimingComponent.h"
+#include "Kismet/GameplayStatics.h"
+#define OUT
+
 //#include "Engine.h"
 
 // Sets default values for this component's properties
@@ -30,9 +33,37 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 
 void UTankAimingComponent::TurnAndAimAt(FVector TargetLocation, float LaunchSpeed)
 {
+	if (MyTankBarrel == nullptr) { return; } //Pointer Protection
+
+	
+	FVector TossVelocity(0);
+	if (UGameplayStatics::SuggestProjectileVelocity(
+		this,			// World context object. Grabs the class we're currently in. In this case, TankAimingComponent.cpp.
+		OUT TossVelocity,
+		MyTankBarrel->GetSocketLocation(FName("ProjectileSpawn")),
+		TargetLocation,
+		LaunchSpeed,
+		false,
+		0,
+		0,
+		ESuggestProjVelocityTraceOption::DoNotTrace    //NOTE! This argument is required for this function to work!
+		))
+	{
+		//Normalize the value of TossVelocity to a combined directional value of 1 with GetSafeNormal().
+		FVector AimDirection = TossVelocity.GetSafeNormal();
+
+		UE_LOG(LogTemp, Warning, TEXT("%s AimDirection is %s"), *GetOwner()->GetName(), *AimDirection.ToString());
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("IMPOSSIBLE TossVelocity!!"));
+	}
+	
+
+
+
 	///DEBUG LOGS
 	//UE_LOG(LogTemp, Warning, TEXT("%s is aiming at %s. Barrel Posision is: %s"), *GetOwner()->GetName(), *TargetLocation.ToString(), *MyTankBarrel->GetComponentLocation().ToString());
-	UE_LOG(LogTemp, Warning, TEXT("LaunchSpeed is %f"), LaunchSpeed);
 }
 
 void UTankAimingComponent::SetBarrelReferenceAimComponent(UStaticMeshComponent* TankBarrel)
