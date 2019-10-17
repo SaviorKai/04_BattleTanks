@@ -38,7 +38,7 @@ void UTankAimingComponent::TurnAndAimAt(FVector TargetLocation, float LaunchSpee
 	if (MyTankBarrel == nullptr) { return; } //Pointer Protection
 
 	
-	FVector TossVelocity(0);
+	FVector TossVelocity(0); //Make sure you initialize vectors.
 
 	bool bHaveAimSolution = UGameplayStatics::SuggestProjectileVelocity(
 		this,			// World context object. Grabs the class we're currently in. In this case, TankAimingComponent.cpp.
@@ -46,10 +46,10 @@ void UTankAimingComponent::TurnAndAimAt(FVector TargetLocation, float LaunchSpee
 		MyTankBarrel->GetSocketLocation(FName("ProjectileSpawn")),
 		TargetLocation,
 		LaunchSpeed,
-		false,      //IVAN NOTE: You don't need these paramaters, since they are default. You can delete them and it would still work.
-		0,			//IVAN NOTE: You don't need these paramaters, since they are default. You can delete them and it would still work.
-		0,			//IVAN NOTE: You don't need these paramaters, since they are default. You can delete them and it would still work.
-		ESuggestProjVelocityTraceOption::DoNotTrace //NOTE! This argument is required for this function to work!
+		false,      
+		0,			
+		0,			
+		ESuggestProjVelocityTraceOption::DoNotTrace      //NOTE! This argument is required for this function to work!
 	);
 
 	if (bHaveAimSolution) 
@@ -58,7 +58,7 @@ void UTankAimingComponent::TurnAndAimAt(FVector TargetLocation, float LaunchSpee
 		FVector AimDirection = TossVelocity.GetSafeNormal();
 
 		//DEBUGLOGS: 
-		UE_LOG(LogTemp, Warning, TEXT("%f: Barrel Elevate called"), GetWorld()->GetTimeSeconds());
+		UE_LOG(LogTemp, Warning, TEXT("Aim Solution: %s"), *TossVelocity.ToString());
 
 		///Move the barrel to aim at the solution location. 
 		MoveBarrel(AimDirection);

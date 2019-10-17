@@ -2,6 +2,8 @@
 
 
 #include "TankAIController.h"
+#include "TankPlayerController.h"
+#include "Tank.h"   //Supporting forward declaration
 
 
 void ATankAIController::BeginPlay()

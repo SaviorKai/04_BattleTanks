@@ -2,7 +2,10 @@
 
 
 #include "Tank.h"
-#include "TankBarrel.h" //Supporting the Forward Declaration
+
+//Supporting the Forward Declarations
+#include "TankBarrel.h" 
+#include "TankAimingComponent.h"
 
 // Sets default values
 ATank::ATank()

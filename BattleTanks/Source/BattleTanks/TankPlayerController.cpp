@@ -4,6 +4,8 @@
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
 
+#include "Tank.h" //Supporting forward declaration.
+
 //#include "Engine.h"
 
 #define OUT
