@@ -8,6 +8,9 @@
 ///Needs to be the last include
 #include "TankAimingComponent.generated.h"
 
+//Forward Declaration: 
+class UTankBarrel;
+
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BATTLETANKS_API UTankAimingComponent : public UActorComponent
@@ -28,10 +31,10 @@ public:
 	
 	///Methods
 	void TurnAndAimAt(FVector TargetLocation, float LaunchSpeed);
-	void SetBarrelReferenceAimComponent(UStaticMeshComponent* TankBarrel);
+	void SetBarrelReferenceAimComponent(UTankBarrel* TankBarrel);
 
 private:
-	UStaticMeshComponent* MyTankBarrel = nullptr;
+	UTankBarrel* MyTankBarrel = nullptr;
 	
 	void MoveBarrel(FVector AimDirection);
 		

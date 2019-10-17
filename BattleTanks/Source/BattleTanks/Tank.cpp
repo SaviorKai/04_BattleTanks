@@ -2,6 +2,7 @@
 
 
 #include "Tank.h"
+#include "TankBarrel.h" //Supporting the Forward Declaration
 
 // Sets default values
 ATank::ATank()
@@ -19,7 +20,7 @@ void ATank::AimAt(FVector TargetLocation)
 	TankAimingComponent->TurnAndAimAt(TargetLocation, LaunchSpeed);  /// NOTE: No need to protect pointer as its added in construction.
 }
 
-void ATank::SetBarrelReference(UStaticMeshComponent* TankBarrel)
+void ATank::SetBarrelReference(UTankBarrel* TankBarrel)
 {
 	TankAimingComponent->SetBarrelReferenceAimComponent(TankBarrel);
 }

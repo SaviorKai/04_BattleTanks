@@ -3,6 +3,8 @@
 
 #include "TankAimingComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "TankBarrel.h" //Supporting the Forward Declaration
+
 #define OUT
 
 //#include "Engine.h"
@@ -73,7 +75,7 @@ void UTankAimingComponent::TurnAndAimAt(FVector TargetLocation, float LaunchSpee
 	//UE_LOG(LogTemp, Warning, TEXT("%s is aiming at %s. Barrel Posision is: %s"), *GetOwner()->GetName(), *TargetLocation.ToString(), *MyTankBarrel->GetComponentLocation().ToString());
 }
 
-void UTankAimingComponent::SetBarrelReferenceAimComponent(UStaticMeshComponent* TankBarrel)
+void UTankAimingComponent::SetBarrelReferenceAimComponent(UTankBarrel* TankBarrel)
 {
 	//Set the Private Member Var from input.
 	MyTankBarrel = TankBarrel;
@@ -86,9 +88,10 @@ void UTankAimingComponent::MoveBarrel(FVector AimDirection)
 	FRotator AimAsRotator = AimDirection.Rotation();
 	FRotator DeltaRotator = AimAsRotator - BarrelRotation;
 
-	UE_LOG(LogTemp, Warning, TEXT("Barrel Rotation: %s , AimAsRotator is %s"), *BarrelRotation.ToString(), *AimAsRotator.ToString());
-	//move the barrel the right amount this frame
-	//given a max elevation speed, and frame time (delta seconds)
+	//UE_LOG(LogTemp, Warning, TEXT("Barrel Rotation: %s , AimAsRotator is %s"), *BarrelRotation.ToString(), *AimAsRotator.ToString());
+
+
+	MyTankBarrel->Elevate(5); //TODO: Remove hard-coded number.
 	
 }
 

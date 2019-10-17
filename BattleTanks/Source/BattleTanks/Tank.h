@@ -9,6 +9,9 @@
 ///Must Be the last Include
 #include "Tank.generated.h"
 
+//Forward Declaration: 
+class UTankBarrel;
+
 UCLASS()
 class BATTLETANKS_API ATank : public APawn
 {
@@ -22,7 +25,7 @@ public:
 	void AimAt(FVector TargetLocation);
 
 	UFUNCTION(BlueprintCallable, Category = Setup)					/// Creates this method as a item which can be called in Blueprints.
-		void SetBarrelReference(UStaticMeshComponent* TankBarrel);
+		void SetBarrelReference(UTankBarrel* TankBarrel);
 
 protected:			// IVAN NOTE: Protected isn't public nor private.
 	// Called when the game starts or when spawned
