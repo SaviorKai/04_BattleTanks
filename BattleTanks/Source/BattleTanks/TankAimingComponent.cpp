@@ -14,7 +14,7 @@ UTankAimingComponent::UTankAimingComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bCanEverTick = true; //TODO: Should this tick?
 
 	// ...
 }
@@ -52,16 +52,16 @@ void UTankAimingComponent::TurnAndAimAt(FVector TargetLocation, float LaunchSpee
 		ESuggestProjVelocityTraceOption::DoNotTrace //NOTE! This argument is required for this function to work!
 	);
 
-	if (bHaveAimSolution)
+	if (bHaveAimSolution) 
 	{
 		//Normalize the value of TossVelocity to a combined directional value of 1 with GetSafeNormal().
 		FVector AimDirection = TossVelocity.GetSafeNormal();
 
+		//DEBUGLOGS: 
+		UE_LOG(LogTemp, Warning, TEXT("%f: Barrel Elevate called"), GetWorld()->GetTimeSeconds());
+
 		///Move the barrel to aim at the solution location. 
 		MoveBarrel(AimDirection);
-
-
-		
 	}
 	else
 	{
