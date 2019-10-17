@@ -9,12 +9,26 @@
 /**
  * 
  */
-UCLASS()
+
+///IVAN NOTE: This line below, just above UCLASS, is how you add comments which is seen in the editor to this item in the "Add component" list.
+
+//This Component holds the Barrel properties and Elevate() method.     
+UCLASS( ClassGroup = (Custom), meta = (BlueprintSpawnableComponent), hidecategories = ("Collision") )
 class BATTLETANKS_API UTankBarrel : public UStaticMeshComponent
 {
 	GENERATED_BODY()
 
 public:
 	void Elevate(float DegreesPerSecond);
+
+private:
+	UPROPERTY(EditAnywhere, Category = Setup)
+		float MaxDegreesPerSecond = 20.0f; //Sensible default.
+
+	UPROPERTY(EditAnywhere, Category = Setup)
+		float MaxDegreesElevation = 40.0f; //Sensible default.
+
+	UPROPERTY(EditAnywhere, Category = Setup)
+		float MinDegreesElevation = 0.0f; //Sensible default.
 	
 };

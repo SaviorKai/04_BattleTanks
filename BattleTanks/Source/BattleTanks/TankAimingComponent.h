@@ -11,7 +11,9 @@
 //Forward Declaration: 
 class UTankBarrel;
 
+///IVAN NOTE: This line below, just above UCLASS, is how you add comments which is seen in the editor to this item in the "Add component" list.
 
+//This Aiming component Sets the reference of the barrel for the tank and holds the TurnAndAimAt() method to get SuggestProjectileVelocity().
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BATTLETANKS_API UTankAimingComponent : public UActorComponent
 {
