@@ -32,5 +32,7 @@ public:
 
 private:
 	UStaticMeshComponent* MyTankBarrel = nullptr;
+	
+	void MoveBarrel(FVector AimDirection);
 		
 };
