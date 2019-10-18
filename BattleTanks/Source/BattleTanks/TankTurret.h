@@ -19,6 +19,6 @@ public:
 
 private:
 	UPROPERTY(EditAnywhere, Category = Setup)
-		float MaxRotationPerSecond = 20.0; //Sensible default.
+		float MaxRotationPerSecond = 25.0; //Sensible default.
 
 };

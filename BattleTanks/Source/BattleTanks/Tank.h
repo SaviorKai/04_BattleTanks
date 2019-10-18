@@ -39,13 +39,11 @@ protected:			// IVAN NOTE: Protected isn't public nor private.
 	UTankAimingComponent* TankAimingComponent = nullptr;
 
 
-
-
 private:	
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	UPROPERTY(EditAnywhere, Category = Firing)
-		float LaunchSpeed = 100000; // TODO: Find Sensible default starting vallue. 
+		float LaunchSpeed = 4000; // Sensible default starting vallue. 
 
 };
