@@ -4,6 +4,7 @@
 #include "TankAimingComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "TankBarrel.h" //Supporting the Forward Declaration
+#include "TankTurret.h" //Supporting the Forward Declaration
 
 #define OUT
 
@@ -56,10 +57,11 @@ void UTankAimingComponent::TurnAndAimAt(FVector TargetLocation, float LaunchSpee
 		FVector AimDirection = TossVelocity.GetSafeNormal();
 
 		//DEBUGLOGS: 
-		//UE_LOG(LogTemp, Warning, TEXT("Aim Solution: %s"), *TossVelocity.ToString());
+		UE_LOG(LogTemp, Warning, TEXT("Aim Solution: %s"), *TossVelocity.ToString());
 
 		///Move the barrel to aim at the solution location. 
 		MoveBarrel(AimDirection);
+		MoveTurret(AimDirection);
 	}
 	else
 	{
@@ -75,20 +77,54 @@ void UTankAimingComponent::TurnAndAimAt(FVector TargetLocation, float LaunchSpee
 
 void UTankAimingComponent::SetBarrelReferenceAimComponent(UTankBarrel* TankBarrel)
 {
-	//Set the Private Member Var from input.
+	//Set the var to the instance id of the Barrel Component of the tank.
 	MyTankBarrel = TankBarrel;
+
+	if (MyTankBarrel == nullptr) //PointerProtection.
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Nullptr on SetBarrelReferenceAimComponent()"));
+		return;
+	}
+}
+
+void UTankAimingComponent::SetTurretReferenceAimComponent(UTankTurret* TankTurret)
+{
+	//Set the var to the instance id of the Turret Component of the tank.
+	MyTankTurret = TankTurret;
+
+	if (MyTankTurret == nullptr) //PointerProtection.
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Nullptr on SetTurretReferenceAimComponent()"));
+		return;
+	}
 }
 
 void UTankAimingComponent::MoveBarrel(FVector AimDirection)
 {
+	if (MyTankBarrel == nullptr) { return; } //Pointer protection.
+
 	//Work out the difference between the two points
-	FRotator BarrelRotation = MyTankBarrel->GetForwardVector().Rotation();
-	FRotator AimAsRotator = AimDirection.Rotation();
-	FRotator RoationDifference = AimAsRotator - BarrelRotation;
+	FRotator CurrentBarrelRotation = MyTankBarrel->GetForwardVector().Rotation();
+	FRotator TargetRotation = AimDirection.Rotation();
+	FRotator RoationDifference = TargetRotation - CurrentBarrelRotation;
+	
+	//Move the Barrel
+	MyTankBarrel->Elevate(RoationDifference.Pitch);
 
 	//UE_LOG(LogTemp, Warning, TEXT("Barrel Rotation: %s , AimAsRotator is %s"), *BarrelRotation.ToString(), *AimAsRotator.ToString());
+}
 
+void UTankAimingComponent::MoveTurret(FVector AimDirection)
+{
+	if (MyTankTurret == nullptr) { return; } //Pointer protection.
+	
+	//Calculate the difference between the two  points
+	FRotator CurrentTurretRotation = MyTankTurret->GetForwardVector().Rotation();
+	FRotator TargetRotation = AimDirection.Rotation();
+	FRotator RoationDifference = TargetRotation - CurrentTurretRotation;
 
-	MyTankBarrel->Elevate(RoationDifference.Pitch);
+	//Move the Turret
+	MyTankTurret->RotateTurret(RoationDifference.Yaw);
+
 }
 

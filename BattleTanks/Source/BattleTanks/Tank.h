@@ -11,6 +11,7 @@
 //Forward Declarations: 
 class UTankBarrel;
 class UTankAimingComponent;
+class UTankTurret;
 
 UCLASS()
 class BATTLETANKS_API ATank : public APawn
@@ -26,6 +27,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = Setup)					/// Creates this method as a item which can be called in Blueprints.
 		void SetBarrelReference(UTankBarrel* TankBarrel);
+
+	UFUNCTION(BlueprintCallable, Category = Setup)					/// Creates this method as a item which can be called in Blueprints.
+		void SetTurretReference(UTankTurret* TankTurret);
 
 protected:			// IVAN NOTE: Protected isn't public nor private.
 	// Called when the game starts or when spawned

@@ -10,6 +10,7 @@
 
 //Forward Declaration: 
 class UTankBarrel;
+class UTankTurret;
 
 ///IVAN NOTE: This line below, just above UCLASS, is how you add comments which is seen in the editor to this item in the "Add component" list.
 
@@ -34,10 +35,13 @@ public:
 	///Methods
 	void TurnAndAimAt(FVector TargetLocation, float LaunchSpeed);
 	void SetBarrelReferenceAimComponent(UTankBarrel* TankBarrel);
+	void SetTurretReferenceAimComponent(UTankTurret* TankTurret);
 
 private:
 	UTankBarrel* MyTankBarrel = nullptr;
+	UTankTurret* MyTankTurret = nullptr;
 	
 	void MoveBarrel(FVector AimDirection);
+	void MoveTurret(FVector AimDirection);
 		
 };

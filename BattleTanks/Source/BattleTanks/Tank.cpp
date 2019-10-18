@@ -5,6 +5,7 @@
 
 //Supporting the Forward Declarations
 #include "TankBarrel.h" 
+#include "TankTurret.h"
 #include "TankAimingComponent.h"
 
 // Sets default values
@@ -23,9 +24,14 @@ void ATank::AimAt(FVector TargetLocation)
 	TankAimingComponent->TurnAndAimAt(TargetLocation, LaunchSpeed);  /// NOTE: No need to protect pointer as its added in construction.
 }
 
-void ATank::SetBarrelReference(UTankBarrel* TankBarrel)
+void ATank::SetBarrelReference(UTankBarrel* TankBarrel)  //NOTE!! THIS IS CALLED IN THE BLUEPRINT ON SPAWN TO SET THE VALUE!!!
 {
 	TankAimingComponent->SetBarrelReferenceAimComponent(TankBarrel);
+}
+
+void ATank::SetTurretReference(UTankTurret* TankTurret)  //NOTE!! THIS IS CALLED IN THE BLUEPRINT ON SPAWN TO SET THE VALUE!!!
+{
+	TankAimingComponent->SetTurretReferenceAimComponent(TankTurret);
 }
 
 // Called when the game starts or when spawned
