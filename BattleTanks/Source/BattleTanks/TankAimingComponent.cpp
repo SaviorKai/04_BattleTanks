@@ -7,8 +7,6 @@
 
 #define OUT
 
-//#include "Engine.h"
-
 // Sets default values for this component's properties
 UTankAimingComponent::UTankAimingComponent()
 {
@@ -58,7 +56,7 @@ void UTankAimingComponent::TurnAndAimAt(FVector TargetLocation, float LaunchSpee
 		FVector AimDirection = TossVelocity.GetSafeNormal();
 
 		//DEBUGLOGS: 
-		UE_LOG(LogTemp, Warning, TEXT("Aim Solution: %s"), *TossVelocity.ToString());
+		//UE_LOG(LogTemp, Warning, TEXT("Aim Solution: %s"), *TossVelocity.ToString());
 
 		///Move the barrel to aim at the solution location. 
 		MoveBarrel(AimDirection);
@@ -86,12 +84,11 @@ void UTankAimingComponent::MoveBarrel(FVector AimDirection)
 	//Work out the difference between the two points
 	FRotator BarrelRotation = MyTankBarrel->GetForwardVector().Rotation();
 	FRotator AimAsRotator = AimDirection.Rotation();
-	FRotator DeltaRotator = AimAsRotator - BarrelRotation;
+	FRotator RoationDifference = AimAsRotator - BarrelRotation;
 
 	//UE_LOG(LogTemp, Warning, TEXT("Barrel Rotation: %s , AimAsRotator is %s"), *BarrelRotation.ToString(), *AimAsRotator.ToString());
 
 
-	MyTankBarrel->Elevate(5); //TODO: Remove hard-coded number.
-	
+	MyTankBarrel->Elevate(RoationDifference.Pitch);
 }
 

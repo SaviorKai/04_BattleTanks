@@ -6,8 +6,6 @@
 
 #include "Tank.h" //Supporting forward declaration.
 
-//#include "Engine.h"
-
 #define OUT
 
 void ATankPlayerController::BeginPlay()
