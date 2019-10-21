@@ -31,6 +31,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Setup)					/// Creates this method as a item which can be called in Blueprints.
 		void SetTurretReference(UTankTurret* TankTurret);
 
+	UFUNCTION(BlueprintCallable, Category = Setup)					/// Creates this method as a item which can be called in Blueprints.
+		void Fire(AActor* ProjectileType);
+
 protected:			// IVAN NOTE: Protected isn't public nor private.
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

@@ -34,6 +34,11 @@ void ATank::SetTurretReference(UTankTurret* TankTurret)  //NOTE!! THIS IS CALLED
 	TankAimingComponent->SetTurretReferenceAimComponent(TankTurret);
 }
 
+void ATank::Fire(AActor* ProjectileType)
+{
+	UE_LOG(LogTemp, Warning, TEXT("%f: Fire() Called."), GetWorld()->GetTimeSeconds());
+}
+
 // Called when the game starts or when spawned
 void ATank::BeginPlay()
 {
