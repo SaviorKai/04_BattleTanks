@@ -39,7 +39,7 @@ protected:			// IVAN NOTE: Protected isn't public nor private.
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	//Create a class instance var *pointer of type UTankAimingComponent, and initialize it to nullptr.
+	//Create a class instance var *pointer of type UTankAimingComponent and UTankProjectileMovementComponent, and initialize it to nullptr.
 	UTankAimingComponent* TankAimingComponent = nullptr;
 
 

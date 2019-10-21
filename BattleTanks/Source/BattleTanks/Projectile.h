@@ -4,6 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+
+//Forward Declarations
+class UTankProjectileMovementComponent;
+
+//Must be last include
 #include "Projectile.generated.h"
 
 UCLASS()
@@ -23,4 +28,10 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	//Public Methods
+	void LaunchProjectile(float Speed);
+
+private:
+	//Private Vars
+	UTankProjectileMovementComponent* ProjMoveComponent = nullptr;
 };

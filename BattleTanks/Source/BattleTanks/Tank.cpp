@@ -42,12 +42,13 @@ void ATank::SetTurretReference(UTankTurret* TankTurret)  //NOTE!! THIS IS CALLED
 
 void ATank::Fire()
 {
-	GetWorld()->SpawnActor<AProjectile>(                      // SpawnActor<CLASSTYPE>(CLASS,
+	auto* MyProjectile = GetWorld()->SpawnActor<AProjectile>(                      // SpawnActor<CLASSTYPE>(CLASS,LOCATION,ROTATION)
 		TankProjectileType,
 		MyBarrel->GetSocketLocation(FName("ProjectileSpawn")),
 		MyBarrel->GetSocketRotation(FName("ProjectileSpawn"))
 	);
-	UE_LOG(LogTemp, Warning, TEXT("%f: Fire() Called."), GetWorld()->GetTimeSeconds());
+
+	MyProjectile->LaunchProjectile(LaunchSpeed);
 }
 
 // Called when the game starts or when spawned

@@ -2,12 +2,16 @@
 
 
 #include "Projectile.h"
+#include "TankProjectileMovementComponent.h"
 
 // Sets default values
 AProjectile::AProjectile()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	ProjMoveComponent = CreateDefaultSubobject<UTankProjectileMovementComponent>(FName("TankProjectileMovement"));
+	ProjMoveComponent->bAutoActivate = false;
 
 }
 
@@ -23,5 +27,13 @@ void AProjectile::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+}
+
+void AProjectile::LaunchProjectile(float Speed)
+{
+	ProjMoveComponent->SetVelocityInLocalSpace(FVector::ForwardVector * Speed);
+	ProjMoveComponent->Activate();
+	
+	UE_LOG(LogTemp, Warning, TEXT("%f: LaunchProjectile(%f) Called."), GetWorld()->GetTimeSeconds(), Speed);
 }
 
