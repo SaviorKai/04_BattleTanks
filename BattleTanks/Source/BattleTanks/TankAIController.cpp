@@ -16,6 +16,43 @@ void ATankAIController::BeginPlay()
 	
 }
 
+///Runs Every Frame or Step of the game, Ticking continuously.
+void ATankAIController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);  ///Super is just a line to tell the compiler to do what its SuperClass does (the mother of the class)
+	
+	//Use Cast to change the value of GetPawn which returns AActor, to ATank, and set the var pointers.
+	auto MyTank = Cast<ATank>(GetPawn());     //TODO: How does this work without a * after auto? How does it become a pointer var type?
+	auto EnemyTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
+
+	if (MyTank == nullptr) 
+	{
+		//PointerProtection
+		UE_LOG(LogTemp, Warning, TEXT("Nullptr on TankAIController.MyTank!"));
+	}
+	else
+	{
+		if (EnemyTank == nullptr)
+		{
+			//PointerProtection
+			UE_LOG(LogTemp, Warning, TEXT("Nullptr on TankAIController.EnemyTank!"));
+		}
+		else
+		{
+			//Call the public method on the Tank.cpp Class instance.
+			MyTank->AimAt(EnemyTank->GetActorLocation());
+
+			//Fire When Ready
+			MyTank->Fire();  //TODO: Limit firing rate
+
+		}
+	}
+	
+	
+}
+
+///////// REFACTORED OUT - OLD CODE BELOW /////////
+/*
 ATank* ATankAIController::GetControlledTank() const
 {
 	if (Cast<ATank>(GetPawn()) == nullptr)
@@ -42,24 +79,6 @@ ATank* ATankAIController::GetPlayerTank() const
 	{
 		return Cast<ATank>(PlayerTank);
 	}
-	
+
 }
-
-
-///Runs Every Frame or Step of the game, Ticking continuously.
-void ATankAIController::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);  ///Super is just a line to tell the compiler to do what its SuperClass does (the mother of the class)
-	 
-	//Pointer Protection and log.
-	if (GetControlledTank() == nullptr) { return; }
-
-	///Find the target tank (the player)
-	if (GetPlayerTank() != nullptr) //Pointer Protection   (Logged in function def)
-	{ 
-		GetControlledTank()->AimAt(GetPlayerTank()->GetActorLocation()); //Call the public method on the Tank.cpp Class instance.
-	}
-	return;
-	
-	
-}
+*/

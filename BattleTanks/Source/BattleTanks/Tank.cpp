@@ -42,13 +42,24 @@ void ATank::SetTurretReference(UTankTurret* TankTurret)  //NOTE!! THIS IS CALLED
 
 void ATank::Fire()
 {
-	auto* MyProjectile = GetWorld()->SpawnActor<AProjectile>(                      // SpawnActor<CLASSTYPE>(CLASS,LOCATION,ROTATION)
-		TankProjectileType,
-		MyBarrel->GetSocketLocation(FName("ProjectileSpawn")),
-		MyBarrel->GetSocketRotation(FName("ProjectileSpawn"))
-	);
+	//Check if ready to fire, by seeing how many seconds have passed since the last shot. This is better than setting the value to 0 manually.
+	bool bIsReloaded = (FPlatformTime::Seconds() - LastShotTime) > ReloadTimeInSeconds;
 
-	MyProjectile->LaunchProjectile(LaunchSpeed);
+	if (MyBarrel != nullptr)//Pointer Protection
+	{
+		if (bIsReloaded) //If you are ready to fire
+		{
+			//Spawn the Projectile       
+			auto* MyProjectile = GetWorld()->SpawnActor<AProjectile>(                      // SpawnActor<CLASSTYPE>(CLASS,LOCATION,ROTATION)
+				TankProjectileType,
+				MyBarrel->GetSocketLocation(FName("ProjectileSpawn")),
+				MyBarrel->GetSocketRotation(FName("ProjectileSpawn"))
+				);
+
+			MyProjectile->LaunchProjectile(LaunchSpeed);
+			LastShotTime = FPlatformTime::Seconds();
+		}
+	}
 }
 
 // Called when the game starts or when spawned

@@ -22,14 +22,4 @@ private:
 
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
-	
-	///Methods:
-	ATank* GetControlledTank() const;
-	ATank* GetPlayerTank() const;
-
-	///Member Vars
-	ATank* ControlledTank = nullptr;
-	ATank* PlayerTank = nullptr;
-
-
 };
