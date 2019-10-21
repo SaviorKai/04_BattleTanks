@@ -2,11 +2,13 @@
 
 
 #include "Tank.h"
+#include "Engine/World.h"
 
 //Supporting the Forward Declarations
 #include "TankBarrel.h" 
 #include "TankTurret.h"
 #include "TankAimingComponent.h"
+#include "Projectile.h"
 
 // Sets default values
 ATank::ATank()
@@ -26,7 +28,11 @@ void ATank::AimAt(FVector TargetLocation)
 
 void ATank::SetBarrelReference(UTankBarrel* TankBarrel)  //NOTE!! THIS IS CALLED IN THE BLUEPRINT ON SPAWN TO SET THE VALUE!!!
 {
+	//Call the function on the Aiming component to pass down the set Barrel Reference.
 	TankAimingComponent->SetBarrelReferenceAimComponent(TankBarrel);
+	
+	//Set the local Var on Tank
+	MyBarrel = TankBarrel;
 }
 
 void ATank::SetTurretReference(UTankTurret* TankTurret)  //NOTE!! THIS IS CALLED IN THE BLUEPRINT ON SPAWN TO SET THE VALUE!!!
@@ -34,8 +40,13 @@ void ATank::SetTurretReference(UTankTurret* TankTurret)  //NOTE!! THIS IS CALLED
 	TankAimingComponent->SetTurretReferenceAimComponent(TankTurret);
 }
 
-void ATank::Fire(AActor* ProjectileType)
+void ATank::Fire()
 {
+	GetWorld()->SpawnActor<AProjectile>(                      // SpawnActor<CLASSTYPE>(CLASS,
+		TankProjectileType,
+		MyBarrel->GetSocketLocation(FName("ProjectileSpawn")),
+		MyBarrel->GetSocketRotation(FName("ProjectileSpawn"))
+	);
 	UE_LOG(LogTemp, Warning, TEXT("%f: Fire() Called."), GetWorld()->GetTimeSeconds());
 }
 
