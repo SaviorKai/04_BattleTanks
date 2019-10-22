@@ -18,7 +18,7 @@ public:
 	void RotateTurret(float RotationPosition);
 
 private:
-	UPROPERTY(EditAnywhere, Category = Setup)
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
 		float MaxRotationPerSecond = 25.0; //Sensible default.
 
 };

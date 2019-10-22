@@ -43,7 +43,7 @@ void ATank::SetTurretReference(UTankTurret* TankTurret)  //NOTE!! THIS IS CALLED
 void ATank::Fire()
 {
 	//Check if ready to fire, by seeing how many seconds have passed since the last shot. This is better than setting the value to 0 manually.
-	bool bIsReloaded = (FPlatformTime::Seconds() - LastShotTime) > ReloadTimeInSeconds;
+	bool bIsReloaded = (GetWorld()->GetTimeSeconds() - LastShotTime) > ReloadTimeInSeconds;
 
 	if (MyBarrel != nullptr)//Pointer Protection
 	{
@@ -57,7 +57,8 @@ void ATank::Fire()
 				);
 
 			MyProjectile->LaunchProjectile(LaunchSpeed);
-			LastShotTime = FPlatformTime::Seconds();
+			LastShotTime = GetWorld()->GetTimeSeconds();
+			UE_LOG(LogTemp, Warning, TEXT("%f: Projectile Fired"), LastShotTime);
 		}
 	}
 }

@@ -22,6 +22,19 @@ void ATankPlayerController::BeginPlay()
 }
 
 
+
+///Runs Every Frame or Step of the game, Ticking continuously.
+void ATankPlayerController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);  ///Super is just a line to tell the compiler to do what its SuperClass does (the mother of the class)
+	
+	AimTowardsCrosshair();
+
+}
+
+
+
+
 ATank* ATankPlayerController::GetControlledTank() const
 {
 	return Cast<ATank>(GetPawn()); ///IVAN NOTE: Cast is used here, to convert the return from 'GetPawn()', which is a APawn, into a ATank (the custom class). This is needed since we've specified the function return value as 'ATank'.
@@ -38,7 +51,7 @@ void ATankPlayerController::AimTowardsCrosshair()
 		///Aim Tank to the pointed position
 		GetControlledTank()->AimAt(HitLocation); //Call the public method on the Tank.cpp Class instance.
 	}
-	
+
 	return;
 }
 
@@ -50,22 +63,22 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) cons
 	int32 ViewportSizeX, ViewportSizeY;
 	GetViewportSize(OUT ViewportSizeX, OUT ViewportSizeY); ///Out paramater
 	FVector2D ScreenLocation = FVector2D(ViewportSizeX * CrossHairLocationX, ViewportSizeY * CrossHairLocationY); ///IVAN NOTE: Yes, int32 can be multiplied by floats!
-	
+
 	// "De-Project" the screen position of the crosshair to a world direction.
 	FVector CamLookDirection;
 	if (GetLookDirection(ScreenLocation, OUT CamLookDirection))
 	{
 		// Line trace through this look direction and see what we hit (up to max range).
-		GetLookVectorHitLocation(CamLookDirection, OutHitLocation);   
+		GetLookVectorHitLocation(CamLookDirection, OutHitLocation);
 	}
-		
+
 	return true;
 }
 
 bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const
 {
 	FVector CameraWorldLocation; //To be discarded, but needed for the Deproject function.
-	
+
 	return DeprojectScreenPositionToWorld(						///Ivan Note: This is a out paramater BOOL function, which means it can be used as a If statement.
 		ScreenLocation.X,
 		ScreenLocation.Y,
@@ -79,7 +92,7 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector CamLookDirection, F
 {
 	FVector LineTraceStart = PlayerCameraManager->GetCameraLocation();
 	FVector LineTraceEnd = LineTraceStart + (CamLookDirection * LineTraceRange);		 //IVAN NOTE: '(FRotator.FVector() * Length)' is similar to the LengthDir function
-	
+
 	///DEBUG DRAW LINE
 	/*
 	DrawDebugLine(
@@ -93,31 +106,17 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector CamLookDirection, F
 		10.0
 	);
 	*/
-	
+
 	FHitResult HitResult;
 	if (GetWorld()->LineTraceSingleByChannel(
-		OUT HitResult, LineTraceStart, 
-		LineTraceEnd, 
+		OUT HitResult, LineTraceStart,
+		LineTraceEnd,
 		ECollisionChannel::ECC_Visibility
-		))
+	))
 	{
 		HitLocationPoint = HitResult.Location;
 		return true;
 	}
-	
+
 	return false;
 }
-
-
-///Runs Every Frame or Step of the game, Ticking continuously.
-void ATankPlayerController::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);  ///Super is just a line to tell the compiler to do what its SuperClass does (the mother of the class)
-	
-	AimTowardsCrosshair();
-
-
-}
-
-
-

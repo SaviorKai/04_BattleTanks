@@ -48,17 +48,17 @@ private:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	//Private Vars
-	UPROPERTY(EditAnywhere, Category = Firing)
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
 		float LaunchSpeed = 4000; // Sensible default starting vallue. 
 
-	UPROPERTY(EditAnywhere, Category = Firing)
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
 		//UClass* TankProjectileType;					//Method 1: All classes to choose from in the dropdown. Here I am setting the TYPES of classes you can choose from (UClass = All), and then giving it a name as a var (TankProjectileType), which is then referecenced in the Editor. This one is dangerous, as if you choose the wrong one, the editor will crash.
 		TSubclassOf<AProjectile> TankProjectileType;	//Method 2: In this method, I can be specific about which subclasses to include.
 
-	UPROPERTY(EditAnywhere, Category = Firing)
+	UPROPERTY(EditAnywhere, Category = Firing)  //IVAN NOTE: EditAnywhere, means it can be changed on the default, and on the instances during runtime. EditDefaultsOnly, means you can only edit the default in the editor (not the instances).
 		float ReloadTimeInSeconds = 3; // Sensible default starting vallue.
 
 	UTankBarrel* MyBarrel = nullptr; //My Barrel (Local Reference for spawning projectile)
 
-	double LastShotTime = 0; //A new number type?
+	float LastShotTime = 0; 
 };
