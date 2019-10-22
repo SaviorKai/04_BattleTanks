@@ -13,6 +13,7 @@ class UTankBarrel;
 class UTankAimingComponent;
 class UTankTurret;
 class AProjectile;
+class UTankMovementComponent;
 
 UCLASS()
 class BATTLETANKS_API ATank : public APawn
@@ -41,6 +42,10 @@ protected:			// IVAN NOTE: Protected isn't public nor private.
 
 	//Create a class instance var *pointer of type UTankAimingComponent and UTankProjectileMovementComponent, and initialize it to nullptr.
 	UTankAimingComponent* TankAimingComponent = nullptr;
+
+	//Declare a var that can be called from the Blueprint, to hold the movement component, so that we can target it. //IVAN NOTE: If you don't set this as BlueprintReadOnly, you won't be able to drag the component into the blueprint. 
+	UPROPERTY(BlueprintReadOnly) 
+		UTankMovementComponent* TankMovementComponent = nullptr;
 
 
 private:	

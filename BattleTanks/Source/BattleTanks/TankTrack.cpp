@@ -23,5 +23,4 @@ void UTankTrack::SetThrottle(float Amount)
 	auto TankRootConverted = Cast<UPrimitiveComponent>(MyTankRoot); // Cast down to a child class of USceneComponent, to make it a UPrimitiveComponent.
 	
 	TankRootConverted->AddForceAtLocation(ForceApplied, ForceLocation);
-	UE_LOG(LogTemp, Warning, TEXT("%s, Throttle amount: %f"), *MyName, Amount);
 }

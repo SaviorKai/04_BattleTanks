@@ -10,7 +10,7 @@
 ///IVAN NOTE: This line below, just above UCLASS, is how you add comments which is seen in the editor to this item in the "Add component" list.
 
 //This Component holds the Barrel properties and Elevate() method.     
-UCLASS( ClassGroup = (TankParts), meta = (BlueprintSpawnableComponent))
+UCLASS( ClassGroup = (TankParts), meta = (BlueprintSpawnableComponent) )
 class BATTLETANKS_API UTankBarrel : public UStaticMeshComponent
 {
 	GENERATED_BODY()

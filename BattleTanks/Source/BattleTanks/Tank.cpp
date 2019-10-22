@@ -9,6 +9,7 @@
 #include "TankTurret.h"
 #include "TankAimingComponent.h"
 #include "Projectile.h"
+#include "TankMovementComponent.h"
 
 // Sets default values
 ATank::ATank()
@@ -16,8 +17,9 @@ ATank::ATank()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;    //IVAN NOTE: We set this to false to improve performance! We don't need tick here.
 
-	// Set the value of TankAimingComponent by creating a sub-object and adding it to the actor.
+	/// SPAWN and SET the value of TankAimingComponent & TankMovementComponent by creating a sub-object and adding it to the actor.
 	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aiming Component"));
+	TankMovementComponent = CreateDefaultSubobject<UTankMovementComponent>(FName("Movement Component"));
 
 }
 
