@@ -13,7 +13,7 @@ UTankTrack::UTankTrack() /// Ivan added. Constructor.
 void UTankTrack::SetThrottle(float Amount)
 {
 	auto MyName = GetName();
-	UE_LOG(LogTemp, Warning, TEXT("%s, Throttle amount: %f"), *MyName, Amount);
+	
 
 	//TODO: Clamp Throttle value to 1 and 0 to avoid player overdrive.
 
@@ -23,4 +23,5 @@ void UTankTrack::SetThrottle(float Amount)
 	auto TankRootConverted = Cast<UPrimitiveComponent>(MyTankRoot); // Cast down to a child class of USceneComponent, to make it a UPrimitiveComponent.
 	
 	TankRootConverted->AddForceAtLocation(ForceApplied, ForceLocation);
+	UE_LOG(LogTemp, Warning, TEXT("%s, Throttle amount: %f"), *MyName, Amount);
 }
