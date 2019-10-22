@@ -2,6 +2,7 @@
 
 
 #include "TankTrack.h"
+//#include "Components/SceneComponent.h"
 
 
 UTankTrack::UTankTrack() /// Ivan added. Constructor.
@@ -15,4 +16,11 @@ void UTankTrack::SetThrottle(float Amount)
 	UE_LOG(LogTemp, Warning, TEXT("%s, Throttle amount: %f"), *MyName, Amount);
 
 	//TODO: Clamp Throttle value to 1 and 0 to avoid player overdrive.
+
+	auto ForceApplied = GetForwardVector() * Amount * TrackMaxDrivingForce;
+	auto ForceLocation = GetComponentLocation();
+	auto MyTankRoot = GetOwner()->GetRootComponent(); //This is a good way to get the root component.
+	auto TankRootConverted = Cast<UPrimitiveComponent>(MyTankRoot); // Cast down to a child class of USceneComponent, to make it a UPrimitiveComponent.
+	
+	TankRootConverted->AddForceAtLocation(ForceApplied, ForceLocation);
 }
