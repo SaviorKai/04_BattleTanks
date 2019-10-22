@@ -58,7 +58,6 @@ void ATank::Fire()
 
 			MyProjectile->LaunchProjectile(LaunchSpeed);
 			LastShotTime = GetWorld()->GetTimeSeconds();
-			UE_LOG(LogTemp, Warning, TEXT("%f: Projectile Fired"), LastShotTime);
 		}
 	}
 }

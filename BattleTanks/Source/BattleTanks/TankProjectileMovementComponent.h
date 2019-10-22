@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
+UCLASS(ClassGroup = (TankParts), meta = (BlueprintSpawnableComponent))
 class BATTLETANKS_API UTankProjectileMovementComponent : public UProjectileMovementComponent
 {
 	GENERATED_BODY()
