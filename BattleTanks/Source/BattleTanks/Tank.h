@@ -26,13 +26,13 @@ public:
 	///Methods
 	void AimAt(FVector TargetLocation);
 
-	UFUNCTION(BlueprintCallable, Category = Setup)					/// Creates this method as a item which can be called in Blueprints.
+	UFUNCTION(BlueprintCallable, Category = TankSetup)					/// Creates this method as a item which can be called in Blueprints.
 		void SetBarrelReference(UTankBarrel* TankBarrel);
 
-	UFUNCTION(BlueprintCallable, Category = Setup)					/// Creates this method as a item which can be called in Blueprints.
+	UFUNCTION(BlueprintCallable, Category = TankSetup)					/// Creates this method as a item which can be called in Blueprints.
 		void SetTurretReference(UTankTurret* TankTurret);
 
-	UFUNCTION(BlueprintCallable, Category = Setup)					/// Creates this method as a item which can be called in Blueprints.
+	UFUNCTION(BlueprintCallable, Category = TankSetup)					/// Creates this method as a item which can be called in Blueprints.
 		void Fire();
 
 protected:			// IVAN NOTE: Protected isn't public nor private.
