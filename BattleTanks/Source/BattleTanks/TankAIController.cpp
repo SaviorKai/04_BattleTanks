@@ -3,8 +3,8 @@
 
 #include "TankAIController.h"
 #include "TankPlayerController.h"
-#include "Tank.h"   //Supporting forward declaration
-
+#include "Tank.h"   
+#include "TankMovementComponent.h"
 
 void ATankAIController::BeginPlay()
 {
@@ -25,20 +25,21 @@ void ATankAIController::Tick(float DeltaTime)
 	auto MyTank = Cast<ATank>(GetPawn());     //TODO: How does this work without a * after auto? How does it become a pointer var type?
 	auto EnemyTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
 
-	if (MyTank == nullptr) 
+	if (MyTank == nullptr)  //PointerProtection
 	{
-		//PointerProtection
 		UE_LOG(LogTemp, Warning, TEXT("Nullptr on TankAIController.MyTank!"));
 	}
 	else
 	{
-		if (EnemyTank == nullptr)
+		if (EnemyTank == nullptr) //PointerProtection
 		{
-			//PointerProtection
 			UE_LOG(LogTemp, Warning, TEXT("Nullptr on TankAIController.EnemyTank!"));
 		}
 		else
 		{
+			//Move Towards the player
+			MoveToActor(EnemyTank, AcceptanceRadius);
+						
 			//Call the public method on the Tank.cpp Class instance.
 			MyTank->AimAt(EnemyTank->GetActorLocation());
 

@@ -12,6 +12,7 @@
 
 //Forward Declaration: 
 class ATank;
+class UTankMovementComponent;
 
 UCLASS()
 class BATTLETANKS_API ATankAIController : public AAIController
@@ -22,4 +23,8 @@ private:
 
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
+
+	// How close will the AI tank go towards target before stopping.
+	UPROPERTY(EditDefaultsOnly, Category = TankAI)
+		float AcceptanceRadius = 3000;
 };

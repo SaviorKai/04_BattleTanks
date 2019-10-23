@@ -17,11 +17,26 @@ void UTankMovementComponent::InitialiseMoveComponent(UTankTrack* LeftTrack, UTan
 	MyRightTrack = RightTrack;
 }
 
+void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) 
+{
+	//Super::RequestDirectMove(MoveVelocity, bForceMaxSpeed);   //Removed super, since we'll be replacing it. 
+
+	/** TODO: Understand how this function was called????? 
+	// (It seems the AAIActor::MoveToActor() function engine code, calls RequestDirectMove() as part of its function. 
+	// This is why we've overridden it. Our version gets called, because we didn't use SUPER and replaced the root.)
+	*/
+	auto MyTank = GetOwner()->GetName();
+	auto MoveVelocityString = MoveVelocity.ToString();
+	UE_LOG(LogTemp, Warning, TEXT("%f: RequestDirectMove() called on %s, MoveVelocity: %s"), GetWorld()->GetTimeSeconds(), *MyTank, *MoveVelocityString);
+}
+
+
 void UTankMovementComponent::IntendMoveForward(float Amount)
 {
 	if (!MyLeftTrack || !MyLeftTrack) { return; } // Pointer Protection
 	MyLeftTrack->SetThrottle(Amount);
 	MyRightTrack->SetThrottle(Amount);
+	
 
 	// Clamp Throttle to avoid DOUBLE-SPEED from dual input.
 
@@ -34,6 +49,4 @@ void UTankMovementComponent::IntendTurnRight(float Amount)
 	MyRightTrack->SetThrottle(-Amount);
 
 	// Clamp Throttle to avoid DOUBLE-SPEED from dual input.
-
-	// UE_LOG(LogTemp, Warning, TEXT("%f: IntendMoveForward() called. Amount: %f"), GetWorld()->GetTimeSeconds(), Amount);
 }

@@ -24,6 +24,9 @@ class BATTLETANKS_API UTankMovementComponent : public UNavMovementComponent
 	GENERATED_BODY()
 
 public:
+	///Check Best protection for RequestDirectMove()
+	virtual void RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) override;  /// Polymorphism (Sub-Type)
+
 	///Fly-by-wire Controls
 	UFUNCTION(BlueprintCallable, Category = TankSetup) //This function manages the forward and backward movement of the tank.
 		void IntendMoveForward(float Amount);
@@ -34,6 +37,7 @@ public:
 	///Setup
 	UFUNCTION(BlueprintCallable, Category = TankSetup)
 		void InitialiseMoveComponent(UTankTrack* LeftTrack, UTankTrack* RightTrack);
+
 
 private:
 	UTankTrack* MyLeftTrack = nullptr;
