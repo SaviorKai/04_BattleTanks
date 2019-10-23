@@ -13,10 +13,6 @@ UTankTrack::UTankTrack() /// Ivan added. Constructor.
 void UTankTrack::SetThrottle(float Amount)
 {
 	auto MyName = GetName();
-	
-
-	//TODO: Clamp Throttle value to 1 and 0 to avoid player overdrive.
-
 	auto ForceApplied = GetForwardVector() * Amount * TrackMaxDrivingForce;
 	auto ForceLocation = GetComponentLocation();
 	auto MyTankRoot = GetOwner()->GetRootComponent(); //This is a good way to get the root component.
