@@ -4,7 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/NavMovementComponent.h"
+
+//Always has to be the last include!
 #include "TankMovementComponent.generated.h"
+
+//Forward Declarations
+class UTankTrack;
+
+
+
 
 /**  TODO: Add these Class Titles for all my classes
  * 
@@ -20,5 +28,11 @@ public:
 	//Fly-by-wire Control Forward.
 	UFUNCTION(BlueprintCallable, Category = TankSetup)
 		void IntendMoveForward(float Amount);
-	
+
+	UFUNCTION(BlueprintCallable, Category = TankSetup)
+		void InitialiseMoveComponent(UTankTrack* LeftTrack, UTankTrack* RightTrack);
+
+private:
+	UTankTrack* MyLeftTrack = nullptr;
+	UTankTrack* MyRightTrack = nullptr;
 };

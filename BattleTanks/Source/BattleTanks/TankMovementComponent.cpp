@@ -2,11 +2,23 @@
 
 
 #include "TankMovementComponent.h"
+#include "TankTrack.h"
+
 #include "Engine/World.h"
 
-void UTankMovementComponent::IntendMoveForward(float Amount)
+void UTankMovementComponent::InitialiseMoveComponent(UTankTrack* LeftTrack, UTankTrack* RightTrack) //NOTE!! THIS IS CALLED AND SETUP IN THE bp_Tank BeginPlay EventGraph
 {
-	UE_LOG(LogTemp, Warning, TEXT("%f: IntendMoveForward() called. Amount: %f"), GetWorld()->GetTimeSeconds(), Amount);
+	if (!LeftTrack || !LeftTrack) { return; } ///Pointer Protection
+
+	MyLeftTrack = LeftTrack;
+	MyRightTrack = RightTrack;
+
 }
 
 
+void UTankMovementComponent::IntendMoveForward(float Amount)
+{
+	MyLeftTrack->SetThrottle(Amount);
+	MyRightTrack->SetThrottle(Amount);
+	UE_LOG(LogTemp, Warning, TEXT("%f: IntendMoveForward() called. Amount: %f"), GetWorld()->GetTimeSeconds(), Amount);
+}
