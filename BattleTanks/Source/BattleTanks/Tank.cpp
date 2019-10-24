@@ -17,27 +17,38 @@ ATank::ATank()
 	PrimaryActorTick.bCanEverTick = false;    /// IVAN NOTE: We set this to false to improve performance! We don't need tick here.
 
 	/// SPAWN and SET the value of TankAimingComponent by creating a sub-object and adding it to the actor.
-	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("Aiming Component"));
 
+}
+
+// Called when the game starts or when spawned
+void ATank::BeginPlay()
+{
+	Super::BeginPlay();
+	
+}
+
+// Called to bind functionality to input
+void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
 void ATank::AimAt(FVector TargetLocation)
 {
-	TankAimingComponent->TurnAndAimAt(TargetLocation, LaunchSpeed);  ///NOTE: No need to protect pointer as its added in construction.
+	if (TankAimingComponent == nullptr) { return; } //Pointer Protection
+
+	TankAimingComponent->TurnAndAimAt(TargetLocation, LaunchSpeed);  
 }
 
-void ATank::SetBarrelReference(UTankBarrel* TankBarrel)  //NOTE!! THIS IS CALLED IN THE BLUEPRINT ON SPAWN TO SET THE VALUE!!!
+void ATank::SetupComponents(UTankAimingComponent* AimingComponent, UTankBarrel* TankBarrel)  
 {
-	//Call the function on the Aiming component to pass down the set Barrel Reference.
-	TankAimingComponent->SetBarrelReferenceAimComponent(TankBarrel);
-	
-	//Set the local Var on Tank
-	MyBarrel = TankBarrel;
-}
+	TankAimingComponent = AimingComponent;
+	MyBarrel = TankBarrel;  
 
-void ATank::SetTurretReference(UTankTurret* TankTurret)  //NOTE!! THIS IS CALLED IN THE BLUEPRINT ON SPAWN TO SET THE VALUE!!!
-{
-	TankAimingComponent->SetTurretReferenceAimComponent(TankTurret);
+	if (TankAimingComponent == nullptr || MyBarrel==nullptr) //Pointer Protection Log only.
+	{
+		UE_LOG(LogTemp, Warning, TEXT("NULLPTR on ATank::SetAimComponent()"));
+	}
 }
 
 void ATank::Fire()
@@ -62,19 +73,4 @@ void ATank::Fire()
 	}
 }
 
-// Called when the game starts or when spawned
-void ATank::BeginPlay()
-{
-	Super::BeginPlay();
-	
-}
-
-
-
-// Called to bind functionality to input
-void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-}
 

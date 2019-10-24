@@ -69,34 +69,20 @@ void UTankAimingComponent::TurnAndAimAt(FVector TargetLocation, float LaunchSpee
 		//UE_LOG(LogTemp, Warning, TEXT("%f: IMPOSSIBLE TossVelocity!!"), GetWorld()->GetTimeSeconds());
 	}
 	
-
-
-
 	///DEBUG LOGS
 	//UE_LOG(LogTemp, Warning, TEXT("%s is aiming at %s. Barrel Posision is: %s"), *GetOwner()->GetName(), *TargetLocation.ToString(), *MyTankBarrel->GetComponentLocation().ToString());
 }
 
-void UTankAimingComponent::SetBarrelReferenceAimComponent(UTankBarrel* TankBarrel)
+
+void UTankAimingComponent::InitialiseAimComponent(UTankBarrel* TankBarrel, UTankTurret* TankTurret)
 {
-	//Set the var to the instance id of the Barrel Component of the tank.
+	
 	MyTankBarrel = TankBarrel;
-
-	if (MyTankBarrel == nullptr) //PointerProtection.
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Nullptr on SetBarrelReferenceAimComponent()"));
-		return;
-	}
-}
-
-void UTankAimingComponent::SetTurretReferenceAimComponent(UTankTurret* TankTurret)
-{
-	//Set the var to the instance id of the Turret Component of the tank.
 	MyTankTurret = TankTurret;
 
-	if (MyTankTurret == nullptr) //PointerProtection.
+	if (MyTankBarrel == nullptr || MyTankTurret == nullptr) /// Pointer protection and log.
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Nullptr on SetTurretReferenceAimComponent()"));
-		return;
+		UE_LOG(LogTemp, Warning, TEXT("NULLPTR on InitialiseAimComponent()"));
 	}
 }
 

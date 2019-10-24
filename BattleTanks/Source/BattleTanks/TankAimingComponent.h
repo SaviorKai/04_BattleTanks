@@ -14,7 +14,7 @@ enum class EFiringStatus : uint8
 {
 	Locked,
 	Aiming,
-	Reloadinng
+	Reloading
 };
 
 //Forward Declaration: 
@@ -24,7 +24,7 @@ class UTankTurret;
 /// IVAN NOTE: This line below, just above UCLASS, is how you add comments which is seen in the editor to this item in the "Add component" list.
 
 //This Aiming component Sets the reference of the barrel for the tank and holds the TurnAndAimAt() method to get SuggestProjectileVelocity().
-UCLASS( ClassGroup=(TankParts), meta=(BlueprintSpawnableComponent) )
+UCLASS( ClassGroup = (TankParts), meta=(BlueprintSpawnableComponent) )
 class BATTLETANKS_API UTankAimingComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -38,8 +38,8 @@ protected:
 	virtual void BeginPlay() override;
 
 	// Setup MyFiringStatus enum var, which can be called by the UI. 
-	UPROPERTY(BlueprintReadOnly, Category = "Setup") /// Remember that the parent of bp_TankAimingComponent is the C++ class TankAimingComponent.cpp. Thus, this needs to be in protected, so that the child classes can call it. 
-		EFiringStatus MyFiringStatus = EFiringStatus::Reloadinng;
+	UPROPERTY(BlueprintReadOnly, Category = "Setup") /// Why protected:? Remember that the parent of bp_TankAimingComponent is the C++ class TankAimingComponent.cpp. Thus, this needs to be in protected, so that the child classes can call it. 
+		EFiringStatus MyFiringState = EFiringStatus::Reloading;
 
 public:	
 	// Called every frame
@@ -47,8 +47,9 @@ public:
 	
 	///Methods
 	void TurnAndAimAt(FVector TargetLocation, float LaunchSpeed);
-	void SetBarrelReferenceAimComponent(UTankBarrel* TankBarrel);
-	void SetTurretReferenceAimComponent(UTankTurret* TankTurret);
+	
+	UFUNCTION(BlueprintCallable, Category="Setup")
+		void InitialiseAimComponent(UTankBarrel* TankBarrel, UTankTurret* TankTurret);
 
 private:
 	UTankBarrel* MyTankBarrel = nullptr;
