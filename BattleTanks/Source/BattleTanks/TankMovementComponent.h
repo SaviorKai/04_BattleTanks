@@ -24,22 +24,22 @@ class BATTLETANKS_API UTankMovementComponent : public UNavMovementComponent
 	GENERATED_BODY()
 
 public:
-	///Check Best protection for RequestDirectMove()
-	virtual void RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) override;  /// Polymorphism (Sub-Type)
-
 	///Fly-by-wire Controls
-	UFUNCTION(BlueprintCallable, Category = TankSetup) //This function manages the forward and backward movement of the tank.
+	UFUNCTION(BlueprintCallable, Category = "TankSetup") //This function manages the forward and backward movement of the tank.
 		void IntendMoveForward(float Amount);
 
-	UFUNCTION(BlueprintCallable, Category = TankSetup) //This function manages the turning of the tank (Left and Right).
+	UFUNCTION(BlueprintCallable, Category = "TankSetup") //This function manages the turning of the tank (Left and Right).
 		void IntendTurnRight(float Amount);
 
 	///Setup
-	UFUNCTION(BlueprintCallable, Category = TankSetup)
+	UFUNCTION(BlueprintCallable, Category = "TankSetup")
 		void InitialiseMoveComponent(UTankTrack* LeftTrack, UTankTrack* RightTrack);
 
 
 private:
 	UTankTrack* MyLeftTrack = nullptr;
 	UTankTrack* MyRightTrack = nullptr;
+
+	// Override Function which is called from the MoveToActor() UE4 Function, to intercept it. MoveToActor() is called in the TankAIContrroller.cpp
+	virtual void RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) override;  /// Polymorphism (Sub-Type)
 };

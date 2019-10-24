@@ -19,4 +19,6 @@ void UTankTrack::SetThrottle(float Amount)
 	auto TankRootConverted = Cast<UPrimitiveComponent>(MyTankRoot); // Cast down to a child class of USceneComponent, to make it a UPrimitiveComponent.
 	
 	TankRootConverted->AddForceAtLocation(ForceApplied, ForceLocation);
+
+	// TODO: Set max track speed to a CLAMP to ensure that DOUBLE controlls, can't double the speed. Do this by creating a MySpeedVar, and have this function alter it instead.
 }

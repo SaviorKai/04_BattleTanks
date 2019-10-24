@@ -37,8 +37,6 @@ void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool
 	auto CrossProductResult = FVector::CrossProduct(TankForwardDirection, AIMoveDirection).Z; /// IVAN NOTE: Remember that its the Z value we want. The Z value will grow or shrink based on the angle difference.
 	IntendTurnRight(CrossProductResult); 
 
-	//UE_LOG(LogTemp, Warning, TEXT("%f: CrossProductResult = %f"), GetWorld()->GetTimeSeconds(), DotProductResult);
-
 	/* IVAN NOTE:
 	// This function 'RequestDirectMove()' is called by 'MoveToActor() UE4 function' used in the TankAIController.cpp file.
 	// (It seems the AAIActor::MoveToActor() function engine code, calls RequestDirectMove() as part of its function.
@@ -52,10 +50,6 @@ void UTankMovementComponent::IntendMoveForward(float Amount)
 	if (!MyLeftTrack || !MyLeftTrack) { return; } // Pointer Protection
 	MyLeftTrack->SetThrottle(Amount);
 	MyRightTrack->SetThrottle(Amount);
-	
-
-	// Clamp Throttle to avoid DOUBLE-SPEED from dual input.
-
 }
 
 void UTankMovementComponent::IntendTurnRight(float Amount)
@@ -63,6 +57,4 @@ void UTankMovementComponent::IntendTurnRight(float Amount)
 	if (!MyLeftTrack || !MyLeftTrack) { return; } // Pointer Protection
 	MyLeftTrack->SetThrottle(Amount);
 	MyRightTrack->SetThrottle(-Amount);
-
-	// Clamp Throttle to avoid DOUBLE-SPEED from dual input.
 }
