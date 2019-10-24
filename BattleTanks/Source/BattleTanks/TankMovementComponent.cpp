@@ -22,16 +22,22 @@ void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool
 {
 	//Super::RequestDirectMove(MoveVelocity, bForceMaxSpeed);   //Removed super, since we'll be replacing it. 
 
+	/// AI TANK MOVEMENT ///
+	
 	auto TankForwardDirection = GetOwner()->GetActorForwardVector().GetSafeNormal();    // IVAN NOTE: To 'GetForwardVector()' of a AActor, we need to use 'GetActorForwardVector()'. We also need to normalize it again, with GetSafeNormal();
 	auto AIMoveDirection = MoveVelocity.GetSafeNormal();
 
+	/// Move the AI tank 
 	// Using DotProduct, get the speed based on the angle difference.
 	auto DotProductResult = FVector::DotProduct(TankForwardDirection, AIMoveDirection); /// IVAN NOTE: This is a math solution that can be used on a vector. See lecture bookmark and read here: https://en.wikipedia.org/wiki/Dot_product#Geometric_definition
-
-	// Move the AI tank (remember, although this function lives inside TankMovementComponent, this method is called from the AI controller).
 	IntendMoveForward(DotProductResult);
-	
-	UE_LOG(LogTemp, Warning, TEXT("%f: DotProductResult = %f"), GetWorld()->GetTimeSeconds(), DotProductResult);
+
+	/// Turn the AI Tank
+	//Using the CrossProduct, get the speed we want to turn based on perpendicular length returned on the Z perp line.
+	auto CrossProductResult = FVector::CrossProduct(TankForwardDirection, AIMoveDirection).Z; /// IVAN NOTE: Remember that its the Z value we want. The Z value will grow or shrink based on the angle difference.
+	IntendTurnRight(CrossProductResult); 
+
+	//UE_LOG(LogTemp, Warning, TEXT("%f: CrossProductResult = %f"), GetWorld()->GetTimeSeconds(), DotProductResult);
 
 	/* IVAN NOTE:
 	// This function 'RequestDirectMove()' is called by 'MoveToActor() UE4 function' used in the TankAIController.cpp file.
