@@ -20,8 +20,11 @@ public:
 	virtual void BeginPlay() override;				/// Called when the game starts or when spwned (Ivan added)
 	virtual void Tick(float DeltaTime) override;	/// Called every tick/step of the game (Ivan added)
 
+protected:
+	UFUNCTION(BlueprintCallable, Category = "Setup")  /// TODO: Understand "Protected / Private / Public" better.
+		ATank* GetControlledTank() const;
+
 private:
-	///Member Vars
 	UPROPERTY(EditDefaultsOnly)
 		float CrossHairLocationX = 0.5;
 	UPROPERTY(EditDefaultsOnly)
@@ -29,12 +32,8 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 		float LineTraceRange = 1000000.0;
 
-
-	///Methods:
-	ATank* GetControlledTank() const;
 	void AimTowardsCrosshair();
 
-	///Helper Methods
 	bool GetSightRayHitLocation(FVector& OutHitLocation) const; //Out Param Method, true if hit something
 	bool GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const; //Out Param Method
 	bool GetLookVectorHitLocation(FVector CamLookDirection, FVector& HitLocationPoint) const;

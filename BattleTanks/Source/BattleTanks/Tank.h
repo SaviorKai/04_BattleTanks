@@ -40,7 +40,8 @@ protected:			/// IVAN NOTE: Protected isn't public nor private.
 	virtual void BeginPlay() override;
 
 	//Create a class instance var *pointer of type UTankAimingComponent and UTankProjectileMovementComponent, and initialize it to nullptr.
-	UTankAimingComponent* TankAimingComponent = nullptr;
+	UPROPERTY(BlueprintReadOnly)
+		UTankAimingComponent* TankAimingComponent = nullptr;
 
 	/* ============= OLD - NOT USED ANYMORE =============
 	//Declare a var that can be called from the Blueprint, to hold the movement component, so that we can target it. /// IVAN NOTE: If you don't set this as BlueprintReadOnly, you won't be able to drag the component into the blueprint. 
