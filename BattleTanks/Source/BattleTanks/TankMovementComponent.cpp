@@ -6,7 +6,7 @@
 
 #include "Engine/World.h"
 
-void UTankMovementComponent::InitialiseMoveComponent(UTankTrack* LeftTrack, UTankTrack* RightTrack) //NOTE!! THIS IS CALLED AND SETUP IN THE bp_Tank BeginPlay EventGraph
+void UTankMovementComponent::InitialiseMoveComponent(UTankTrack* LeftTrack, UTankTrack* RightTrack) //IVAN NOTE!! THIS IS CALLED AND SETUP IN THE bp_Tank BeginPlay EventGraph
 {
 	if (!LeftTrack || !LeftTrack) ///Pointer Protection Log only (Protection not needed, but added for the log.)
 	{
@@ -17,17 +17,27 @@ void UTankMovementComponent::InitialiseMoveComponent(UTankTrack* LeftTrack, UTan
 	MyRightTrack = RightTrack;
 }
 
-void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) 
+
+void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed)  /// IVAN NOTE: This function is called by 'MoveToActor() UE4 function' used in the TankAIController.cpp file.
 {
 	//Super::RequestDirectMove(MoveVelocity, bForceMaxSpeed);   //Removed super, since we'll be replacing it. 
 
-	/** TODO: Understand how this function was called????? 
-	// (It seems the AAIActor::MoveToActor() function engine code, calls RequestDirectMove() as part of its function. 
-	// This is why we've overridden it. Our version gets called, because we didn't use SUPER and replaced the root.)
+	auto TankForwardDirection = GetOwner()->GetActorForwardVector().GetSafeNormal();    // IVAN NOTE: To 'GetForwardVector()' of a AActor, we need to use 'GetActorForwardVector()'. We also need to normalize it again, with GetSafeNormal();
+	auto AIMoveDirection = MoveVelocity.GetSafeNormal();
+
+	// Using DotProduct, get the speed based on the angle difference.
+	auto DotProductResult = FVector::DotProduct(TankForwardDirection, AIMoveDirection); /// IVAN NOTE: This is a math solution that can be used on a vector. See lecture bookmark and read here: https://en.wikipedia.org/wiki/Dot_product#Geometric_definition
+
+	// Move the AI tank (remember, although this function lives inside TankMovementComponent, this method is called from the AI controller).
+	IntendMoveForward(DotProductResult);
+	
+	UE_LOG(LogTemp, Warning, TEXT("%f: DotProductResult = %f"), GetWorld()->GetTimeSeconds(), DotProductResult);
+
+	/* IVAN NOTE:
+	// This function 'RequestDirectMove()' is called by 'MoveToActor() UE4 function' used in the TankAIController.cpp file.
+	// (It seems the AAIActor::MoveToActor() function engine code, calls RequestDirectMove() as part of its function.
+	// This is why we've overridden it, since we only want the velocity for direction. Our version gets called, because we didn't use SUPER and replaced the root.)
 	*/
-	auto MyTank = GetOwner()->GetName();
-	auto MoveVelocityString = MoveVelocity.ToString();
-	UE_LOG(LogTemp, Warning, TEXT("%f: RequestDirectMove() called on %s, MoveVelocity: %s"), GetWorld()->GetTimeSeconds(), *MyTank, *MoveVelocityString);
 }
 
 

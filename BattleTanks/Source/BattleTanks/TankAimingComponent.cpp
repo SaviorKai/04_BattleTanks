@@ -48,7 +48,7 @@ void UTankAimingComponent::TurnAndAimAt(FVector TargetLocation, float LaunchSpee
 		false,      
 		0,			
 		0,			
-		ESuggestProjVelocityTraceOption::DoNotTrace      //NOTE! This argument is required for this function to work!
+		ESuggestProjVelocityTraceOption::DoNotTrace      /// IVAN NOTE! This argument is required for this function to work!
 	);
 
 	if (bHaveAimSolution) 

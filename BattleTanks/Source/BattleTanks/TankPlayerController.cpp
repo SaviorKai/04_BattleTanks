@@ -37,7 +37,7 @@ void ATankPlayerController::Tick(float DeltaTime)
 
 ATank* ATankPlayerController::GetControlledTank() const
 {
-	return Cast<ATank>(GetPawn()); ///IVAN NOTE: Cast is used here, to convert the return from 'GetPawn()', which is a APawn, into a ATank (the custom class). This is needed since we've specified the function return value as 'ATank'.
+	return Cast<ATank>(GetPawn()); /// IVAN NOTE: Cast is used here, to convert the return from 'GetPawn()', which is a APawn, into a ATank (the custom class). This is needed since we've specified the function return value as 'ATank'.
 }
 
 
@@ -62,7 +62,7 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) cons
 	/// Find the crosshair position
 	int32 ViewportSizeX, ViewportSizeY;
 	GetViewportSize(OUT ViewportSizeX, OUT ViewportSizeY); ///Out paramater
-	FVector2D ScreenLocation = FVector2D(ViewportSizeX * CrossHairLocationX, ViewportSizeY * CrossHairLocationY); ///IVAN NOTE: Yes, int32 can be multiplied by floats!
+	FVector2D ScreenLocation = FVector2D(ViewportSizeX * CrossHairLocationX, ViewportSizeY * CrossHairLocationY); /// IVAN NOTE: Yes, int32 can be multiplied by floats!
 
 	// "De-Project" the screen position of the crosshair to a world direction.
 	FVector CamLookDirection;
@@ -79,7 +79,7 @@ bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& 
 {
 	FVector CameraWorldLocation; //To be discarded, but needed for the Deproject function.
 
-	return DeprojectScreenPositionToWorld(						///Ivan Note: This is a out paramater BOOL function, which means it can be used as a If statement.
+	return DeprojectScreenPositionToWorld(						/// IVAN NOTE: This is a out paramater BOOL function, which means it can be used as a If statement.
 		ScreenLocation.X,
 		ScreenLocation.Y,
 		OUT CameraWorldLocation,
@@ -91,7 +91,7 @@ bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& 
 bool ATankPlayerController::GetLookVectorHitLocation(FVector CamLookDirection, FVector& HitLocationPoint) const
 {
 	FVector LineTraceStart = PlayerCameraManager->GetCameraLocation();
-	FVector LineTraceEnd = LineTraceStart + (CamLookDirection * LineTraceRange);		 //IVAN NOTE: '(FRotator.FVector() * Length)' is similar to the LengthDir function
+	FVector LineTraceEnd = LineTraceStart + (CamLookDirection * LineTraceRange);		 /// IVAN NOTE: '(FRotator.FVector() * Length)' is similar to the LengthDir function
 
 	///DEBUG DRAW LINE
 	/*

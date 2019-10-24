@@ -44,7 +44,7 @@ void ATankAIController::Tick(float DeltaTime)
 			MyTank->AimAt(EnemyTank->GetActorLocation());
 
 			//Fire When Ready
-			MyTank->Fire();  //TODO: Limit firing rate
+			//MyTank->Fire();  //TODO: Limit firing rate
 
 		}
 	}
