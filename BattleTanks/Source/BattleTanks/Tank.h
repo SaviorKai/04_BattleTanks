@@ -19,6 +19,14 @@ class BATTLETANKS_API ATank : public APawn
 {
 	GENERATED_BODY()
 
+/* IVAN NOTE ABOUT public, protected, private:
+// public: You can access it anywhere.
+// protected: This class and its inheretance can call these.
+// private: Only I can call these.
+//
+// It's important to remember, that if we create a BluePrint class from our C++ classes, the BLUEPRINT class is still a child of the main C++ class.
+*/
+
 public:
 	// Sets default values for this pawn's properties
 	ATank();

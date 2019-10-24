@@ -8,6 +8,15 @@
 ///Needs to be the last include
 #include "TankAimingComponent.generated.h"
 
+// EFiring Status Enum class creation.
+UENUM()
+enum class EFiringStatus : uint8
+{
+	Locked,
+	Aiming,
+	Reloadinng
+};
+
 //Forward Declaration: 
 class UTankBarrel;
 class UTankTurret;
@@ -28,6 +37,10 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
+	// Setup MyFiringStatus enum var, which can be called by the UI. 
+	UPROPERTY(BlueprintReadOnly, Category = "Setup") /// Remember that the parent of bp_TankAimingComponent is the C++ class TankAimingComponent.cpp. Thus, this needs to be in protected, so that the child classes can call it. 
+		EFiringStatus MyFiringStatus = EFiringStatus::Reloadinng;
+
 public:	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
@@ -40,7 +53,7 @@ public:
 private:
 	UTankBarrel* MyTankBarrel = nullptr;
 	UTankTurret* MyTankTurret = nullptr;
-	
+		
 	void MoveBarrel(FVector AimDirection);
 	void MoveTurret(FVector AimDirection);
 		

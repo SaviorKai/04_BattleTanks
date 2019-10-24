@@ -21,7 +21,7 @@ public:
 	virtual void Tick(float DeltaTime) override;	/// Called every tick/step of the game (Ivan added)
 
 protected:
-	UFUNCTION(BlueprintCallable, Category = "Setup")  /// TODO: Understand "Protected / Private / Public" better.
+	UFUNCTION(BlueprintCallable, Category = "Setup") 
 		ATank* GetControlledTank() const;
 
 private:
