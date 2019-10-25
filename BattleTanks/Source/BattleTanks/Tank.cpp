@@ -36,7 +36,7 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void ATank::AimAt(FVector TargetLocation)
 {
 	if (TankAimingComponent == nullptr) { return; } //Pointer Protection
-
+	
 	TankAimingComponent->TurnAndAimAt(TargetLocation, LaunchSpeed);  
 }
 

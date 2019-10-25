@@ -14,6 +14,7 @@ UTankAimingComponent::UTankAimingComponent()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = false; 
+	UE_LOG(LogTemp, Warning, TEXT("[SAVIORKAI C++] : UTankAimingComponent Construction"));
 
 	// ...
 }
@@ -23,6 +24,7 @@ UTankAimingComponent::UTankAimingComponent()
 void UTankAimingComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	UE_LOG(LogTemp, Warning, TEXT("[SAVIORKAI C++] : UTankAimingComponent BeginPlay()"));
 }
 
 
@@ -34,9 +36,8 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 
 void UTankAimingComponent::TurnAndAimAt(FVector TargetLocation, float LaunchSpeed)
 {
-	if (MyTankBarrel == nullptr) { return; } //Pointer Protection
-
-	
+	if (MyTankBarrel == nullptr) { return; } //Pointer Protection   /// [BUG HERE FOR AI TANKS]
+		
 	FVector TossVelocity(0); //Make sure you initialize vectors.
 
 	bool bHaveAimSolution = UGameplayStatics::SuggestProjectileVelocity(

@@ -18,7 +18,7 @@ class BATTLETANKS_API UTankTrack : public UStaticMeshComponent
 	GENERATED_BODY()
 
 public:
-	UTankTrack(); ///Ivan added. Constructor.
+	UTankTrack(); /// [REMOVE]
 
 	/// Public Methods
 	UFUNCTION(BlueprintCallable)

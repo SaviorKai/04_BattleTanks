@@ -6,6 +6,12 @@
 
 #include "Engine/World.h"
 
+
+UTankMovementComponent::UTankMovementComponent() /// [REMOVE]
+{
+	UE_LOG(LogTemp, Warning, TEXT("[SAVIORKAI C++] : UTankMovementComponent Construction"));
+}
+
 void UTankMovementComponent::InitialiseMoveComponent(UTankTrack* LeftTrack, UTankTrack* RightTrack) //IVAN NOTE!! THIS IS CALLED AND SETUP IN THE bp_Tank BeginPlay EventGraph
 {
 	if (!LeftTrack || !LeftTrack) ///Pointer Protection Log only (Protection not needed, but added for the log.)

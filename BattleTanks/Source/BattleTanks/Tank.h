@@ -53,7 +53,7 @@ protected:			/// IVAN NOTE: Protected isn't public nor private.
 
 private:	
 	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override; //TODO: This could be removed? 
 
 	UFUNCTION(BlueprintCallable, Category = "TankSetup")					/// Creates this method as a item which can be called in Blueprints.
 		void SetupComponents(UTankAimingComponent* AimingComponent, UTankBarrel* TankBarrel);

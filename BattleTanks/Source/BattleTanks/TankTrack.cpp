@@ -5,9 +5,9 @@
 //#include "Components/SceneComponent.h"
 
 
-UTankTrack::UTankTrack() /// Ivan added. Constructor.
+UTankTrack::UTankTrack() /// [REMOVE]
 {
-	//UE_LOG(LogTemp, Warning, TEXT("Tracks reporting for duty!"));
+	UE_LOG(LogTemp, Warning, TEXT("[SAVIORKAI C++] : UTankTrack Construction"));
 }
 
 void UTankTrack::SetThrottle(float Amount)

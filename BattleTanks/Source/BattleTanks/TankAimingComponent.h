@@ -31,7 +31,7 @@ class BATTLETANKS_API UTankAimingComponent : public UActorComponent
 
 public:	
 	// Sets default values for this component's properties
-	UTankAimingComponent();
+	UTankAimingComponent(); 
 
 protected:
 	// Called when the game starts

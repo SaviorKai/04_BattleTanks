@@ -13,6 +13,8 @@ void ATankAIController::BeginPlay()
 	//Log out Debug Messages
 	//UE_LOG(LogTemp, Warning, TEXT("%s has possessed Actor: %s"), *GetName(), *ControlledTank->GetName());
 	//UE_LOG(LogTemp, Warning, TEXT("%s has Targeted: %s"), *GetName(), *PlayerTank->GetName());
+
+	UE_LOG(LogTemp, Warning, TEXT("[SAVIORKAI C++] : ATankAIController BeginPlay")); // [REMOVE]
 	
 }
 
@@ -38,7 +40,7 @@ void ATankAIController::Tick(float DeltaTime)
 		else
 		{
 			//Move Towards the player
-			MoveToActor(EnemyTank, AcceptanceRadius);
+			MoveToActor(EnemyTank, AcceptanceRadius);   /// NOTE: This is a UE4 Engine Function. We intercept it on the TankMovementComponent.
 						
 			//Call the public method on the Tank.cpp Class instance.
 			MyTank->AimAt(EnemyTank->GetActorLocation());
