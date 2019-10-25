@@ -8,13 +8,14 @@
 
 void ATankAIController::BeginPlay()
 {
+	UE_LOG(LogTemp, Warning, TEXT("[SAVIORKAI C++] : ATankAIController BeginPlay")); // [REMOVE]
 	Super::BeginPlay();
 
 	//Log out Debug Messages
 	//UE_LOG(LogTemp, Warning, TEXT("%s has possessed Actor: %s"), *GetName(), *ControlledTank->GetName());
 	//UE_LOG(LogTemp, Warning, TEXT("%s has Targeted: %s"), *GetName(), *PlayerTank->GetName());
 
-	UE_LOG(LogTemp, Warning, TEXT("[SAVIORKAI C++] : ATankAIController BeginPlay")); // [REMOVE]
+	
 	
 }
 

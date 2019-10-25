@@ -18,8 +18,6 @@ class BATTLETANKS_API UTankTrack : public UStaticMeshComponent
 	GENERATED_BODY()
 
 public:
-	UTankTrack(); /// [REMOVE]
-
 	/// Public Methods
 	UFUNCTION(BlueprintCallable)
 		void SetThrottle(float Amount);

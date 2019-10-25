@@ -23,8 +23,9 @@ ATank::ATank()
 // Called when the game starts or when spawned
 void ATank::BeginPlay()
 {
-	Super::BeginPlay();
 	UE_LOG(LogTemp, Warning, TEXT("[SAVIORKAI C++] : ATank BeginPlay")); // [REMOVE]
+	Super::BeginPlay();
+	
 	
 }
 

@@ -3,11 +3,6 @@
 
 #include "TankBarrel.h"
 
-UTankBarrel::UTankBarrel() /// [REMOVE]
-{
-	UE_LOG(LogTemp, Warning, TEXT("[SAVIORKAI C++] : UTankBarrel Construction"));
-}
-
 void UTankBarrel::Elevate(float ElevatePosition)
 {
 	//move the barrel the right amount this frame

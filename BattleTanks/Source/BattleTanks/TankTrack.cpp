@@ -4,12 +4,6 @@
 #include "TankTrack.h"
 //#include "Components/SceneComponent.h"
 
-
-UTankTrack::UTankTrack() /// [REMOVE]
-{
-	UE_LOG(LogTemp, Warning, TEXT("[SAVIORKAI C++] : UTankTrack Construction"));
-}
-
 void UTankTrack::SetThrottle(float Amount)
 {
 	auto MyName = GetName();

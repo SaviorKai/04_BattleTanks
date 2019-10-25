@@ -18,46 +18,42 @@ class BATTLETANKS_API ABattleTanksGameModeBase : public AGameModeBase
 
 /// ORDER OF RUNTIME
 /* Notes:
-// - Looks like bp_GameMode Construction script doesn't run? 
-// - Seems like BLUEPRINT Construction script is skipped for the AI Units already placed in the level?
+// - Units within a level(AI), will not run their Construction script if you don't load another level before it (like a main menu).
 
-*** 1. Class Constructors ***
-	[SAVIORKAI C++] : ATank Constructor
-	[SAVIORKAI C++] : UTankTurret Construction
-	[SAVIORKAI C++] : UTankMovementComponent Construction
-	[SAVIORKAI C++] : UTankTrack Construction
-	[SAVIORKAI C++] : UTankAimingComponent Construction
-	[SAVIORKAI C++] : UTankTrack Construction
-	[SAVIORKAI C++] : UTankBarrel Construction
-
+========== Menu Level ==========
+*** 0. Pre-Constructors (C++ > BP)
 	[bp_PlayerController_C_0] [SAVIORKAI] : bp_PlayerController, Construction Script
-	[SAVIORKAI C++] : ATank Constructor
-	[SAVIORKAI C++] : UTankTurret Construction
-	[SAVIORKAI C++] : UTankBarrel Construction
-	[SAVIORKAI C++] : UTankTrack Construction
-	[SAVIORKAI C++] : UTankTrack Construction
-	[SAVIORKAI C++] : UTankMovementComponent Construction
-	[SAVIORKAI C++] : UTankAimingComponent Construction
+		[SAVIORKAI C++] : ATank Constructor
+		[bp_Tank_C_0] [SAVIORKAI] : bp_Tank, Construction Script
 
-*** 2. BP Class Constructors ***
-	[bp_Tank_C_0] [SAVIORKAI] : bp_Tank, Construction Script
-
-*** 3. Game Mode BP Begin Play ***
+****1. Begin Play (C++ > BP)
 	[bp_Game_Mode_C_0] [SAVIORKAI] :bp_Game_Mode, BeginPlayEvent
-
-*** 4. Units Already in Level ***
-	[SAVIORKAI C++] : ATankAIController BeginPlay
-	[SAVIORKAI C++] : UTankAimingComponent BeginPlay()
-	[bp_Tank_2] [SAVIORKAI] : bp_Tank, BeginPlayEvent (Inisialise Functions)
-	[SAVIORKAI C++] : ATank BeginPlay
-
-*** 5. Level Blueprint (After Unites spawned into level)
-	[lvl_Main_C_14] [SAVIORKAI] : lvl_Main BP, BeginPlayEvent
-
-*** 6. PlayerController + Units (Construction happened earlier in step 1 & 2)
 	[bp_PlayerController_C_0] [SAVIORKAI] : bp_PlayerController, BeginPlayEvents
-	[SAVIORKAI C++] : UTankAimingComponent BeginPlay()
-	[bp_Tank_C_0] [SAVIORKAI] : bp_Tank, BeginPlayEvent (Inisialise Functions)
-	[SAVIORKAI C++] : ATank BeginPlay
+		[SAVIORKAI C++] : ATank BeginPlay
+		[SAVIORKAI C++] : UTankAimingComponent BeginPlay()
+		[bp_Tank_C_0] [SAVIORKAI] : bp_Tank, BeginPlayEvent (Inisialise Functions)
+
+
+========== Main Tank Level + Pre-Constructors ================
+*** 0. Pre-Constructors (C++ > BP)         //NOTE: This is skipped another level isn't loaded before Main Tank Level)
+	[SAVIORKAI C++] : ATank Constructor
+	[bp_Tank_2] [SAVIORKAI] : bp_Tank, Construction Script
+
+*** 0. Constructors (C++ > BP)
+	[bp_PlayerController_C_0] [SAVIORKAI] : bp_PlayerController, Construction Script
+		[SAVIORKAI C++] : ATank Constructor
+		[bp_Tank_C_0] [SAVIORKAI] : bp_Tank, Construction Script
+
+****1. Begin Play (C++ > BP)
+	[bp_Game_Mode_C_0] [SAVIORKAI] :bp_Game_Mode, BeginPlayEvent
+	[SAVIORKAI C++] : ATankAIController BeginPlay
+		[SAVIORKAI C++] : ATank BeginPlay
+		[SAVIORKAI C++] : UTankAimingComponent BeginPlay()
+		[bp_Tank_2] [SAVIORKAI] : bp_Tank, BeginPlayEvent (Inisialise Functions)
+	[lvl_Main_C_16] [SAVIORKAI] : lvl_Main BP, BeginPlayEvent
+	[bp_PlayerController_C_0] [SAVIORKAI] : bp_PlayerController, BeginPlayEvents
+		[SAVIORKAI C++] : ATank BeginPlay
+		[SAVIORKAI C++] : UTankAimingComponent BeginPlay()
+		[bp_Tank_C_0] [SAVIORKAI] : bp_Tank, BeginPlayEvent (Inisialise Functions)
 
 */

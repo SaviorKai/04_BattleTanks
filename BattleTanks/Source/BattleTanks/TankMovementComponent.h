@@ -24,8 +24,6 @@ class BATTLETANKS_API UTankMovementComponent : public UNavMovementComponent
 	GENERATED_BODY()
 
 public:
-	UTankMovementComponent(); /// [REMOVE]
-
 	///Fly-by-wire Controls
 	UFUNCTION(BlueprintCallable, Category = "TankSetup") //This function manages the forward and backward movement of the tank.
 		void IntendMoveForward(float Amount);

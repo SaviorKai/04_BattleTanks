@@ -3,11 +3,6 @@
 
 #include "TankTurret.h"
 
-UTankTurret::UTankTurret() /// [REMOVE]
-{
-	UE_LOG(LogTemp, Warning, TEXT("[SAVIORKAI C++] : UTankTurret Construction"));
-}
-
 void UTankTurret::RotateTurret(float RotationPosition)
 {
 	//Normalize the value of the position to be used accurately with speed
