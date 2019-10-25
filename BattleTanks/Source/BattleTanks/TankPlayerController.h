@@ -10,6 +10,7 @@
 
 //Forward Declaration
 class ATank;
+class UTankAimingComponent;
 
 UCLASS()
 class BATTLETANKS_API ATankPlayerController : public APlayerController
@@ -23,6 +24,9 @@ public:
 protected:
 	UFUNCTION(BlueprintCallable, Category = "Setup") 
 		ATank* GetControlledTank() const;
+	
+	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
+		void FoundAimingComponent(UTankAimingComponent* AimingComponent); //IVAN NOTE: We don't need to DEFINE this function, since we are using 'BlueprintImplementableEvent'
 
 private:
 	UPROPERTY(EditDefaultsOnly)

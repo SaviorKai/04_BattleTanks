@@ -1,10 +1,11 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Fill out your copyright notice in the Description page of Project Settings. //TODO for all classes
 
 #include "TankPlayerController.h"
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
 
 #include "Tank.h" //Supporting forward declaration.
+#include "TankAimingComponent.h"
 
 #define OUT
 
@@ -12,10 +13,19 @@ void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//UE_LOG(LogTemp, Warning, TEXT("Player Controller Begin play called!")); //Debug Log
+	//Call the FoundAimingComponent Event and let it run.
+	auto AimingComponent = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();  /// IVAN NOTE! Used FINDcomponentByClass, not GET. !! This doesn't exist in blueprints.
+	if (AimingComponent == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Nullpointer on PlayerController BeginPlay - No AimingComponent"));
+	}
+	else
+	{
+		FoundAimingComponent(AimingComponent);
+	}
 
-	auto ControlledTank = GetControlledTank();
-	if (ControlledTank == nullptr) //Crash Protection (Pointer)
+	//Crash Protection (Pointer Log Only)
+	if (GetControlledTank() == nullptr) 
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Nullpointer on PlayerController - No Controlled Tank"));
 	}
