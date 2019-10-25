@@ -8,7 +8,6 @@
 
 void ATankAIController::BeginPlay()
 {
-	UE_LOG(LogTemp, Warning, TEXT("[SAVIORKAI C++] : ATankAIController BeginPlay")); // [REMOVE]
 	Super::BeginPlay();
 
 	//Log out Debug Messages

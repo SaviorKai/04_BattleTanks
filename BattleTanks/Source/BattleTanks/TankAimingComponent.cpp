@@ -21,9 +21,7 @@ UTankAimingComponent::UTankAimingComponent()
 // Called when the game starts
 void UTankAimingComponent::BeginPlay()
 {
-	UE_LOG(LogTemp, Warning, TEXT("[SAVIORKAI C++] : UTankAimingComponent BeginPlay()"));
 	Super::BeginPlay();
-	
 }
 
 

@@ -17,16 +17,12 @@ ATank::ATank()
 	PrimaryActorTick.bCanEverTick = false;    /// IVAN NOTE: We set this to false to improve performance! We don't need tick here.
 
 	/// SPAWN and SET the value of TankAimingComponent by creating a sub-object and adding it to the actor.
-	UE_LOG(LogTemp, Warning, TEXT("[SAVIORKAI C++] : ATank Constructor")); // [REMOVE]
 }
 
 // Called when the game starts or when spawned
 void ATank::BeginPlay()
 {
-	UE_LOG(LogTemp, Warning, TEXT("[SAVIORKAI C++] : ATank BeginPlay")); // [REMOVE]
 	Super::BeginPlay();
-	
-	
 }
 
 // Called to bind functionality to input
