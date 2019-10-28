@@ -50,6 +50,7 @@ protected:			/// IVAN NOTE: Protected isn't public nor private.
 	*/
 	UPROPERTY(BlueprintReadOnly) ///NOTE: This is moved here to protected, as 'BlueprintReadOnly', since its called in the UI for 'MyFiringStatus'
 		UTankAimingComponent* TankAimingComponent = nullptr;
+	
 
 private:	
 	// Called to bind functionality to input

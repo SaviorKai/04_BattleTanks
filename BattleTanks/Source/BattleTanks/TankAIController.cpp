@@ -27,17 +27,9 @@ void ATankAIController::Tick(float DeltaTime)
 	auto MyTank = Cast<ATank>(GetPawn());     //TODO: How does this work without a * after auto? How does it become a pointer var type?
 	auto EnemyTank = Cast<ATank>(GetWorld()->GetFirstPlayerController()->GetPawn());
 
-	if (MyTank == nullptr)  //PointerProtection
+	if (ensure(MyTank != nullptr))  //NULLPTR Protection
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Nullptr on TankAIController.MyTank!"));
-	}
-	else
-	{
-		if (EnemyTank == nullptr) //PointerProtection
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Nullptr on TankAIController.EnemyTank!"));
-		}
-		else
+		if (ensure(EnemyTank != nullptr)) //NULLPTR Protection
 		{
 			//Move Towards the player
 			MoveToActor(EnemyTank, AcceptanceRadius);   /// NOTE: This is a UE4 Engine Function. We intercept it on the TankMovementComponent.
@@ -49,6 +41,14 @@ void ATankAIController::Tick(float DeltaTime)
 			MyTank->Fire();  //TODO: Limit firing rate
 
 		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("NULLPTR on TankAIController.EnemyTank!"));		// Can be removed, since we are using 'ensure'.
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("NULLPTR on TankAIController.MyTank!"));				// Can be removed, since we are using 'ensure'.
 	}
 	
 	

@@ -8,7 +8,8 @@
 
 void UTankMovementComponent::InitialiseMoveComponent(UTankTrack* LeftTrack, UTankTrack* RightTrack) //IVAN NOTE!! THIS IS CALLED AND SETUP IN THE bp_Tank BeginPlay EventGraph
 {
-	if (!LeftTrack || !LeftTrack) ///Pointer Protection Log only (Protection not needed, but added for the log.)
+	//if (!LeftTrack || !RightTrack) ///Pointer Protection Log only (Protection not needed, but added for the log.)
+	if (!ensure(LeftTrack && RightTrack)) ///NULLPTR Protection Log only (Protection not needed, but added for the log.)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("NULLPTR on TankMovementComponent::InitialiseMoveComponent()"));;
 	}
@@ -28,7 +29,7 @@ void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool
 	auto AIMoveDirection = MoveVelocity.GetSafeNormal();
 
 	/// Move the AI tank 
-	// Using DotProduct, get the speed based on the angle difference.
+	// Using DotProduct, get the speed based on the angle difference.         //TODO: Understand Vector Math Better (Creation in Unreal, Rotation, Direction(Forward Vector), Lenght, etc.
 	auto DotProductResult = FVector::DotProduct(TankForwardDirection, AIMoveDirection); /// IVAN NOTE: This is a math solution that can be used on a vector. See lecture bookmark and read here: https://en.wikipedia.org/wiki/Dot_product#Geometric_definition
 	IntendMoveForward(DotProductResult);
 
@@ -47,14 +48,16 @@ void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool
 
 void UTankMovementComponent::IntendMoveForward(float Amount)
 {
-	if (!MyLeftTrack || !MyLeftTrack) { return; } // Pointer Protection
+	if (!ensure(MyLeftTrack && MyRightTrack)) { return; } // NULLPTR Protection
+
 	MyLeftTrack->SetThrottle(Amount);
 	MyRightTrack->SetThrottle(Amount);
 }
 
 void UTankMovementComponent::IntendTurnRight(float Amount)
 {
-	if (!MyLeftTrack || !MyLeftTrack) { return; } // Pointer Protection
+	if (!ensure(MyLeftTrack && MyRightTrack)) { return; } // NULLPTR Protection
+
 	MyLeftTrack->SetThrottle(Amount);
 	MyRightTrack->SetThrottle(-Amount);
 }

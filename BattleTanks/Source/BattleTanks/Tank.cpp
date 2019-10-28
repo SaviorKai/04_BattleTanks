@@ -33,7 +33,7 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void ATank::AimAt(FVector TargetLocation)
 {
-	if (TankAimingComponent == nullptr) { return; } //Pointer Protection
+	if (!ensure(TankAimingComponent != nullptr)) { return; }		/// NULLPTR Protection
 	
 	TankAimingComponent->TurnAndAimAt(TargetLocation, LaunchSpeed);  
 }
@@ -43,10 +43,11 @@ void ATank::SetupComponents(UTankAimingComponent* AimingComponent, UTankBarrel* 
 	TankAimingComponent = AimingComponent;
 	MyBarrel = TankBarrel;  
 
-	if (TankAimingComponent == nullptr || MyBarrel==nullptr) //Pointer Protection Log only.
+	if (!ensure(TankAimingComponent != nullptr && MyBarrel != nullptr))	/// NULLPTR Protection Log only. 
 	{
-		UE_LOG(LogTemp, Warning, TEXT("NULLPTR on ATank::SetAimComponent()"));
+		UE_LOG(LogTemp, Warning, TEXT("NULLPTR on ATank::SetAimComponent()")); 
 	}
+
 }
 
 void ATank::Fire()
@@ -54,7 +55,7 @@ void ATank::Fire()
 	//Check if ready to fire, by seeing how many seconds have passed since the last shot. This is better than setting the value to 0 manually.
 	bool bIsReloaded = (GetWorld()->GetTimeSeconds() - LastShotTime) > ReloadTimeInSeconds;
 
-	if (MyBarrel != nullptr)//Pointer Protection
+	if (ensure(MyBarrel != nullptr))	//NULLPTR Protection
 	{
 		if (bIsReloaded) //If you are ready to fire
 		{

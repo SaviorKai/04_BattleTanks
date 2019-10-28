@@ -33,7 +33,7 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 
 void UTankAimingComponent::TurnAndAimAt(FVector TargetLocation, float LaunchSpeed)
 {
-	if (MyTankBarrel == nullptr) { return; } //Pointer Protection   /// [BUG HERE FOR AI TANKS]
+	if (!ensure(MyTankBarrel != nullptr)) { return; }	 //NULLPTR Protection   
 		
 	FVector TossVelocity(0); //Make sure you initialize vectors.
 
@@ -78,7 +78,7 @@ void UTankAimingComponent::InitialiseAimComponent(UTankBarrel* TankBarrel, UTank
 	MyTankBarrel = TankBarrel;
 	MyTankTurret = TankTurret;
 
-	if (MyTankBarrel == nullptr || MyTankTurret == nullptr) /// Pointer protection and log.
+	if (!ensure(MyTankBarrel != nullptr && MyTankTurret != nullptr)) /// NULLPTR protection and log.
 	{
 		UE_LOG(LogTemp, Warning, TEXT("NULLPTR on InitialiseAimComponent()"));
 	}
@@ -86,7 +86,7 @@ void UTankAimingComponent::InitialiseAimComponent(UTankBarrel* TankBarrel, UTank
 
 void UTankAimingComponent::MoveBarrel(FVector AimDirection)
 {
-	if (MyTankBarrel == nullptr) { return; } //Pointer protection.
+	if (!ensure(MyTankBarrel != nullptr)) { return; } // NULLPTR protection.
 
 	//Work out the difference between the two points
 	FRotator CurrentBarrelRotation = MyTankBarrel->GetForwardVector().Rotation();
@@ -101,7 +101,7 @@ void UTankAimingComponent::MoveBarrel(FVector AimDirection)
 
 void UTankAimingComponent::MoveTurret(FVector AimDirection)
 {
-	if (MyTankTurret == nullptr) { return; } //Pointer protection.
+	if (!ensure(MyTankTurret != nullptr)) { return; } // NULLPTR protection.
 	
 	//Calculate the difference between the two  points
 	FRotator CurrentTurretRotation = MyTankTurret->GetForwardVector().Rotation();
