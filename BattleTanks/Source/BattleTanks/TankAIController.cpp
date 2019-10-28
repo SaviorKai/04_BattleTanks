@@ -4,7 +4,7 @@
 #include "TankAIController.h"
 #include "TankPlayerController.h"
 #include "Tank.h"   
-#include "TankMovementComponent.h"
+#include "TankMovementComponent.h" // NOTE: Depends on TankMovementComponent for the pathfinding system via 'MoveToActor()' UE4 function
 
 void ATankAIController::BeginPlay()
 {
