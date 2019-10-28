@@ -9,7 +9,6 @@
 #include "TankPlayerController.generated.h"
 
 //Forward Declaration
-class ATank;
 class UTankAimingComponent;
 
 UCLASS()
@@ -22,8 +21,6 @@ public:
 	virtual void Tick(float DeltaTime) override;	/// Called every tick/step of the game (Ivan added)
 
 protected:
-	UFUNCTION(BlueprintCallable, Category = "Setup") 
-		ATank* GetControlledTank() const;
 	
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
 		void FoundAimingComponent(UTankAimingComponent* AimingComponent); //IVAN NOTE: We don't need to DEFINE this function, since we are using 'BlueprintImplementableEvent'

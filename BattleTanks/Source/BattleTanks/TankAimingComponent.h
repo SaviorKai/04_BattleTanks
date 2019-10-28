@@ -37,7 +37,7 @@ protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
-	// Setup MyFiringStatus enum var, which can be called by the UI. 
+	// Setup MyFiringStatus enum var, which can be called by the UI.  
 	UPROPERTY(BlueprintReadOnly, Category = "Setup") /// Why protected:? Remember that the parent of bp_TankAimingComponent is the C++ class TankAimingComponent.cpp. Thus, this needs to be in protected, so that the child classes can call it. 
 		EFiringStatus MyFiringState = EFiringStatus::Aiming;
 
@@ -46,16 +46,23 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	
 	///Methods
-	void TurnAndAimAt(FVector TargetLocation, float LaunchSpeed);
+	void TurnAndAimAt(FVector TargetLocation);
 	
 	UFUNCTION(BlueprintCallable, Category="Setup")
 		void InitialiseAimComponent(UTankBarrel* TankBarrel, UTankTurret* TankTurret);
 
+		UFUNCTION(BlueprintCallable, Category = "TankSetup") /// Made this a Blueprint callable function since we want to call it via input in blueprints.
+		void Fire();
+
 private:
 	UTankBarrel* MyTankBarrel = nullptr;
 	UTankTurret* MyTankTurret = nullptr;
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+		float LaunchSpeed = 4000; // Sensible default starting vallue.      
 		
 	void MoveBarrel(FVector AimDirection);
 	void MoveTurret(FVector AimDirection);
+
+
 		
 };

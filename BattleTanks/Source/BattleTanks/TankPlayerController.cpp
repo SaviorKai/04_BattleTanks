@@ -3,8 +3,6 @@
 #include "TankPlayerController.h"
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
-
-#include "Tank.h" //Supporting forward declaration.
 #include "TankAimingComponent.h"
 
 #define OUT
@@ -14,9 +12,9 @@ void ATankPlayerController::BeginPlay()
 	Super::BeginPlay();
 
 	//Call the FoundAimingComponent Event and let it run.
-	auto AimingComponent = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();  /// IVAN NOTE! Used FINDcomponentByClass, not GET. !! This doesn't exist in blueprints.
-	
+	auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();  /// IVAN NOTE! Used FINDcomponentByClass, not GET. !! This doesn't exist in blueprints.
 	if (!ensure(AimingComponent != nullptr)) { return; }  /// NULLPTR Protection.
+	
 	FoundAimingComponent(AimingComponent);
 }
 
@@ -31,24 +29,25 @@ void ATankPlayerController::Tick(float DeltaTime)
 
 }
 
-
-
-
+/* //OLD CODE 
 ATank* ATankPlayerController::GetControlledTank() const
 {
 	return Cast<ATank>(GetPawn()); /// IVAN NOTE: Cast is used here, to convert the return from 'GetPawn()', which is a APawn, into a ATank (the custom class). This is needed since we've specified the function return value as 'ATank'.
 }
-
+*/
 
 void ATankPlayerController::AimTowardsCrosshair()
 {
-	if (!ensure(GetControlledTank() != nullptr)) { return; } /// NULLPTR Protection: Check if we have a tank we're controlling before doing anything.
+	if (!ensure(GetPawn() != nullptr)) { return; } /// NULLPTR Protection: Check if we have a tank we're controlling before doing anything.
 
 	FVector HitLocation; //OUT Parameter
 	if (GetSightRayHitLocation(OUT HitLocation))
 	{
 		///Aim Tank to the pointed position
-		GetControlledTank()->AimAt(HitLocation); //Call the public method on the Tank.cpp Class instance.
+		auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();  /// IVAN NOTE! Used FINDcomponentByClass, not GET. !! This doesn't exist in blueprints.
+		if (!ensure(AimingComponent != nullptr)) { return; }  /// NULLPTR Protection.
+
+		AimingComponent->TurnAndAimAt(HitLocation);
 	}
 }
 

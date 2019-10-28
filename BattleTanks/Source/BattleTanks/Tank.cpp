@@ -7,7 +7,6 @@
 //Supporting the Forward Declarations
 #include "TankBarrel.h" 
 #include "TankTurret.h"
-#include "TankAimingComponent.h"
 #include "Projectile.h"
 
 // Sets default values
@@ -23,8 +22,6 @@ ATank::ATank()
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
-
-	TankAimingComponent = FindComponentByClass<UTankAimingComponent>();
 }
 
 // Called to bind functionality to input
@@ -33,12 +30,6 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 }
 
-void ATank::AimAt(FVector TargetLocation)
-{
-	if (!ensure(TankAimingComponent != nullptr)) { return; }		/// NULLPTR Protection
-	
-	TankAimingComponent->TurnAndAimAt(TargetLocation, LaunchSpeed);  
-}
 
 void ATank::Fire()
 {
@@ -58,7 +49,7 @@ void ATank::Fire()
 				MyBarrel->GetSocketRotation(FName("ProjectileSpawn"))
 				);
 
-			MyProjectile->LaunchProjectile(LaunchSpeed);
+			MyProjectile->LaunchProjectile(4000); ///Change 4000 back to LaunchSpeed This When Fire has been moved.
 			LastShotTime = GetWorld()->GetTimeSeconds();
 		}
 	}

@@ -31,7 +31,7 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
 
-void UTankAimingComponent::TurnAndAimAt(FVector TargetLocation, float LaunchSpeed)
+void UTankAimingComponent::TurnAndAimAt(FVector TargetLocation)
 {
 	if (!ensure(MyTankBarrel != nullptr)) { return; }	 //NULLPTR Protection   
 		
@@ -76,6 +76,12 @@ void UTankAimingComponent::InitialiseAimComponent(UTankBarrel* TankBarrel, UTank
 {
 	MyTankBarrel = TankBarrel;
 	MyTankTurret = TankTurret;
+}
+
+void UTankAimingComponent::Fire()
+{
+	/// TODO: Complete this function.
+	UE_LOG(LogTemp, Warning, TEXT("PRETEND FIRE IS WORKING! :D"));
 }
 
 void UTankAimingComponent::MoveBarrel(FVector AimDirection)

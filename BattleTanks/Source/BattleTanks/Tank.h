@@ -10,7 +10,6 @@
 
 //Forward Declarations: 
 class UTankBarrel;
-class UTankAimingComponent;
 class UTankTurret;
 class AProjectile;
 
@@ -32,27 +31,20 @@ public:
 	ATank();
 
 	///Methods
-	void AimAt(FVector TargetLocation);
-
 	UFUNCTION(BlueprintCallable, Category = "TankSetup") /// Made this a Blueprint callable function since we want to call it via input in blueprints.
-		void Fire();
-
-
+		void Fire(); ///TODO: Complete move to Aiming Component (and update input blueprint to call this accurately.
 
 protected:			
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-		
+	/* // OLD CODE //
 	UPROPERTY(BlueprintReadOnly) ///NOTE: This is moved here to protected, and as 'BlueprintReadOnly', since its called in the UI for 'MyFiringStatus' /// IVAN NOTE: If you don't set this as BlueprintReadOnly, you won't be able to drag the component into the blueprint. 
 		UTankAimingComponent* TankAimingComponent = nullptr;
-	
+	*/
 
 private:	
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override; //TODO: This could be removed? 
-
-	UPROPERTY(EditDefaultsOnly, Category = "Firing")
-		float LaunchSpeed = 4000; // Sensible default starting vallue.      // TODO: Remove when Fire() has been moved.
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 		TSubclassOf<AProjectile> TankProjectileType;	//Method 1: In this method, I can be specific about which subclasses to include.
