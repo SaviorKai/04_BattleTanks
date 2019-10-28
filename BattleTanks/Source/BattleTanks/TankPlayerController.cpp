@@ -15,20 +15,9 @@ void ATankPlayerController::BeginPlay()
 
 	//Call the FoundAimingComponent Event and let it run.
 	auto AimingComponent = GetControlledTank()->FindComponentByClass<UTankAimingComponent>();  /// IVAN NOTE! Used FINDcomponentByClass, not GET. !! This doesn't exist in blueprints.
-	if (!ensure(AimingComponent != nullptr))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("NULLPTR on PlayerController BeginPlay - No AimingComponent"));
-	}
-	else
-	{
-		FoundAimingComponent(AimingComponent);
-	}
 	
-	// NULLPTR Log Only
-	if (!ensure(GetControlledTank() != nullptr))
-	{
-		UE_LOG(LogTemp, Warning, TEXT("NULLPTR on PlayerController - No Controlled Tank"));
-	}
+	if (!ensure(AimingComponent != nullptr)) { return; }  /// NULLPTR Protection.
+	FoundAimingComponent(AimingComponent);
 }
 
 
@@ -61,8 +50,6 @@ void ATankPlayerController::AimTowardsCrosshair()
 		///Aim Tank to the pointed position
 		GetControlledTank()->AimAt(HitLocation); //Call the public method on the Tank.cpp Class instance.
 	}
-
-	return;
 }
 
 

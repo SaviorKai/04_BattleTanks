@@ -23,6 +23,8 @@ ATank::ATank()
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
+
+	TankAimingComponent = FindComponentByClass<UTankAimingComponent>();
 }
 
 // Called to bind functionality to input
@@ -38,22 +40,12 @@ void ATank::AimAt(FVector TargetLocation)
 	TankAimingComponent->TurnAndAimAt(TargetLocation, LaunchSpeed);  
 }
 
-void ATank::SetupComponents(UTankAimingComponent* AimingComponent, UTankBarrel* TankBarrel)  
-{
-	TankAimingComponent = AimingComponent;
-	MyBarrel = TankBarrel;  
-
-	if (!ensure(TankAimingComponent != nullptr && MyBarrel != nullptr))	/// NULLPTR Protection Log only. 
-	{
-		UE_LOG(LogTemp, Warning, TEXT("NULLPTR on ATank::SetAimComponent()")); 
-	}
-
-}
-
 void ATank::Fire()
 {
 	//Check if ready to fire, by seeing how many seconds have passed since the last shot. This is better than setting the value to 0 manually.
 	bool bIsReloaded = (GetWorld()->GetTimeSeconds() - LastShotTime) > ReloadTimeInSeconds;
+
+	auto MyBarrel = FindComponentByClass<UTankBarrel>();
 
 	if (ensure(MyBarrel != nullptr))	//NULLPTR Protection
 	{

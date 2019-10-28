@@ -8,12 +8,6 @@
 
 void UTankMovementComponent::InitialiseMoveComponent(UTankTrack* LeftTrack, UTankTrack* RightTrack) //IVAN NOTE!! THIS IS CALLED AND SETUP IN THE bp_Tank BeginPlay EventGraph
 {
-	//if (!LeftTrack || !RightTrack) ///Pointer Protection Log only (Protection not needed, but added for the log.)
-	if (!ensure(LeftTrack && RightTrack)) ///NULLPTR Protection Log only (Protection not needed, but added for the log.)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("NULLPTR on TankMovementComponent::InitialiseMoveComponent()"));;
-	}
-
 	MyLeftTrack = LeftTrack;
 	MyRightTrack = RightTrack;
 }

@@ -14,8 +14,6 @@ void ATankAIController::BeginPlay()
 	//UE_LOG(LogTemp, Warning, TEXT("%s has possessed Actor: %s"), *GetName(), *ControlledTank->GetName());
 	//UE_LOG(LogTemp, Warning, TEXT("%s has Targeted: %s"), *GetName(), *PlayerTank->GetName());
 
-	
-	
 }
 
 ///Runs Every Frame or Step of the game, Ticking continuously.
@@ -41,17 +39,7 @@ void ATankAIController::Tick(float DeltaTime)
 			MyTank->Fire();  //TODO: Limit firing rate
 
 		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("NULLPTR on TankAIController.EnemyTank!"));		// Can be removed, since we are using 'ensure'.
-		}
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("NULLPTR on TankAIController.MyTank!"));				// Can be removed, since we are using 'ensure'.
-	}
-	
-	
+	}	
 }
 
 ///////// REFACTORED OUT - OLD CODE BELOW /////////

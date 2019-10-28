@@ -74,14 +74,8 @@ void UTankAimingComponent::TurnAndAimAt(FVector TargetLocation, float LaunchSpee
 
 void UTankAimingComponent::InitialiseAimComponent(UTankBarrel* TankBarrel, UTankTurret* TankTurret)
 {
-	
 	MyTankBarrel = TankBarrel;
 	MyTankTurret = TankTurret;
-
-	if (!ensure(MyTankBarrel != nullptr && MyTankTurret != nullptr)) /// NULLPTR protection and log.
-	{
-		UE_LOG(LogTemp, Warning, TEXT("NULLPTR on InitialiseAimComponent()"));
-	}
 }
 
 void UTankAimingComponent::MoveBarrel(FVector AimDirection)
