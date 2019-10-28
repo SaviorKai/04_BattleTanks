@@ -5,6 +5,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "TankBarrel.h" //Supporting the Forward Declaration
 #include "TankTurret.h" //Supporting the Forward Declaration
+#include "Projectile.h" //Supporting the Forward Declaration
 
 #define OUT
 
@@ -80,8 +81,28 @@ void UTankAimingComponent::InitialiseAimComponent(UTankBarrel* TankBarrel, UTank
 
 void UTankAimingComponent::Fire()
 {
-	/// TODO: Complete this function.
-	UE_LOG(LogTemp, Warning, TEXT("PRETEND FIRE IS WORKING! :D"));
+	//Check if ready to fire, by seeing how many seconds have passed since the last shot. This is better than setting the value to 0 manually.
+	bool bIsReloaded = (GetWorld()->GetTimeSeconds() - LastShotTime) > ReloadTimeInSeconds;
+
+	if (ensure(MyTankBarrel != nullptr))	//NULLPTR Protection
+	{
+		if (bIsReloaded) //If you are ready to fire
+		{
+			//Spawn the Projectile       
+			auto* MyProjectile = GetWorld()->SpawnActor<AProjectile>(                      // SpawnActor<CLASSTYPE>(CLASS,LOCATION,ROTATION)
+				TankProjectileType,
+				MyTankBarrel->GetSocketLocation(FName("ProjectileSpawn")),
+				MyTankBarrel->GetSocketRotation(FName("ProjectileSpawn"))
+				);
+
+			//Move the Projectile
+			if (ensure(MyProjectile)) ///Pointer protection incase the projectile doesn't spawn.
+			{
+				MyProjectile->LaunchProjectile(LaunchSpeed);
+			}
+			LastShotTime = GetWorld()->GetTimeSeconds();
+		}
+	}
 }
 
 void UTankAimingComponent::MoveBarrel(FVector AimDirection)

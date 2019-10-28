@@ -30,10 +30,6 @@ public:
 	// Sets default values for this pawn's properties
 	ATank();
 
-	///Methods
-	UFUNCTION(BlueprintCallable, Category = "TankSetup") /// Made this a Blueprint callable function since we want to call it via input in blueprints.
-		void Fire(); ///TODO: Complete move to Aiming Component (and update input blueprint to call this accurately.
-
 protected:			
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -42,16 +38,4 @@ protected:
 		UTankAimingComponent* TankAimingComponent = nullptr;
 	*/
 
-private:	
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override; //TODO: This could be removed? 
-
-	UPROPERTY(EditDefaultsOnly, Category = "Firing")
-		TSubclassOf<AProjectile> TankProjectileType;	//Method 1: In this method, I can be specific about which subclasses to include.
-		//UClass* TankProjectileType;					//Method 2: All classes to choose from in the dropdown. Here I am setting the TYPES of classes you can choose from (UClass = All), and then giving it a name as a var (TankProjectileType), which is then referecenced in the Editor. This one is dangerous, as if you choose the wrong one, the editor will crash.
-
-	UPROPERTY(EditAnywhere, Category = "Firing")  /// IVAN NOTE: EditAnywhere, means it can be changed on the default, and on the instances during runtime. EditDefaultsOnly, means you can only edit the default in the editor (not the instances).
-		float ReloadTimeInSeconds = 3; // Sensible default starting vallue.
-
-	float LastShotTime = 0; 
 };

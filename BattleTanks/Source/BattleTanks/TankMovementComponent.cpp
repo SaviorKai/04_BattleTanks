@@ -4,8 +4,6 @@
 #include "TankMovementComponent.h"
 #include "TankTrack.h"
 
-#include "Engine/World.h"
-
 void UTankMovementComponent::InitialiseMoveComponent(UTankTrack* LeftTrack, UTankTrack* RightTrack) //IVAN NOTE!! THIS IS CALLED AND SETUP IN THE bp_Tank BeginPlay EventGraph
 {
 	MyLeftTrack = LeftTrack;

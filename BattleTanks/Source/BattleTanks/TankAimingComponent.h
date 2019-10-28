@@ -20,6 +20,7 @@ enum class EFiringStatus : uint8
 //Forward Declaration: 
 class UTankBarrel;
 class UTankTurret;
+class AProjectile;
 
 /// IVAN NOTE: This line below, just above UCLASS, is how you add comments which is seen in the editor to this item in the "Add component" list.
 
@@ -51,18 +52,24 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Setup")
 		void InitialiseAimComponent(UTankBarrel* TankBarrel, UTankTurret* TankTurret);
 
-		UFUNCTION(BlueprintCallable, Category = "TankSetup") /// Made this a Blueprint callable function since we want to call it via input in blueprints.
+	UFUNCTION(BlueprintCallable, Category = "TankSetup") /// Made this a Blueprint callable function since we want to call it via input in blueprints.
 		void Fire();
 
 private:
 	UTankBarrel* MyTankBarrel = nullptr;
 	UTankTurret* MyTankTurret = nullptr;
+	float LastShotTime = 0;
+
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
-		float LaunchSpeed = 4000; // Sensible default starting vallue.      
-		
+		float LaunchSpeed = 4000; // Sensible default starting vallue.
+	
+	UPROPERTY(EditAnywhere, Category = "Firing")  /// IVAN NOTE: EditAnywhere, means it can be changed on the default, and on the instances during runtime. EditDefaultsOnly, means you can only edit the default in the editor (not the instances).
+		float ReloadTimeInSeconds = 3; // Sensible default starting vallue.
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Firing")
+		TSubclassOf<AProjectile> TankProjectileType;	//Method 1: In this method, I can be specific about which subclasses to include.
+		//UClass* TankProjectileType;					//Method 2: All classes to choose from in the dropdown. Here I am setting the TYPES of classes you can choose from (UClass = All), and then giving it a name as a var (TankProjectileType), which is then referecenced in the Editor. This one is dangerous, as if you choose the wrong one, the editor will crash.
+
 	void MoveBarrel(FVector AimDirection);
 	void MoveTurret(FVector AimDirection);
-
-
-		
 };

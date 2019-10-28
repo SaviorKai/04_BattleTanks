@@ -2,9 +2,7 @@
 
 
 #include "TankAIController.h"
-#include "TankPlayerController.h"
 #include "TankAimingComponent.h"
-#include "TankMovementComponent.h" // NOTE: Depends on TankMovementComponent for the pathfinding system via 'MoveToActor()' UE4 function
 
 void ATankAIController::BeginPlay()
 {
@@ -29,7 +27,8 @@ void ATankAIController::Tick(float DeltaTime)
 	{
 		if (ensure(EnemyTank != nullptr)) //NULLPTR Protection
 		{
-			//Move Towards the player
+			
+			//Move Towards the player /// NOTE: Depends on TankMovementComponent for the pathfinding system via 'MoveToActor()' UE4 function
 			MoveToActor(EnemyTank, AcceptanceRadius);   /// NOTE: This is a UE4 Engine Function. We intercept it on the TankMovementComponent.
 						
 			//Call the public method on the Tank.cpp Class instance.

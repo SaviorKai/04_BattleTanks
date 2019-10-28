@@ -37,8 +37,8 @@ public:
 
 
 private:
-	UTankTrack* MyLeftTrack = nullptr;
-	UTankTrack* MyRightTrack = nullptr;
+	UTankTrack* MyLeftTrack = nullptr;		//Set with the InitialiseMoveComponent() method.
+	UTankTrack* MyRightTrack = nullptr;		//Set with the InitialiseMoveComponent() method.
 
 	// Override Function which is called from the MoveToActor() UE4 Function, to intercept it. MoveToActor() is called in the TankAIContrroller.cpp
 	virtual void RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) override;  /// Polymorphism (Sub-Type)
