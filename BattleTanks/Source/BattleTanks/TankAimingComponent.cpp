@@ -14,7 +14,7 @@ UTankAimingComponent::UTankAimingComponent()
 {
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
-	PrimaryComponentTick.bCanEverTick = false;
+	PrimaryComponentTick.bCanEverTick = true;
 	// ...
 }
 
@@ -29,13 +29,21 @@ void UTankAimingComponent::BeginPlay()
 // Called every frame
 void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	//Super::TickComponent(DeltaTime, TickType, ThisTickFunction);   //Removed this, as it made the game crash.
+	
+
+	//Check if ready to fire, by seeing how many seconds have passed since the last shot. This is better than setting the value to 0 manually.
+	if ( (GetWorld()->GetTimeSeconds() - LastShotTime) < ReloadTimeInSeconds )
+	{
+		MyFiringState = EFiringStatus::Reloading;
+	}
+	/// TODO : Handle aiming and locked states for EFiringStatus
 }
 
 void UTankAimingComponent::TurnAndAimAt(FVector TargetLocation)
 {
 	if (!ensure(MyTankBarrel != nullptr)) { return; }	 //NULLPTR Protection   
-		
+
 	FVector TossVelocity(0); //Make sure you initialize vectors.
 
 	bool bHaveAimSolution = UGameplayStatics::SuggestProjectileVelocity(
@@ -44,13 +52,13 @@ void UTankAimingComponent::TurnAndAimAt(FVector TargetLocation)
 		MyTankBarrel->GetSocketLocation(FName("ProjectileSpawn")),
 		TargetLocation,
 		LaunchSpeed,
-		false,      
-		0,			
-		0,			
+		false,
+		0,
+		0,
 		ESuggestProjVelocityTraceOption::DoNotTrace      /// IVAN NOTE! This argument is required for this function to work!
 	);
 
-	if (bHaveAimSolution) 
+	if (bHaveAimSolution)
 	{
 		//Normalize the value of TossVelocity to a combined directional value of 1 with GetSafeNormal().
 		FVector AimDirection = TossVelocity.GetSafeNormal();
@@ -67,7 +75,7 @@ void UTankAimingComponent::TurnAndAimAt(FVector TargetLocation)
 		///NoAimSolution Found.
 		//UE_LOG(LogTemp, Warning, TEXT("%f: IMPOSSIBLE TossVelocity!!"), GetWorld()->GetTimeSeconds());
 	}
-	
+
 	///DEBUG LOGS
 	//UE_LOG(LogTemp, Warning, TEXT("%s is aiming at %s. Barrel Posision is: %s"), *GetOwner()->GetName(), *TargetLocation.ToString(), *MyTankBarrel->GetComponentLocation().ToString());
 }
@@ -81,12 +89,10 @@ void UTankAimingComponent::InitialiseAimComponent(UTankBarrel* TankBarrel, UTank
 
 void UTankAimingComponent::Fire()
 {
-	//Check if ready to fire, by seeing how many seconds have passed since the last shot. This is better than setting the value to 0 manually.
-	bool bIsReloaded = (GetWorld()->GetTimeSeconds() - LastShotTime) > ReloadTimeInSeconds;
-
 	if (ensure(MyTankBarrel != nullptr))	//NULLPTR Protection
 	{
-		if (bIsReloaded) //If you are ready to fire
+		//if (bIsReloaded) //If you are ready to fire
+		if (MyFiringState != EFiringStatus::Reloading)
 		{
 			//Spawn the Projectile       
 			auto* MyProjectile = GetWorld()->SpawnActor<AProjectile>(                      // SpawnActor<CLASSTYPE>(CLASS,LOCATION,ROTATION)
