@@ -30,7 +30,7 @@ void UTankAimingComponent::BeginPlay()
 // Called every frame
 void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
-	//Super::TickComponent(DeltaTime, TickType, ThisTickFunction);   //Removed this, as it made the game crash.
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);  
 
 	//Check if ready to fire, by seeing how many seconds have passed since the last shot. This is better than setting the value to 0 manually.
 	if ((GetWorld()->GetTimeSeconds() - LastShotTime) < ReloadTimeInSeconds)

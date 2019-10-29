@@ -2,7 +2,29 @@
 
 
 #include "TankTrack.h"
-//#include "Components/SceneComponent.h"
+#include "Components/SceneComponent.h"
+
+UTankTrack::UTankTrack()
+{
+	PrimaryComponentTick.bCanEverTick = true;
+}
+
+
+void UTankTrack::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	
+	// Calculate the Slipping Speed
+	auto SlippingSpeed = FVector::DotProduct(GetRightVector(), GetComponentVelocity());
+	
+	// Calculate the Correction Acceleration required
+	auto CorrectionAcceleration = -SlippingSpeed / DeltaTime * GetRightVector(); // Negative of Slipping speed, since we want to go the opposite direction / Deltatime * GetRightVector(), thus scaling the vector of get right by the number of -Slippingspeed/deltatime.
+
+	// Calculate and apply sideways velocity.
+	auto TankRootMesh = Cast<UStaticMeshComponent>(GetOwner()->GetRootComponent());
+	auto CorrectionForce = ((TankRootMesh->GetMass() * CorrectionAcceleration)/2); //We devide by two here, since we have two tracks. 
+	TankRootMesh->AddForce(CorrectionForce);
+}
 
 void UTankTrack::SetThrottle(float Amount)
 {
@@ -13,6 +35,5 @@ void UTankTrack::SetThrottle(float Amount)
 	auto TankRootConverted = Cast<UPrimitiveComponent>(MyTankRoot); // Cast down to a child class of USceneComponent, to make it a UPrimitiveComponent.
 	
 	TankRootConverted->AddForceAtLocation(ForceApplied, ForceLocation);
-
 	// TODO: Set max track speed to a CLAMP to ensure that DOUBLE controlls, can't double the speed. Do this by creating a MySpeedVar, and have this function alter it instead.
 }
