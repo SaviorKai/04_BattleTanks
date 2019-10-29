@@ -3,6 +3,7 @@
 
 #include "TankAimingComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "TankBarrel.h" //Supporting the Forward Declaration
 #include "TankTurret.h" //Supporting the Forward Declaration
 #include "Projectile.h" //Supporting the Forward Declaration
@@ -30,15 +31,22 @@ void UTankAimingComponent::BeginPlay()
 void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	//Super::TickComponent(DeltaTime, TickType, ThisTickFunction);   //Removed this, as it made the game crash.
-	
 
 	//Check if ready to fire, by seeing how many seconds have passed since the last shot. This is better than setting the value to 0 manually.
-	if ( (GetWorld()->GetTimeSeconds() - LastShotTime) < ReloadTimeInSeconds )
+	if ((GetWorld()->GetTimeSeconds() - LastShotTime) < ReloadTimeInSeconds)
 	{
 		MyFiringState = EFiringStatus::Reloading;
 	}
-	/// TODO : Handle aiming and locked states for EFiringStatus
+	else if (IsBarrelMoving())
+	{
+		MyFiringState = EFiringStatus::Aiming;
+	}
+	else
+	{
+		MyFiringState = EFiringStatus::Locked;
+	}
 }
+
 
 void UTankAimingComponent::TurnAndAimAt(FVector TargetLocation)
 {
@@ -69,6 +77,9 @@ void UTankAimingComponent::TurnAndAimAt(FVector TargetLocation)
 		///Move the barrel to aim at the solution location. 
 		MoveBarrel(AimDirection);
 		MoveTurret(AimDirection);
+
+		///Set the Private Var for use in other checks
+		CurrentAimDirection = AimDirection;
 	}
 	else
 	{
@@ -138,5 +149,15 @@ void UTankAimingComponent::MoveTurret(FVector AimDirection)
 	//Move the Turret
 	MyTankTurret->RotateTurret(RoationDifference.Yaw);
 
+}
+
+bool UTankAimingComponent::IsBarrelMoving()
+{
+	///Pointer Protection
+	if (!ensure(MyTankBarrel != nullptr)) { return false; } // NULLPTR protection.
+
+	auto BarrelForward = MyTankBarrel->GetForwardVector();
+
+	return (!BarrelForward.Equals(CurrentAimDirection, 0.1f));
 }
 

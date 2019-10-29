@@ -58,6 +58,7 @@ public:
 private:
 	UTankBarrel* MyTankBarrel = nullptr;
 	UTankTurret* MyTankTurret = nullptr;
+	FVector CurrentAimDirection = FVector(0,0,0);
 	float LastShotTime = 0;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
@@ -72,4 +73,6 @@ private:
 
 	void MoveBarrel(FVector AimDirection);
 	void MoveTurret(FVector AimDirection);
+	bool IsBarrelMoving();
+
 };
