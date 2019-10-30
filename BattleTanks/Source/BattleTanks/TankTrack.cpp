@@ -9,6 +9,14 @@ UTankTrack::UTankTrack()
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
+// Called when the game starts
+void UTankTrack::BeginPlay()
+{
+	Super::BeginPlay();
+
+	///1. Register the OnHit() Event delegate:
+	OnComponentHit.AddDynamic(this, &UTankTrack::OnHit);
+}
 
 void UTankTrack::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
@@ -24,6 +32,11 @@ void UTankTrack::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompo
 	auto TankRootMesh = Cast<UStaticMeshComponent>(GetOwner()->GetRootComponent());
 	auto CorrectionForce = ((TankRootMesh->GetMass() * CorrectionAcceleration)/2); //We devide by two here, since we have two tracks. 
 	TankRootMesh->AddForce(CorrectionForce);
+}
+
+void UTankTrack::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	UE_LOG(LogTemp, Warning, TEXT("ONHIT Cpp Working"));
 }
 
 void UTankTrack::SetThrottle(float Amount)

@@ -17,6 +17,7 @@ UCLASS(ClassGroup = (TankParts), meta = (BlueprintSpawnableComponent)) /// Makes
 class BATTLETANKS_API UTankTrack : public UStaticMeshComponent
 {
 	GENERATED_BODY()
+	
 
 public:
 	/// Public Methods
@@ -30,5 +31,10 @@ public:
 
 private: 
 	UTankTrack();
+	virtual void BeginPlay() override;
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+	//2. Use this signature for the delegate (OnHit())
+	UFUNCTION(BlueprintCallable)
+		void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
 };
