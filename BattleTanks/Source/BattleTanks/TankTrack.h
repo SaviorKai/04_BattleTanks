@@ -10,7 +10,10 @@
 
 /**
 * Tank Track is used to control the speed of the tank by setting the speed of each track individually.
-* !!IVAN NOTE: Reminder that the Tank Track uses a Physics Material. Also remember that the linear dampening on the tank track, should be 0. Both of these need to be reset when a new track is added.
+* [!]NOTES: The following must be set when adding a new track to a tank:
+*	- Reminder that the Tank Track uses a Physics Material, make sure you add it.
+*	- Also remember that the linear dampening on the tank track, should be 0. 
+*	- Lastly, Ensure "Generate Event Hit Events" is turned on. 
 */
 
 UCLASS(ClassGroup = (TankParts), meta = (BlueprintSpawnableComponent)) /// Makes the Class spawnnable in blueprints
@@ -32,7 +35,13 @@ public:
 private: 
 	UTankTrack();
 	virtual void BeginPlay() override;
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+	void ApplySidewaysForce();
+	void DriveTrack();
+
+	float Throttle;
+	
+
 
 	//2. Use this signature for the delegate (OnHit())
 	UFUNCTION(BlueprintCallable)
