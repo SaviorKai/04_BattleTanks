@@ -10,7 +10,6 @@
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-
 	//Call the FoundAimingComponent Event and let it run.
 	auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();  /// IVAN NOTE! Used FINDcomponentByClass, not GET. !! This doesn't exist in blueprints.
 	if (!ensure(AimingComponent != nullptr)) { return; }  /// NULLPTR Protection.
@@ -41,7 +40,9 @@ void ATankPlayerController::AimTowardsCrosshair()
 	if (!ensure(GetPawn() != nullptr)) { return; } /// NULLPTR Protection: Check if we have a tank we're controlling before doing anything.
 
 	FVector HitLocation; //OUT Parameter
-	if (GetSightRayHitLocation(OUT HitLocation))
+	bool bGotHitLocation = GetSightRayHitLocation(OUT HitLocation);
+	//UE_LOG(LogTemp, Warning, TEXT("bGotHitLocation = %i"), bGotHitLocation);
+	if (bGotHitLocation)
 	{
 		///Aim Tank to the pointed position
 		auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();  /// IVAN NOTE! Used FINDcomponentByClass, not GET. !! This doesn't exist in blueprints.
@@ -65,10 +66,10 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) cons
 	if (GetLookDirection(ScreenLocation, OUT CamLookDirection))
 	{
 		// Line trace through this look direction and see what we hit (up to max range).
-		GetLookVectorHitLocation(CamLookDirection, OutHitLocation);
+		return GetLookVectorHitLocation(CamLookDirection, OutHitLocation);
 	}
 
-	return true;
+	return false; //This should always return false if it can't find a target to hit
 }
 
 bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const

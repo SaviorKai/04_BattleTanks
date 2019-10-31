@@ -137,7 +137,7 @@ void UTankAimingComponent::MoveBarrel(FVector AimDirection)
 	//UE_LOG(LogTemp, Warning, TEXT("Barrel Rotation: %s , AimAsRotator is %s"), *BarrelRotation.ToString(), *AimAsRotator.ToString());
 }
 
-void UTankAimingComponent::MoveTurret(FVector AimDirection)
+void UTankAimingComponent::MoveTurret(FVector AimDirection) //// TODO: Combine this method with the Move Barrel Method. It can be combined.
 {
 	if (!ensure(MyTankTurret != nullptr)) { return; } // NULLPTR protection.
 	
@@ -146,8 +146,37 @@ void UTankAimingComponent::MoveTurret(FVector AimDirection)
 	FRotator TargetRotation = AimDirection.Rotation();
 	FRotator RoationDifference = TargetRotation - CurrentTurretRotation;
 
+	float FixedRotationDifference = 0;
+	
+	/* LECTURE SOLUTION -- (NOT USED) -- 
+	if (RoationDifference.Yaw < 180) // if Positive value
+	{
+		//FixedRotationDifference = RoationDifference.Yaw;
+		MyTankTurret->RotateTurret(RoationDifference.Yaw);
+	}
+	else
+	{
+		//FixedRotationDifference = -RoationDifference.Yaw;
+		MyTankTurret->RotateTurret(-RoationDifference.Yaw);
+	}
+	*/
+
+	/// Turn the shortest way only.
+	if (RoationDifference.Yaw > 180) // if Positive value
+	{
+		FixedRotationDifference = RoationDifference.Yaw - 360;
+	}
+	else if (RoationDifference.Yaw < -180) // if Negative value
+	{
+		FixedRotationDifference = RoationDifference.Yaw + 360;
+	}
+	else // if Exactly = 0 (just to avoid bugs)
+	{
+		FixedRotationDifference = RoationDifference.Yaw;
+	}
+
 	//Move the Turret
-	MyTankTurret->RotateTurret(RoationDifference.Yaw);
+	MyTankTurret->RotateTurret(FixedRotationDifference);
 
 }
 
