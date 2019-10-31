@@ -24,5 +24,6 @@ private:
 	virtual void Tick(float DeltaTime) override;
 
 	// How close will the AI tank go towards target before stopping.
-	float AcceptanceRadius = 2500;
+	UPROPERTY(EditDefaultsOnly, Category = "Tank Setup")  //TODO: Why does this work, without it being protected? The blueprint copy ofthis class, is a child of this class. How is this readable from the child, without it being protected? Is it because it also gets this value?
+		float AcceptanceRadius = 2500;
 };

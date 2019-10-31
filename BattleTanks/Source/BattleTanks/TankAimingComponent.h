@@ -48,7 +48,8 @@ public:
 	
 	///Methods
 	void TurnAndAimAt(FVector TargetLocation);
-	
+	EFiringStatus GetFiringStatus() const;
+
 	UFUNCTION(BlueprintCallable, Category="Setup")
 		void InitialiseAimComponent(UTankBarrel* TankBarrel, UTankTurret* TankTurret);
 
@@ -62,7 +63,7 @@ private:
 	float LastShotTime = 0;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
-		float LaunchSpeed = 4000; // Sensible default starting vallue.
+		float LaunchSpeed = 8000; // Sensible default starting vallue.
 	
 	UPROPERTY(EditAnywhere, Category = "Firing")  /// IVAN NOTE: EditAnywhere, means it can be changed on the default, and on the instances during runtime. EditDefaultsOnly, means you can only edit the default in the editor (not the instances).
 		float ReloadTimeInSeconds = 3; // Sensible default starting vallue.

@@ -35,8 +35,13 @@ void ATankAIController::Tick(float DeltaTime)
 			auto MyAimingComponent = MyTank->FindComponentByClass<UTankAimingComponent>();
 			MyAimingComponent->TurnAndAimAt(EnemyTank->GetActorLocation()); ///TODO URGENT - Is this an issue? (GetControlledTank()->LaunchSpeed)
 
-			//Fire When Ready
-			MyAimingComponent->Fire();
+			///If Firing status = aiming/locked
+			if (MyAimingComponent->GetFiringStatus() == EFiringStatus::Locked)
+			{
+				//Fire When Ready
+				MyAimingComponent->Fire();
+			}
+			
 
 		}
 	}	

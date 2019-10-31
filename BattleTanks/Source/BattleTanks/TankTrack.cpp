@@ -6,6 +6,16 @@
 
 UTankTrack::UTankTrack()
 {
+	/*
+	//USEFUL CODE for blueprint bug forgetting static mesh when this class is recompiled
+	if (!GetStaticMesh())
+	{
+		//UE_LOG(LogTemp, Warning, TEXT("Track loading mesh at runtime."));
+		UStaticMesh* Mesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Game/Models/Tank_Improved/tank_fbx_Track.tank_fbx_Track"));
+		SetStaticMesh(Mesh ? Mesh : nullptr);
+	}
+	*/
+
 	PrimaryComponentTick.bCanEverTick = false;
 }
 

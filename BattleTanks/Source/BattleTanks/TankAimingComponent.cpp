@@ -92,6 +92,7 @@ void UTankAimingComponent::TurnAndAimAt(FVector TargetLocation)
 }
 
 
+
 void UTankAimingComponent::InitialiseAimComponent(UTankBarrel* TankBarrel, UTankTurret* TankTurret)
 {
 	MyTankBarrel = TankBarrel;
@@ -190,3 +191,7 @@ bool UTankAimingComponent::IsBarrelMoving()
 	return (!BarrelForward.Equals(CurrentAimDirection, 0.1f));
 }
 
+EFiringStatus UTankAimingComponent::GetFiringStatus() const
+{
+	return MyFiringState;
+}
