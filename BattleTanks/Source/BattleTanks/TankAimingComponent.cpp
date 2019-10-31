@@ -33,7 +33,11 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);  
 
 	//Check if ready to fire, by seeing how many seconds have passed since the last shot. This is better than setting the value to 0 manually.
-	if ((GetWorld()->GetTimeSeconds() - LastShotTime) < ReloadTimeInSeconds)
+	if (MyAmmoCount <= 0)
+	{
+		MyFiringState = EFiringStatus::OutOfAmmo;
+	}
+	else if ((GetWorld()->GetTimeSeconds() - LastShotTime) < ReloadTimeInSeconds)
 	{
 		MyFiringState = EFiringStatus::Reloading;
 	}
@@ -104,7 +108,7 @@ void UTankAimingComponent::Fire()
 	if (ensure(MyTankBarrel != nullptr))	//NULLPTR Protection
 	{
 		//if (bIsReloaded) //If you are ready to fire
-		if (MyFiringState != EFiringStatus::Reloading)
+		if (MyFiringState == EFiringStatus::Aiming || MyFiringState == EFiringStatus::Locked)
 		{
 			//Spawn the Projectile       
 			auto* MyProjectile = GetWorld()->SpawnActor<AProjectile>(                      // SpawnActor<CLASSTYPE>(CLASS,LOCATION,ROTATION)
@@ -119,6 +123,7 @@ void UTankAimingComponent::Fire()
 				MyProjectile->LaunchProjectile(LaunchSpeed);
 			}
 			LastShotTime = GetWorld()->GetTimeSeconds();
+			MyAmmoCount -= 1;
 		}
 	}
 }

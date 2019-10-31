@@ -14,7 +14,8 @@ enum class EFiringStatus : uint8
 {
 	Locked,
 	Aiming,
-	Reloading
+	Reloading,
+	OutOfAmmo
 };
 
 //Forward Declaration: 
@@ -33,16 +34,7 @@ class BATTLETANKS_API UTankAimingComponent : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UTankAimingComponent(); 
-
-protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
-
-	// Setup MyFiringStatus enum var, which can be called by the UI.  
-	UPROPERTY(BlueprintReadOnly, Category = "Setup") /// Why protected:? Remember that the parent of bp_TankAimingComponent is the C++ class TankAimingComponent.cpp. Thus, this needs to be in protected, so that the child classes can call it. 
-		EFiringStatus MyFiringState = EFiringStatus::Reloading;
-
-public:	
+	
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 	
@@ -56,12 +48,24 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "TankSetup") /// Made this a Blueprint callable function since we want to call it via input in blueprints.
 		void Fire();
 
+protected:
+	// Called when the game starts
+	virtual void BeginPlay() override;
+
+	// Setup Ammo Count
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Firing") /// TODO: Note: In the lecture, we are told to use a getter method to find this value, instead of setting them up as blueprintreadonly. Perhaps the same can be done for the Firing State.
+		int32 MyAmmoCount = 3;											/// TODO: Test all the different types of things you can do (EditDefaultsOnly, BlueprintReadOnly) in protected, private, public, and also none used. Do the same for UFUNCTION.
+
+	// Setup MyFiringStatus enum var, which can be called by the UI.  
+	UPROPERTY(BlueprintReadOnly, Category = "Setup") /// Why protected:? Remember that the parent of bp_TankAimingComponent is the C++ class TankAimingComponent.cpp. Thus, this needs to be in protected, so that the child classes can call it. 
+		EFiringStatus MyFiringState = EFiringStatus::Reloading;
+
 private:
 	UTankBarrel* MyTankBarrel = nullptr;
 	UTankTurret* MyTankTurret = nullptr;
 	FVector CurrentAimDirection = FVector(0,0,0);
 	float LastShotTime = 0;
-
+	
 	UPROPERTY(EditDefaultsOnly, Category = "Firing")
 		float LaunchSpeed = 8000; // Sensible default starting vallue.
 	
