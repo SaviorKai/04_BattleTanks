@@ -41,5 +41,13 @@ private:
 		UStaticMeshComponent* ProjMesh = nullptr;
 
 	UPROPERTY(VisibleAnywhere)
-		UParticleSystemComponent* ProjParticleSystem = nullptr;
+		UParticleSystemComponent* LaunchBlast = nullptr;
+
+	UPROPERTY(VisibleAnywhere)
+		UParticleSystemComponent* ImpactBlast = nullptr;
+
+	//Private Methods
+	UFUNCTION()
+		void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);  //2. Use this signature for the delegate (OnHit()) NOTE: UFUNCTION() is required! 
+
 };

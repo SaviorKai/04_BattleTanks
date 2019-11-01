@@ -43,7 +43,7 @@ private:
 	
 
 
-	//2. Use this signature for the delegate (OnHit())
+	//2. Use this signature for the delegate (OnHit())  
 	UFUNCTION(BlueprintCallable)
-		void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);
+		void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit); // NOTE: UFUNCTION() is required!
 };
