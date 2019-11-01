@@ -12,6 +12,7 @@
 class UTankBarrel;
 class UTankTurret;
 class AProjectile;
+class UTankTrack;
 
 UCLASS()
 class BATTLETANKS_API ATank : public APawn
@@ -37,5 +38,12 @@ protected:
 	UPROPERTY(BlueprintReadOnly) ///NOTE: This is moved here to protected, and as 'BlueprintReadOnly', since its called in the UI for 'MyFiringStatus' /// IVAN NOTE: If you don't set this as BlueprintReadOnly, you won't be able to drag the component into the blueprint. 
 		UTankAimingComponent* TankAimingComponent = nullptr;
 	*/
+
+private:
+	UPROPERTY(VisibleAnywhere)
+		UTankTrack* LeftTankTrack = nullptr;
+
+	UPROPERTY(VisibleAnywhere)
+		UTankTrack* RightTankTrack = nullptr;
 
 };

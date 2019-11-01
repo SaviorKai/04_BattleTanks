@@ -6,15 +6,24 @@
 
 UTankTrack::UTankTrack()
 {
-	/*
-	//USEFUL CODE for blueprint bug forgetting static mesh when this class is recompiled
-	if (!GetStaticMesh())
+	//Tick "Simulation Generates Overlap Events"
+	SetNotifyRigidBodyCollision(true);
+
+	//Set Liner Dampening to 0.
+	SetLinearDamping(0.0f);
+
+	//SetMesh
+	UStaticMesh* TrackMesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Game/Units/Tank/Meshes/tank_fbx_Track.tank_fbx_Track"));
+	if (TrackMesh != nullptr)
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("Track loading mesh at runtime."));
-		UStaticMesh* Mesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Game/Models/Tank_Improved/tank_fbx_Track.tank_fbx_Track"));
-		SetStaticMesh(Mesh ? Mesh : nullptr);
+		//Add mesh
+		SetStaticMesh(TrackMesh);
 	}
-	*/
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Tank couldn't find the Track Mesh to add it. Check Tank.cpp file location."));
+	}
+
 
 	PrimaryComponentTick.bCanEverTick = false;
 }
@@ -26,6 +35,9 @@ void UTankTrack::BeginPlay()
 
 	///1. Register the OnHit() Event delegate:
 	OnComponentHit.AddDynamic(this, &UTankTrack::OnHit);
+
+	//Check if Track Friction Material exists (just to remind the designer)
+	
 }
 
 
