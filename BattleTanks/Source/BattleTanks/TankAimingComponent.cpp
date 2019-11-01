@@ -154,8 +154,8 @@ void UTankAimingComponent::MoveTurret(FVector AimDirection) //// TODO: Combine t
 
 	float FixedRotationDifference = 0;
 	
-	/* LECTURE SOLUTION -- (NOT USED) -- 
-	if (RoationDifference.Yaw < 180) // if Positive value
+	// LECTURE SOLUTION 
+	if (FMath::Abs(RoationDifference.Yaw) < 180) // if Positive value
 	{
 		//FixedRotationDifference = RoationDifference.Yaw;
 		MyTankTurret->RotateTurret(RoationDifference.Yaw);
@@ -165,7 +165,9 @@ void UTankAimingComponent::MoveTurret(FVector AimDirection) //// TODO: Combine t
 		//FixedRotationDifference = -RoationDifference.Yaw;
 		MyTankTurret->RotateTurret(-RoationDifference.Yaw);
 	}
-	*/
+	
+	/*
+	/// IVAN SOLUTION - Working.
 
 	/// Turn the shortest way only.
 	if (RoationDifference.Yaw > 180) // if Positive value
@@ -183,7 +185,7 @@ void UTankAimingComponent::MoveTurret(FVector AimDirection) //// TODO: Combine t
 
 	//Move the Turret
 	MyTankTurret->RotateTurret(FixedRotationDifference);
-
+	*/
 }
 
 bool UTankAimingComponent::IsBarrelMoving()
