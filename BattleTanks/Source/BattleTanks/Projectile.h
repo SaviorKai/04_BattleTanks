@@ -7,6 +7,8 @@
 
 //Forward Declarations
 class UTankProjectileMovementComponent;
+class UParticleSystemComponent;
+class UStaticMeshComponent;
 
 //Must be last include
 #include "Projectile.generated.h"
@@ -34,4 +36,10 @@ public:
 private:
 	//Private Vars
 	UTankProjectileMovementComponent* ProjMoveComponent = nullptr;
+
+	UPROPERTY(VisibleAnywhere)
+		UStaticMeshComponent* ProjMesh = nullptr;
+
+	UPROPERTY(VisibleAnywhere)
+		UParticleSystemComponent* ProjParticleSystem = nullptr;
 };
