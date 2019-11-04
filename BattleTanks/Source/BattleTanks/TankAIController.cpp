@@ -3,7 +3,8 @@
 
 #include "TankAIController.h"
 #include "TankAimingComponent.h"
-#include "Tank.h" // So that we can cast to tank.
+#include "Tank.h"					// So that we can cast to tank.
+#include "GameFramework/Pawn.h"		// So that we can use DetachFromControllerPendingDestroy()
 
 void ATankAIController::BeginPlay()
 {
@@ -63,7 +64,9 @@ void ATankAIController::SetPawn(APawn* InPawn)
 
 void ATankAIController::OnPossessedTankDeath()
 {
-	UE_LOG(LogTemp, Warning, TEXT("AI Possessed Tank Death"));
+	GetPawn()->DetachFromControllerPendingDestroy(); // Detaches the Pawn from the controller
+	//Destroy();
+	//UE_LOG(LogTemp, Warning, TEXT("AI Possessed Tank Death"));
 }
 
 ///////// REFACTORED OUT - OLD CODE BELOW /////////

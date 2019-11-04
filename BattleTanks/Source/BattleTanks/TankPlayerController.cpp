@@ -139,5 +139,6 @@ void ATankPlayerController::SetPawn(APawn* InPawn)
 
 void ATankPlayerController::OnPossesedTankDeath()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Player Possessed Tank Death"));
+	StartSpectatingOnly();			//Turns the player to a spectator on death.
+	//UE_LOG(LogTemp, Warning, TEXT("Player Possessed Tank Death"));
 }

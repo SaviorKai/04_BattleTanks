@@ -17,8 +17,12 @@ ATank::ATank()
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
+
+	//Set the starting Health (This needs to be set here, since the health might be set in the Blueprint). 
+	MyHealth = StartingHealth;
 }
 
+/// Called by the Engine when Actor Damage is dealt.
 float ATank::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
 {
 	int32 DamagePoints = FPlatformMath::RoundToInt(DamageAmount);

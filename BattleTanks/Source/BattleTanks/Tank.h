@@ -1,4 +1,8 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// TODO: Fill out your copyright notice in the Description page of Project Settings.
+// TODO: Go through Unreal's Coding Standards, and apply it to our code.
+// TODO: Clean up all code and format them the same.
+// TODO: Revisit NavMesh and Navigation.
+// TODO: redo the lighting
 
 #pragma once
 
@@ -61,8 +65,8 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Tank Setup")
 		int32 StartingHealth = 100;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Tank Setup")
-		int32 MyHealth = StartingHealth;
+	UPROPERTY(VisibleAnywhere, Category = "Tank Setup")
+		int32 MyHealth = 0;  //Set at Beginplay(). If this was set here, the blueprint value won't get picked up, and be the default 100. 
 
 	// Called by the Engine when Actor Damage is dealt.
 	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
