@@ -50,9 +50,13 @@ private:
 	UPROPERTY(VisibleAnywhere)
 		URadialForceComponent* ExplosionForce = nullptr;
 	
+	UPROPERTY(EditDefaultsOnly)
+		float DestroyDelay = 5.0f;
+	
 
 	//Private Methods
 	UFUNCTION()
 		void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);  //2. Use this signature for the delegate (OnHit()) NOTE: UFUNCTION() is required! 
 
+	void OnTimer01Expire();
 };

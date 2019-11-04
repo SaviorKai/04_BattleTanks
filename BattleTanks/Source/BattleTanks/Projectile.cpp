@@ -6,8 +6,10 @@
 #include "Components/StaticMeshComponent.h"			//Forward Declaration Include
 #include "TankProjectileMovementComponent.h"		//Forward Declaration Include
 #include "PhysicsEngine/RadialForceComponent.h"		//Forward Declaration Include
+#include "Components/StaticMeshComponent.h"
+#include "TimerManager.h"
 
-
+#define OUT
 
 // Sets default values
 AProjectile::AProjectile()
@@ -72,6 +74,23 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 	ExplosionForce->FireImpulse(); 
 
 
+	///Destroy the Mesh and set new root
+	SetRootComponent(ImpactBlast);
+	ProjMesh->DestroyComponent();
 
+	///Get timer to destroy this Actor
+	FTimerHandle Timer01;
+	GetWorld()->GetTimerManager().SetTimer(
+		OUT Timer01,						// OUT parameter, we need it.
+		this,								
+		&AProjectile::OnTimer01Expire,		//The method we call when this expires ///TODO: 1. Why do we use the reference '&' on &AProjectile::OnTimerExpire?    2. Why don't we use () at the end of the 'OnTimerExpire' method name? 
+		DestroyDelay,						//The time for the timer (in float. default = 5);
+		false								//Let the timer loop (true), or run only once(false).
+	);
+}
+
+void AProjectile::OnTimer01Expire()
+{
+	Destroy();
 }
 
