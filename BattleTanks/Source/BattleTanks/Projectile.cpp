@@ -2,15 +2,17 @@
 
 
 #include "Projectile.h"
-#include "Particles/ParticleSystemComponent.h"
-#include "Components/StaticMeshComponent.h"
-#include "TankProjectileMovementComponent.h"
+#include "Particles/ParticleSystemComponent.h"		//Forward Declaration Include
+#include "Components/StaticMeshComponent.h"			//Forward Declaration Include
+#include "TankProjectileMovementComponent.h"		//Forward Declaration Include
+#include "PhysicsEngine/RadialForceComponent.h"		//Forward Declaration Include
+
 
 
 // Sets default values
 AProjectile::AProjectile()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
 
 	/// Add the projectile mesh component
@@ -19,7 +21,7 @@ AProjectile::AProjectile()
 	ProjMesh->SetNotifyRigidBodyCollision(true);		//This always turns on "Simulation Generates Hit Events" checkbox as default.  //TODO: do this for all your classes to avoid manual setup when created as new.
 	ProjMesh->SetVisibility(false);						//Turned this off by default, since we won't have a mesh. We'll be using particle smoke.
 	//ProjMesh->SetStaticMesh(LoadObject<UStaticMesh>(nullptr, TEXT("/Game/Units/Projectiles/mesh_Projectile.mesh_Projectile")));  //Code to apply a mesh to this object.
-	
+
 	/// Add the Projectile particle system
 	LaunchBlast = CreateDefaultSubobject<UParticleSystemComponent>(FName("LaunchBlast"));					// IVAN NOTE: If we don't assign them to a var and make it a UPROPERTY(VisibleAnywhere), we can't see the details in the editor.
 	LaunchBlast->AttachTo(RootComponent);																	//Attaches this to the root component.
@@ -34,6 +36,9 @@ AProjectile::AProjectile()
 	ProjMoveComponent = CreateDefaultSubobject<UTankProjectileMovementComponent>(FName("TankProjectileMovement"));
 	ProjMoveComponent->bAutoActivate = false;
 
+	/// Create the explosion radial force
+	ExplosionForce = CreateDefaultSubobject<URadialForceComponent>(FName("Explosion Radial Force"));
+	ExplosionForce->AttachTo(RootComponent);
 }
 
 // Called when the game starts or when spawned
@@ -59,7 +64,14 @@ void AProjectile::LaunchProjectile(float Speed)
 
 void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
+	/// Particle Systems
 	LaunchBlast->Deactivate();
 	ImpactBlast->Activate();
+	
+	/// Explosion Radial Force for Physics.
+	ExplosionForce->FireImpulse(); 
+
+
+
 }
 

@@ -9,6 +9,7 @@
 class UTankProjectileMovementComponent;
 class UParticleSystemComponent;
 class UStaticMeshComponent;
+class URadialForceComponent;
 
 //Must be last include
 #include "Projectile.generated.h"
@@ -45,6 +46,10 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 		UParticleSystemComponent* ImpactBlast = nullptr;
+	
+	UPROPERTY(VisibleAnywhere)
+		URadialForceComponent* ExplosionForce = nullptr;
+	
 
 	//Private Methods
 	UFUNCTION()
