@@ -53,6 +53,9 @@ private:
 	UPROPERTY(EditDefaultsOnly)
 		float DestroyDelay = 5.0f;
 	
+	UPROPERTY(EditDefaultsOnly)
+		float ProjectileDamage = 50.0f;
+	
 
 	//Private Methods
 	UFUNCTION()

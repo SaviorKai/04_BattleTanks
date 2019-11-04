@@ -28,8 +28,10 @@ protected:
 private:
 	UPROPERTY(EditDefaultsOnly)
 		float CrossHairLocationX = 0.5;
+
 	UPROPERTY(EditDefaultsOnly)
 		float CrossHairLocationY = 0.33333;
+
 	UPROPERTY(EditDefaultsOnly)
 		float LineTraceRange = 1000000.0;
 

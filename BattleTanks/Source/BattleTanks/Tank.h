@@ -31,6 +31,8 @@ public:
 	// Sets default values for this pawn's properties
 	ATank();
 
+	//virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override; //TODO: What was this used for? 
+
 protected:			
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -41,9 +43,18 @@ protected:
 
 private:
 	UPROPERTY(VisibleAnywhere)
-		UTankTrack* LeftTankTrack = nullptr;
+		UTankTrack* LeftTankTrack = nullptr;                  /// TODO: Why is this visible on the tank properties at runtime? (It shows none). Think of fixing this.
 
 	UPROPERTY(VisibleAnywhere)
 		UTankTrack* RightTankTrack = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Tank Setup")
+		int32 StartingHealth = 100;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Tank Setup")
+		int32 MyHealth = 100;
+
+	// Called by the Engine when Actor Damage is dealt.
+	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
 };

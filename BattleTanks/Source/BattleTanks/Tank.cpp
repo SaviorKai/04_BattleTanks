@@ -17,9 +17,21 @@ ATank::ATank()
 void ATank::BeginPlay()
 {
 	Super::BeginPlay();
+}
 
-	//virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override; //TODO: What was this used for? 
+float ATank::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
+{
+	int32 DamagePoints = FPlatformMath::RoundToInt(DamageAmount);
+	int32 ClampedDamage = FMath::Clamp<int32>(DamageAmount, 0, MyHealth);
+	MyHealth -= ClampedDamage;
 
+	if (MyHealth <= 0)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("TANK DIED."), DamagePoints, ClampedDamage, MyHealth);
+	}
+	
+
+	return ClampedDamage;
 }
 
 

@@ -8,6 +8,9 @@
 #include "PhysicsEngine/RadialForceComponent.h"		//Forward Declaration Include
 #include "Components/StaticMeshComponent.h"
 #include "TimerManager.h"
+#include "Kismet/GameplayStatics.h"
+#include "GameFramework/DamageType.h"
+
 
 #define OUT
 
@@ -73,10 +76,19 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 	/// Explosion Radial Force for Physics.
 	ExplosionForce->FireImpulse(); 
 
-
 	///Destroy the Mesh and set new root
 	SetRootComponent(ImpactBlast);
 	ProjMesh->DestroyComponent();
+
+	//Damage Enemy Tank					
+	UGameplayStatics::ApplyRadialDamage(	//IVAN NOTE: This calls the AActor::TakeDamage method. We intercept this method in the Tank.cpp.
+		this,
+		ProjectileDamage,
+		GetActorLocation(),
+		ExplosionForce->Radius,				// For consistency, and so that we can change both vars together.
+		UDamageType::StaticClass(),
+		TArray<AActor*>()					// Damage all Actors (who this should affect).
+	);
 
 	///Get timer to destroy this Actor
 	FTimerHandle Timer01;
