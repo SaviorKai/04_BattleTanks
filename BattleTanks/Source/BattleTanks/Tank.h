@@ -28,8 +28,9 @@ class BATTLETANKS_API ATank : public APawn
 */
 
 public:
-	// Sets default values for this pawn's properties
-	ATank();
+	// Return current health as a percentage.
+	UFUNCTION(BlueprintPure, Category = "Health")		// BlueprintPure = makes this a read only function in the blueprint (like const for c++)
+		float GetHealthPercent();
 
 	//virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override; //TODO: What was this used for? 
 
@@ -42,6 +43,8 @@ protected:
 	*/
 
 private:
+	ATank();
+
 	UPROPERTY(VisibleAnywhere)
 		UTankTrack* LeftTankTrack = nullptr;                  /// TODO: Why is this visible on the tank properties at runtime? (It shows none). Think of fixing this.
 
@@ -52,7 +55,7 @@ private:
 		int32 StartingHealth = 100;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Tank Setup")
-		int32 MyHealth = 100;
+		int32 MyHealth = StartingHealth;
 
 	// Called by the Engine when Actor Damage is dealt.
 	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
