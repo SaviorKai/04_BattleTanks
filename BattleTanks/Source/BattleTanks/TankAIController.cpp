@@ -22,12 +22,12 @@ void ATankAIController::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);  ///Super is just a line to tell the compiler to do what its SuperClass does (the mother of the class)
 	
 	//Use Cast to change the value of GetPawn which returns AActor, to ATank, and set the var pointers.
-	auto MyTank = GetPawn();     //TODO: How does this work without a * after auto? How does it become a pointer var type?
+	auto MyTank = GetPawn();     
 	auto EnemyTank = GetWorld()->GetFirstPlayerController()->GetPawn();
 
-	if (ensure(MyTank != nullptr))  //NULLPTR Protection
+	if (MyTank != nullptr)  //NULLPTR Protection
 	{
-		if (ensure(EnemyTank != nullptr)) //NULLPTR Protection
+		if (EnemyTank != nullptr) //NULLPTR Protection
 		{
 			
 			//Move Towards the player /// NOTE: Depends on TankMovementComponent for the pathfinding system via 'MoveToActor()' UE4 function
@@ -55,7 +55,7 @@ void ATankAIController::SetPawn(APawn* InPawn)
 	Super::SetPawn(InPawn);
 	// Set the possessed tank to a varible we can use.
 	auto PossessedTank = Cast<ATank>(InPawn);
-	if (!ensure(PossessedTank != nullptr)) { return; }	//Pointer Protection
+	if (PossessedTank == nullptr) { return; }	//NULLPTR Protection
 
 
 	///[DMCD Step 5] Register the event and pass the function we've created to take action.
@@ -64,6 +64,7 @@ void ATankAIController::SetPawn(APawn* InPawn)
 
 void ATankAIController::OnPossessedTankDeath()
 {
+	if (GetPawn() == nullptr) { return; } /// NULLPTR Protection
 	GetPawn()->DetachFromControllerPendingDestroy(); // Detaches the Pawn from the controller
 	//Destroy();
 	//UE_LOG(LogTemp, Warning, TEXT("AI Possessed Tank Death"));

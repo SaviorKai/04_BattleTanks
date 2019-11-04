@@ -38,7 +38,7 @@ ATank* ATankPlayerController::GetControlledTank() const
 
 void ATankPlayerController::AimTowardsCrosshair()
 {
-	if (!ensure(GetPawn() != nullptr)) { return; } /// NULLPTR Protection: Check if we have a tank we're controlling before doing anything.
+	if (GetPawn() == nullptr) { return; } /// NULLPTR Protection: Check if we have a tank we're controlling before doing anything.
 
 	FVector HitLocation; //OUT Parameter
 	bool bGotHitLocation = GetSightRayHitLocation(OUT HitLocation);
@@ -47,7 +47,7 @@ void ATankPlayerController::AimTowardsCrosshair()
 	{
 		///Aim Tank to the pointed position
 		auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();  /// IVAN NOTE! Used FINDcomponentByClass, not GET. !! This doesn't exist in blueprints.
-		if (!ensure(AimingComponent != nullptr)) { return; }  /// NULLPTR Protection.
+		if (AimingComponent == nullptr) { return; }  /// NULLPTR Protection.
 
 		AimingComponent->TurnAndAimAt(HitLocation);
 	}
@@ -109,7 +109,7 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector CamLookDirection, F
 	if (GetWorld()->LineTraceSingleByChannel(
 		OUT HitResult, LineTraceStart,
 		LineTraceEnd,
-		ECollisionChannel::ECC_Visibility
+		ECollisionChannel::ECC_Camera				//Set to CAMERA, so that we don't clash with UI objects.
 	))
 	{
 		HitLocationPoint = HitResult.Location;
@@ -123,22 +123,17 @@ void ATankPlayerController::SetPawn(APawn* InPawn)
 {
 	Super::SetPawn(InPawn); // Remember to call SUPER! 
 	
-	if (InPawn)
+	if (InPawn)  //Pointer Protection
 	{
 		ATank* PossessedTank = Cast<ATank>(InPawn);
-		if (!ensure(PossessedTank)) { return; } //PointerProtection
+		if (!PossessedTank) { return; } //PointerProtection
 
 		///[DMCD Step 5] Register the event and pass the function we've created to take action.
 		PossessedTank->OnDeath.AddUniqueDynamic(this, &ATankPlayerController::OnPossesedTankDeath);   //This tells the possessed tank, to let us know when the OnDeath() event is triggered, let us know and trugger OnPossessedTankDeath() here.
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Nullptr on ATankPlayerController::SetPawn"));
 	}
 }
 
 void ATankPlayerController::OnPossesedTankDeath()
 {
 	StartSpectatingOnly();			//Turns the player to a spectator on death.
-	//UE_LOG(LogTemp, Warning, TEXT("Player Possessed Tank Death"));
 }
