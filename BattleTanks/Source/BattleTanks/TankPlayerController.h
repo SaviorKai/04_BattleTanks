@@ -40,5 +40,12 @@ private:
 	bool GetSightRayHitLocation(FVector& OutHitLocation) const; //Out Param Method, true if hit something
 	bool GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const; //Out Param Method
 	bool GetLookVectorHitLocation(FVector CamLookDirection, FVector& HitLocationPoint) const;
+	
+	/// This Function is called by the engine AIController class, when it posseses a pawn. We intercept it. 
+	virtual void SetPawn(APawn* InPawn) override;
 
+	//[DMCD Step 4] Declare Delegate Listener (method to execute when delegate is called)
+	UFUNCTION()
+		void OnPossesedTankDeath();
+	
 };

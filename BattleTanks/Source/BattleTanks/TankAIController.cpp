@@ -3,6 +3,7 @@
 
 #include "TankAIController.h"
 #include "TankAimingComponent.h"
+#include "Tank.h" // So that we can cast to tank.
 
 void ATankAIController::BeginPlay()
 {
@@ -45,6 +46,24 @@ void ATankAIController::Tick(float DeltaTime)
 
 		}
 	}	
+}
+
+
+void ATankAIController::SetPawn(APawn* InPawn)
+{
+	Super::SetPawn(InPawn);
+	// Set the possessed tank to a varible we can use.
+	auto PossessedTank = Cast<ATank>(InPawn);
+	if (!ensure(PossessedTank != nullptr)) { return; }	//Pointer Protection
+
+
+	///[DMCD Step 5] Register the event and pass the function we've created to take action.
+	PossessedTank->OnDeath.AddUniqueDynamic(this, &ATankAIController::OnPossessedTankDeath);   //This tells the possessed tank, to let us know when the OnDeath() event is triggered, let us know and trugger OnPossessedTankDeath() here.
+}
+
+void ATankAIController::OnPossessedTankDeath()
+{
+	UE_LOG(LogTemp, Warning, TEXT("AI Possessed Tank Death"));
 }
 
 ///////// REFACTORED OUT - OLD CODE BELOW /////////

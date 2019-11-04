@@ -14,6 +14,10 @@ class UTankTurret;
 class AProjectile;
 class UTankTrack;
 
+// Declare Delegate
+///[DMCD Step 1] Create delegate type
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FTankDelegate);
+
 UCLASS()
 class BATTLETANKS_API ATank : public APawn
 {
@@ -31,6 +35,9 @@ public:
 	// Return current health as a percentage.
 	UFUNCTION(BlueprintPure, Category = "Health")		// BlueprintPure = makes this a read only function in the blueprint (like const for c++)
 		float GetHealthPercent();
+
+	///[DMCD Step 2] Declare delegate.
+	FTankDelegate OnDeath;
 
 	//virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override; //TODO: What was this used for? 
 

@@ -27,7 +27,8 @@ float ATank::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, ACo
 
 	if (MyHealth <= 0)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("TANK DIED."), DamagePoints, ClampedDamage, MyHealth);
+		///[DMCD Step 3] Broadcast
+		OnDeath.Broadcast();
 	}
 	
 

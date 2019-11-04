@@ -4,6 +4,7 @@
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
 #include "TankAimingComponent.h"
+#include "Tank.h"
 
 #define OUT
 
@@ -116,4 +117,27 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector CamLookDirection, F
 	}
 
 	return false;
+}
+
+void ATankPlayerController::SetPawn(APawn* InPawn)
+{
+	Super::SetPawn(InPawn); // Remember to call SUPER! 
+	
+	if (InPawn)
+	{
+		ATank* PossessedTank = Cast<ATank>(InPawn);
+		if (!ensure(PossessedTank)) { return; } //PointerProtection
+
+		///[DMCD Step 5] Register the event and pass the function we've created to take action.
+		PossessedTank->OnDeath.AddUniqueDynamic(this, &ATankPlayerController::OnPossesedTankDeath);   //This tells the possessed tank, to let us know when the OnDeath() event is triggered, let us know and trugger OnPossessedTankDeath() here.
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Nullptr on ATankPlayerController::SetPawn"));
+	}
+}
+
+void ATankPlayerController::OnPossesedTankDeath()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Player Possessed Tank Death"));
 }
