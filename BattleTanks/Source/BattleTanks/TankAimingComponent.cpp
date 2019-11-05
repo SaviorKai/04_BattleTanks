@@ -111,8 +111,8 @@ void UTankAimingComponent::Fire()
 		if (MyFiringState == EFiringStatus::Aiming || MyFiringState == EFiringStatus::Locked)
 		{
 			//Spawn the Projectile       
-			auto* MyProjectile = GetWorld()->SpawnActor<AProjectile>(                      // SpawnActor<CLASSTYPE>(CLASS,LOCATION,ROTATION)
-				TankProjectileType,
+			auto* MyProjectile = GetWorld()->SpawnActor<AProjectile>(						// SpawnActor<CLASSTYPE>(CLASS,LOCATION,ROTATION)
+				TankProjectileType,															// TankProjectileType is a var we've created in the headerfile.
 				MyTankBarrel->GetSocketLocation(FName("ProjectileSpawn")),
 				MyTankBarrel->GetSocketRotation(FName("ProjectileSpawn"))
 				);

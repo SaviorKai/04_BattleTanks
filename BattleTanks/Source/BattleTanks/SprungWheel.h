@@ -31,7 +31,7 @@ public:
 private:
 	/// Components
 	UPROPERTY(VisibleAnywhere)
-		UStaticMeshComponent* RootMesh = nullptr;
+		UStaticMeshComponent* MassMesh = nullptr;
 
 	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* WheelConstraintMesh = nullptr;
