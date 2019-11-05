@@ -30,8 +30,13 @@ public:
 
 private:
 	/// Components
+	/// MASS (To test Spring)
+	/*
 	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* MassMesh = nullptr;
+	*/
+
+	void SetupConstraint();
 
 	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* WheelConstraintMesh = nullptr;

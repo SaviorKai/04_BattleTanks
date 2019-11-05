@@ -21,13 +21,12 @@ void USpawnPoint::BeginPlay()
 	Super::BeginPlay();
 	
 	//Create a new Actor, and attach the root component, to this new actor.
-	auto NewActor = GetWorld()->SpawnActorDeferred<AActor>(SpawnClass, GetRelativeTransform());		//SpawnActorDeferred, deferrs the BeginPlay() code, so that it only runs when we call it with UGameplayStatics::FinishSpawningActor()//NOTE: SpawnClass is a var we've created in the header file.
-	// auto NewActor = GetWorld()->SpawnActorDeferred<AActor>(SpawnClass, GetComponentTransform()); //I did not use this. If you use this, replace the instance below as well, and cahnge "KeepRelativeTransform" to "KeepWorldTransform"
+	auto NewActor = GetWorld()->SpawnActorDeferred<AActor>(SpawnClass, GetComponentTransform());		//SpawnActorDeferred, deferrs the BeginPlay() code, so that it only runs when we call it with UGameplayStatics::FinishSpawningActor()//NOTE: SpawnClass is a var we've created in the header file.
 	
 	if (NewActor)																					//Pointer Protection
 	{
-		NewActor->AttachToComponent(this, FAttachmentTransformRules::KeepRelativeTransform);		//This attaches something to the "NewActor", not "NewActor" to something.
-		UGameplayStatics::FinishSpawningActor(NewActor, GetRelativeTransform());					//Finishes the spawn of the actor, by running it's BeginPlay() code now.
+		NewActor->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);			//This attaches something to the "NewActor", not "NewActor" to something.
+		UGameplayStatics::FinishSpawningActor(NewActor, GetComponentTransform());					//Finishes the spawn of the actor, by running it's BeginPlay() code now.
 	}
 	
 	
