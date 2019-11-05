@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// All rights reserved © 2019 Ivan Carl Engelbrecht
 
 
 #include "TankMovementComponent.h"

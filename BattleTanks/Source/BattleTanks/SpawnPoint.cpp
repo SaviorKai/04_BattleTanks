@@ -1,4 +1,4 @@
-// Copyright Ivan Carl Engelbrecht
+// All rights reserved © 2019 Ivan Carl Engelbrecht
 
 
 #include "SpawnPoint.h"
@@ -23,9 +23,11 @@ void USpawnPoint::BeginPlay()
 	//Create a new Actor, and attach the root component, to this new actor.
 	auto NewActor = GetWorld()->SpawnActorDeferred<AActor>(SpawnClass, GetComponentTransform());		//SpawnActorDeferred, deferrs the BeginPlay() code, so that it only runs when we call it with UGameplayStatics::FinishSpawningActor()//NOTE: SpawnClass is a var we've created in the header file.
 	
+	//TODO: Test GetComponentTransform() and GetRelativeTransform(), including the FAttachmentTransformRules::KeepWorldTransform and FAttachmentTransformRules::KeepRelativeTransform rules.
+
 	if (NewActor)																					//Pointer Protection
 	{
-		NewActor->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);			//This attaches something to the "NewActor", not "NewActor" to something.
+		NewActor->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);			//This Attaches the RootComponent of this Actor to the supplied component, optionally at a named socket.
 		UGameplayStatics::FinishSpawningActor(NewActor, GetComponentTransform());					//Finishes the spawn of the actor, by running it's BeginPlay() code now.
 	}
 	

@@ -1,5 +1,6 @@
-// Copyright Ivan Carl Engelbrecht
+// All rights reserved © 2019 Ivan Carl Engelbrecht
 
+// TODO: Make the SprungWheel delete itself when it's owner tank dies.
 
 #include "SprungWheel.h"
 #include "Components/StaticMeshComponent.h" // For Static Mesh Components
@@ -18,7 +19,7 @@ ASprungWheel::ASprungWheel()
 	PhysicsConstraint->SetAngularSwing1Limit(ACM_Locked, 0);							// ACM = Angular Constraint
 	PhysicsConstraint->SetAngularSwing2Limit(ACM_Locked, 0);
 	PhysicsConstraint->SetAngularTwistLimit(ACM_Locked, 0);
-	PhysicsConstraint->SetLinearZLimit(LCM_Free, 300);								// LCM = Linear Constraint
+	PhysicsConstraint->SetLinearZLimit(LCM_Free, 300);									// LCM = Linear Constraint
 	PhysicsConstraint->SetLinearPositionDrive(false, false, true);						// Linear Motor: Turn on Position Z
 	PhysicsConstraint->SetLinearVelocityDrive(false, false, true);						// Linear Motor: Turn on Velocity Z
 	PhysicsConstraint->SetLinearDriveParams(50.0f, 25.0f, 0);							// Linear Motor: Position and Velocity Strength
@@ -65,6 +66,8 @@ void ASprungWheel::SetupConstraint()
 			SpringMesh,
 			NAME_None
 		);
+		
+		UE_LOG(LogTemp, Warning, TEXT("MyParentActor = %s"), *MyParentActor->GetName());
 	}
 	else
 	{

@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings. //TODO for all classes
+// All rights reserved © 2019 Ivan Carl Engelbrecht //TODO for all classes
 
 #include "TankPlayerController.h"
 #include "Engine/World.h"

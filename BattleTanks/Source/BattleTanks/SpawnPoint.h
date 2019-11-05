@@ -1,4 +1,4 @@
-// Copyright Ivan Carl Engelbrecht
+// All rights reserved © 2019 Ivan Carl Engelbrecht
 
 #pragma once
 
