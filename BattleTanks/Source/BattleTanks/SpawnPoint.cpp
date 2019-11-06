@@ -14,24 +14,21 @@ USpawnPoint::USpawnPoint()
 	PrimaryComponentTick.bCanEverTick = true;
 }
 
-
 // Called when the game starts
 void USpawnPoint::BeginPlay()
 {
 	Super::BeginPlay();
 	
 	//Create a new Actor, and attach the root component, to this new actor.
-	auto NewActor = GetWorld()->SpawnActorDeferred<AActor>(SpawnClass, GetComponentTransform());		//SpawnActorDeferred, deferrs the BeginPlay() code, so that it only runs when we call it with UGameplayStatics::FinishSpawningActor()//NOTE: SpawnClass is a var we've created in the header file.
+	SpawnedActor = GetWorld()->SpawnActorDeferred<AActor>(SpawnClass, GetComponentTransform());		//SpawnActorDeferred, deferrs the BeginPlay() code, so that it only runs when we call it with UGameplayStatics::FinishSpawningActor()//NOTE: SpawnClass is a var we've created in the header file.
 	
 	//TODO: Test GetComponentTransform() and GetRelativeTransform(), including the FAttachmentTransformRules::KeepWorldTransform and FAttachmentTransformRules::KeepRelativeTransform rules.
 
-	if (NewActor)																					//Pointer Protection
+	if (SpawnedActor)																						//Pointer Protection
 	{
-		NewActor->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);			//This Attaches the RootComponent of this Actor to the supplied component, optionally at a named socket.
-		UGameplayStatics::FinishSpawningActor(NewActor, GetComponentTransform());					//Finishes the spawn of the actor, by running it's BeginPlay() code now.
+		SpawnedActor->AttachToComponent(this, FAttachmentTransformRules::KeepWorldTransform);				//This Attaches the RootComponent of this Actor to the supplied component, optionally at a named socket.
+		UGameplayStatics::FinishSpawningActor(SpawnedActor, GetComponentTransform());						//Finishes the spawn of the actor, by running it's BeginPlay() code now.
 	}
-	
-	
 }
 
 
@@ -43,3 +40,12 @@ void USpawnPoint::TickComponent(float DeltaTime, ELevelTick TickType, FActorComp
 	// ...
 }
 
+AActor* USpawnPoint::GetSpawnedActor() const
+{
+	if (SpawnedActor) // NULLPTR Protection
+	{
+		return SpawnedActor;
+	}
+
+	return nullptr;
+}

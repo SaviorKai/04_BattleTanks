@@ -4,7 +4,7 @@
 #include "TankTrack.h"
 #include "Components/SceneComponent.h"
 #include "SprungWheel.h"								//for ASprungWheel
-#include "PhysicsEngine/PhysicsConstraintComponent.h"	//for UPhysicsConstraintComponent
+#include "SpawnPoint.h"									//for ASpawnPoint
 
 UTankTrack::UTankTrack()
 {
@@ -38,35 +38,33 @@ void UTankTrack::BeginPlay()
 
 TArray<class ASprungWheel*> UTankTrack::GetWheels() const
 {
-	// Initialize Required Arrays
-	TArray<USceneComponent*> Children;
-	TArray<UPhysicsConstraintComponent*> PhyConstraintsArray;
-	TArray<ASprungWheel*> Wheels;															//The Final Array the function will return.
+	/// NEW SOLUTION
+	TArray<ASprungWheel*> SprungWheelsArray;												// Final Return Array
 
-	//* Get the root component, and all its children, and place it into the Empty Array
-	GetOwner()->GetRootComponent()->GetChildrenComponents(true, Children);					// OUT Parameter					
-
-	//* While we can still find a component that is of type UPhysicsConstraintComponent, 
-	//* add it to the PhyConstraintsArray, and remove it from the Children array
-	//* until we can't find any.
-	UPhysicsConstraintComponent* PhyConst = nullptr;										// OUT Parameter Value
-	while (Children.FindItemByClass<UPhysicsConstraintComponent>(&PhyConst))				// OUT Parameter
-	{
-		PhyConstraintsArray.Add(PhyConst);
-		Children.Remove(PhyConst);
-	}
+	// Find the children of THIS TRACK (Should only be spawnpoints)
+	TArray<USceneComponent*> ChildrenArray;
+	GetChildrenComponents(true, ChildrenArray);												// OUT Parameter
 	
-	//* Loop through the PhyConstraintsArray, and get their owners, 
-	//* and add them to the Wheels Array. 
-	//* These are ASprungWheel instances, which we need to return for this function.
-	for (auto i : PhyConstraintsArray)
+	// Loop through each Child,
+	for (auto i : ChildrenArray)
 	{
-		auto SingleWheel = Cast<ASprungWheel>(i->GetOwner());
-
-		Wheels.Add(SingleWheel);
-	}
+		// Cast them to the correct type
+		auto ChildSpawnPoint = Cast<USpawnPoint>(i);
+		if (!ChildSpawnPoint) continue;														//NULLPTR Protection Incase cast fails. (Continue resumes the for loop)
 		
-	return Wheels;
+		// Call the GetSpawnActor() method
+		auto ChildSprungWheel = ChildSpawnPoint->GetSpawnedActor();
+		if (!ChildSprungWheel) continue;													//NULLPTR Protection (Continue resumes the for loop)
+		
+		// Cast the AActor result, to the correct type
+		auto SprungWheel = Cast<ASprungWheel>(ChildSprungWheel);
+
+		// Add the SprungWheel to the final result array.
+		SprungWheelsArray.Add(SprungWheel);
+	}
+
+	return SprungWheelsArray;
+	
 }
 
 void UTankTrack::SetThrottle(float Amount)
@@ -78,7 +76,7 @@ void UTankTrack::SetThrottle(float Amount)
 
 void UTankTrack::DriveTrack(float Throttle)
 {
-	auto ForceApplied = Throttle * TrackMaxDrivingForce;
+	auto ForceApplied = Throttle * TrackMaxDrivingForce * 1.5;
 	auto AllWheels = GetWheels();												// Gets all the wheels on the tank
 	
 	if (AllWheels.Num() != 0)													//NULLPTR Protection
