@@ -36,14 +36,7 @@ private:
 	UTankTrack();
 	virtual void BeginPlay() override;
 
-	void ApplySidewaysForce();
-	void DriveTrack();
-
-	float Throttle;
+	TArray<class ASprungWheel*> GetWheels() const;						// Create a function that returns an array of ASprungWheel Pointers. //TODO: Revisit Arrays, and also, is this like making a forward Declaration? Test it.
 	
-
-
-	//2. Use this signature for the delegate (OnHit())  
-	UFUNCTION(BlueprintCallable)
-		void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit); // NOTE: UFUNCTION() is required!
+	void DriveTrack(float Throttle);
 };

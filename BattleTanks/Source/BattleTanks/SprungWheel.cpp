@@ -60,6 +60,13 @@ void ASprungWheel::BeginPlay()
 	
 }
 
+// Called every frame
+void ASprungWheel::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+}
+
 void ASprungWheel::SetupConstraint()
 {
 	auto MyParentActor = GetAttachParentActor();													// Gets the Root Component, Then the Component its attached too, Then gets the Owner of that Compoent (Tank) //NOTE: Only actors (not USceneComponents) can call this function.
@@ -68,7 +75,7 @@ void ASprungWheel::SetupConstraint()
 		//Set the Contraints settings to Component 1 = Tank Root, Component 2 = Axle
 		auto BodyRoot_Converted = Cast<UPrimitiveComponent>(MyParentActor->GetRootComponent());		//Convert to UPrimitiveComponent
 		auto AxleMesh_Converted = Cast<UPrimitiveComponent>(AxleMesh);								//Convert to UPrimitiveComponent
-		SpringPhysicsConstraint->SetConstrainedComponents(										
+		SpringPhysicsConstraint->SetConstrainedComponents(
 			BodyRoot_Converted,
 			NAME_None,
 			AxleMesh_Converted,
@@ -83,19 +90,11 @@ void ASprungWheel::SetupConstraint()
 			WheelMesh_Converted,
 			NAME_None
 		);
-		
-		UE_LOG(LogTemp, Warning, TEXT("MyParentActor = %s"), *MyParentActor->GetName());
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("MyParentActor = NULLPTR"));
 	}
 }
 
-// Called every frame
-void ASprungWheel::Tick(float DeltaTime)
+void ASprungWheel::AddDrivingForce(float ForceMagnitude)
 {
-	Super::Tick(DeltaTime);
-
+	WheelMesh->AddForce(AxleMesh->GetForwardVector() * ForceMagnitude);
 }
 

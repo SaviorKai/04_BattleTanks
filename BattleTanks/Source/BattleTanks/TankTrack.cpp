@@ -3,6 +3,8 @@
 
 #include "TankTrack.h"
 #include "Components/SceneComponent.h"
+#include "SprungWheel.h"								//for ASprungWheel
+#include "PhysicsEngine/PhysicsConstraintComponent.h"	//for UPhysicsConstraintComponent
 
 UTankTrack::UTankTrack()
 {
@@ -32,53 +34,60 @@ UTankTrack::UTankTrack()
 void UTankTrack::BeginPlay()
 {
 	Super::BeginPlay();
+}
 
-	///1. Register the OnHit() Event delegate:
-	OnComponentHit.AddDynamic(this, &UTankTrack::OnHit);
+TArray<class ASprungWheel*> UTankTrack::GetWheels() const
+{
+	// Initialize Required Arrays
+	TArray<USceneComponent*> Children;
+	TArray<UPhysicsConstraintComponent*> PhyConstraintsArray;
+	TArray<ASprungWheel*> Wheels;															//The Final Array the function will return.
 
-	//Check if Track Friction Material exists (just to remind the designer)
+	//* Get the root component, and all its children, and place it into the Empty Array
+	GetOwner()->GetRootComponent()->GetChildrenComponents(true, Children);					// OUT Parameter					
+
+	//* While we can still find a component that is of type UPhysicsConstraintComponent, 
+	//* add it to the PhyConstraintsArray, and remove it from the Children array
+	//* until we can't find any.
+	UPhysicsConstraintComponent* PhyConst = nullptr;										// OUT Parameter Value
+	while (Children.FindItemByClass<UPhysicsConstraintComponent>(&PhyConst))				// OUT Parameter
+	{
+		PhyConstraintsArray.Add(PhyConst);
+		Children.Remove(PhyConst);
+	}
 	
+	//* Loop through the PhyConstraintsArray, and get their owners, 
+	//* and add them to the Wheels Array. 
+	//* These are ASprungWheel instances, which we need to return for this function.
+	for (auto i : PhyConstraintsArray)
+	{
+		auto SingleWheel = Cast<ASprungWheel>(i->GetOwner());
+
+		Wheels.Add(SingleWheel);
+	}
+		
+	return Wheels;
 }
-
-
-void UTankTrack::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
-{
-	//When Tank is touching the ground, only then apply Driving Force and Sideways Friction this tick:
-	DriveTrack();
-	ApplySidewaysForce();
-	//Once Forces are applied, reset the Throttle to 0, to ensure it doesn't always stay at 1.
-	Throttle = 0;
-}
-
-void UTankTrack::ApplySidewaysForce()
-{
-	// Calculate the Slipping Speed
-	auto SlippingSpeed = FVector::DotProduct(GetRightVector(), GetComponentVelocity());
-	// Calculate the Correction Acceleration required
-	auto DeltaTime = GetWorld()->GetDeltaSeconds();
-	auto CorrectionAcceleration = -SlippingSpeed / DeltaTime * GetRightVector(); // Negative of Slipping speed, since we want to go the opposite direction / Deltatime * GetRightVector(), thus scaling the vector of get right by the number of -Slippingspeed/deltatime.
-
-																				 // Calculate and apply sideways velocity.
-	auto TankRootMesh = Cast<UStaticMeshComponent>(GetOwner()->GetRootComponent());
-	auto CorrectionForce = ((TankRootMesh->GetMass() * CorrectionAcceleration) / 2); //We devide by two here, since we have two tracks. 
-	TankRootMesh->AddForce(CorrectionForce);
-}
-
-
 
 void UTankTrack::SetThrottle(float Amount)
 {
 	//Clamp Throttle (Throttle is set as a var in the header, so that we can get it's current value.
-	Throttle = FMath::Clamp<float>(Throttle + Amount, -1,1);
+	auto Throttle = FMath::Clamp<float>(Amount, -1,1);
+	DriveTrack(Throttle);
 }
 
-void UTankTrack::DriveTrack()
+void UTankTrack::DriveTrack(float Throttle)
 {
-	auto ForceApplied = GetForwardVector() * Throttle * TrackMaxDrivingForce;
-	auto ForceLocation = GetComponentLocation();
-	auto MyTankRoot = GetOwner()->GetRootComponent(); //This is a good way to get the root component.
-	auto TankRootConverted = Cast<UPrimitiveComponent>(MyTankRoot); // Cast down to a child class of USceneComponent, to make it a UPrimitiveComponent.
+	auto ForceApplied = Throttle * TrackMaxDrivingForce;
+	auto AllWheels = GetWheels();												// Gets all the wheels on the tank
+	
+	if (AllWheels.Num() != 0)													//NULLPTR Protection
+	{
+		auto ForcePerWheel = ForceApplied / AllWheels.Num();					// Figures out the driving force per wheel, by dividing the Force Applied by the Num of items in the array.
 
-	TankRootConverted->AddForceAtLocation(ForceApplied, ForceLocation);
-	//TODO: Rethink turning throttles. It interfere's with the forward motion, which means they work against one another.
+		for (ASprungWheel* Wheel : AllWheels)									// for (item in: WheelsArray) - We set the item type to be ASprungWheel type and made it a varible "Wheel"
+		{
+			Wheel->AddDrivingForce(ForcePerWheel);								// Calls the AddDrivingForce() on the SprungWheel Class object, and gives it the driving force.
+		}
+	}
 }

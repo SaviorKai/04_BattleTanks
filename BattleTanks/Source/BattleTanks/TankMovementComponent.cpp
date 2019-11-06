@@ -49,7 +49,6 @@ void UTankMovementComponent::IntendMoveForward(float Amount)
 void UTankMovementComponent::IntendTurnRight(float Amount)
 {
 	if (!ensure(MyLeftTrack && MyRightTrack)) { return; } // NULLPTR Protection
-
 	MyLeftTrack->SetThrottle(Amount);
 	MyRightTrack->SetThrottle(-Amount);
 }
