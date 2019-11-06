@@ -1,5 +1,6 @@
-// TODO: Fill out your copyright notice in the Description page of Project Settings.
-// TODO: Go through Unreal's Coding Standards, and apply it to our code.
+// All rights reserved © 2019 Ivan Carl Engelbrecht
+
+// TODO: go through this, test and understand https://godbolt.org/z/h2QPhc
 // TODO: Clean up all code and format them the same.
 // TODO: Revisit NavMesh and Navigation.
 // TODO: redo the lighting

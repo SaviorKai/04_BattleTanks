@@ -8,7 +8,7 @@
 
 
 class UPhysicsConstraintComponent;
-
+class USphereComponent;
 
 UCLASS()
 class BATTLETANKS_API ASprungWheel : public AActor
@@ -30,19 +30,22 @@ public:
 
 private:
 	/// Components
-	/// MASS (To test Spring)
-	/*
-	UPROPERTY(VisibleAnywhere)
-		UStaticMeshComponent* MassMesh = nullptr;
-	*/
-
 	void SetupConstraint();
 
-	UPROPERTY(VisibleAnywhere)
-		UStaticMeshComponent* WheelConstraintMesh = nullptr;
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+		UPhysicsConstraintComponent* SpringPhysicsConstraint = nullptr;
 
-	UPROPERTY(VisibleAnywhere)
-		UPhysicsConstraintComponent* PhysicsConstraint = nullptr;
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+		UPhysicsConstraintComponent* AxlePhysicsConstraint = nullptr;
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")					// Reminder that Blueprint Read only won't work in Private. 
+		USphereComponent* WheelMesh = nullptr;
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+		USphereComponent* AxleMesh = nullptr;						// We are using USphereComponenthere, as they can be invisible if we want (no mesh)
+
+
+
 
 
 };

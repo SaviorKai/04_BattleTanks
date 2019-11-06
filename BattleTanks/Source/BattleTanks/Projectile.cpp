@@ -95,7 +95,7 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 	GetWorld()->GetTimerManager().SetTimer(
 		OUT Timer01,						// OUT parameter, we need it.
 		this,								
-		&AProjectile::OnTimer01Expire,		//The method we call when this expires ///TODO: 1. Why do we use the reference '&' on &AProjectile::OnTimerExpire?    2. Why don't we use () at the end of the 'OnTimerExpire' method name? 
+		&AProjectile::OnTimer01Expire,		//The method we call when this expires ///TODO: 1. Why do we use the reference '&' on &AProjectile::OnTimerExpire?    2. Why don't we use () at the end of the 'OnTimerExpire' method name? ANSWER: This is because 1. Thats an Address "&of"  and 2. We're passing the address of the function (we don't want to execute it right now, we want to execute it when the timer expires). See more here: https://godbolt.org/z/h2QPhc
 		DestroyDelay,						//The time for the timer (in float. default = 5);
 		false								//Let the timer loop (true), or run only once(false).
 	);

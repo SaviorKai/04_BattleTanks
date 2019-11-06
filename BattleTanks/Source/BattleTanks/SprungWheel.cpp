@@ -5,6 +5,7 @@
 #include "SprungWheel.h"
 #include "Components/StaticMeshComponent.h" // For Static Mesh Components
 #include "PhysicsEngine/PhysicsConstraintComponent.h" // For Physics Constraints
+#include "Components/SphereComponent.h" //For USphereComponent type
 
 
 // Sets default values
@@ -14,33 +15,40 @@ ASprungWheel::ASprungWheel()
 	PrimaryActorTick.bCanEverTick = true;
 	
 	/// Add the Physics Constraint Component (SPRING)
-	PhysicsConstraint = CreateDefaultSubobject<UPhysicsConstraintComponent>(FName("PhysicsConstraint(Spring)"));
-	SetRootComponent(PhysicsConstraint);												// Make it the root component. //NOTE: PhysicsConstraint->SetConstrainedComponents is set in BeginPlay(), to connect the first component with the tank.
-	PhysicsConstraint->SetAngularSwing1Limit(ACM_Locked, 0);							// ACM = Angular Constraint
-	PhysicsConstraint->SetAngularSwing2Limit(ACM_Locked, 0);
-	PhysicsConstraint->SetAngularTwistLimit(ACM_Locked, 0);
-	PhysicsConstraint->SetLinearZLimit(LCM_Free, 300);									// LCM = Linear Constraint
-	PhysicsConstraint->SetLinearPositionDrive(false, false, true);						// Linear Motor: Turn on Position Z
-	PhysicsConstraint->SetLinearVelocityDrive(false, false, true);						// Linear Motor: Turn on Velocity Z
-	PhysicsConstraint->SetLinearDriveParams(50.0f, 25.0f, 0);							// Linear Motor: Position and Velocity Strength
+	SpringPhysicsConstraint = CreateDefaultSubobject<UPhysicsConstraintComponent>(FName("PhysicsConstraint(Spring)"));
+	SetRootComponent(SpringPhysicsConstraint);													// Make it the root component. 
+	SpringPhysicsConstraint->SetAngularSwing1Limit(ACM_Locked, 0);								// ACM = Angular Constraint
+	SpringPhysicsConstraint->SetAngularSwing2Limit(ACM_Locked, 0);
+	SpringPhysicsConstraint->SetAngularTwistLimit(ACM_Locked, 0);
+	SpringPhysicsConstraint->SetLinearZLimit(LCM_Free, 300);									// LCM = Linear Constraint (Z Motion)
+	SpringPhysicsConstraint->SetLinearPositionDrive(false, false, true);						// Linear Motor: Turn on Position Z
+	SpringPhysicsConstraint->SetLinearVelocityDrive(false, false, true);						// Linear Motor: Turn on Velocity Z
+	SpringPhysicsConstraint->SetLinearDriveParams(120.0f, 60.0f, 0);								// Linear Motor: Position and Velocity Strength
+	//NOTE: SpringPhysicsConstraint->SetConstrainedComponents is set in BeginPlay(), to connect the first component with the tank.
+
+	/// Add the Axle Mesh component for the spring
+	AxleMesh = CreateDefaultSubobject<USphereComponent>(FName("AxleMesh"));						// We are using USphereComponenthere, as they can be invisible if we want (no mesh)
+	AxleMesh->SetupAttachment(SpringPhysicsConstraint);											// Better way of attaching components.
+	AxleMesh->SetSimulatePhysics(true);
+	AxleMesh->SetMassOverrideInKg(NAME_None, 10000.0f, true);									// Override and set mass.
+	//NOTE: In bp, set: -Collision Presets : Overlap All > Custom.Collisions Enabled(Query and Physics)
+	//NOTE: In bp, set: -Axel Mesh = Z: -75
+
+
+	/// Add the AxlePhysics Constraint
+	AxlePhysicsConstraint = CreateDefaultSubobject<UPhysicsConstraintComponent>(FName("PhysicsConstraint(Axle)"));
+	AxlePhysicsConstraint->SetupAttachment(AxleMesh);
+	AxlePhysicsConstraint->SetAngularSwing1Limit(ACM_Locked, 0);								// ACM = Angular Constraint
+	AxlePhysicsConstraint->SetAngularSwing2Limit(ACM_Free, 0);									// This is the one we free for the correct rotation forward.
+	AxlePhysicsConstraint->SetAngularTwistLimit(ACM_Locked, 0);									// Twist Motion
 	
-
-	/// Add the second Mesh component for the spring
-	WheelConstraintMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("WheelConstraintMesh"));
-	WheelConstraintMesh->SetupAttachment(PhysicsConstraint);										// Better way of attaching components.
-	WheelConstraintMesh->SetSimulatePhysics(true);
-	WheelConstraintMesh->SetMassOverrideInKg(NAME_None, 10000.0f, true);				// Override and set mass.
-
-	/// MASS (To test Spring) - No longer used.
-	/*
-	/// Add the Mass mesh component
-	MassMesh = CreateDefaultSubobject<UStaticMeshComponent>(FName("MassMesh"));
-	MassMesh->SetupAttachment(PhysicsConstraint);
-	MassMesh->SetSimulatePhysics(true);
-	MassMesh->SetMassOverrideInKg(NAME_None, 40000.0f, true);							// Override and set mass.
-	*/
+	/// Add the Wheel Mesh component for the spring
+	WheelMesh = CreateDefaultSubobject<USphereComponent>(FName("WheelMesh"));					// We are using USphereComponenthere, as they can be invisible if we want (no mesh)
+	WheelMesh->SetupAttachment(AxleMesh);														// Better way of attaching components.
+	WheelMesh->SetSimulatePhysics(true);
+	WheelMesh->SetMassOverrideInKg(NAME_None, 1000.0f, true);									// Override and set mass.
+	//NOTE: In bp, set: PhysicsActor (collision)
 	
-
 }
 
 // Called when the game starts or when spawned
@@ -54,16 +62,25 @@ void ASprungWheel::BeginPlay()
 
 void ASprungWheel::SetupConstraint()
 {
-	auto MyParentActor = GetAttachParentActor();											// Gets the Root Component, Then the Component its attached too, Then gets the Owner of that Compoent (Tank) //NOTE: Only actors (not USceneComponents) can call this function.
+	auto MyParentActor = GetAttachParentActor();													// Gets the Root Component, Then the Component its attached too, Then gets the Owner of that Compoent (Tank) //NOTE: Only actors (not USceneComponents) can call this function.
 	if (MyParentActor)	//Pointer Protection
 	{
-		auto BodyRoot = Cast<UPrimitiveComponent>(MyParentActor->GetRootComponent());		//Convert to UPrimitiveComponent
-		auto SpringMesh = Cast<UPrimitiveComponent>(WheelConstraintMesh);					//Convert to UPrimitiveComponent
-
-		PhysicsConstraint->SetConstrainedComponents(										//Set the Contraints settings to Component 1 = Tank Root, Component 2 = WheelConstraintMesh
-			BodyRoot,
+		//Set the Contraints settings to Component 1 = Tank Root, Component 2 = Axle
+		auto BodyRoot_Converted = Cast<UPrimitiveComponent>(MyParentActor->GetRootComponent());		//Convert to UPrimitiveComponent
+		auto AxleMesh_Converted = Cast<UPrimitiveComponent>(AxleMesh);								//Convert to UPrimitiveComponent
+		SpringPhysicsConstraint->SetConstrainedComponents(										
+			BodyRoot_Converted,
 			NAME_None,
-			SpringMesh,
+			AxleMesh_Converted,
+			NAME_None
+		);
+
+		//Set the Contraints settings to Component 1 = Axle, Component 2 = Wheel
+		auto WheelMesh_Converted = Cast<UPrimitiveComponent>(WheelMesh);							//Convert to UPrimitiveComponent
+		AxlePhysicsConstraint->SetConstrainedComponents(											//Set the Contraints settings to Component 1 = Tank Root, Component 2 = AxleMesh
+			AxleMesh_Converted,
+			NAME_None,
+			WheelMesh_Converted,
 			NAME_None
 		);
 		
