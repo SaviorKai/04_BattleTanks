@@ -1,5 +1,6 @@
 // All rights reserved © 2019 Ivan Carl Engelbrecht
 
+// TODO: go through entire Tanks game, Tripple X game, and Bulls & cows, and document all C++ items.
 // TODO: go through this, test and understand https://godbolt.org/z/h2QPhc
 // TODO: Clean up all code and format them the same.
 // TODO: Revisit NavMesh and Navigation.

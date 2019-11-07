@@ -13,6 +13,12 @@ ASprungWheel::ASprungWheel()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	//* IVAN NOTE: TICK GROUPS!
+	//* BLUEPRINT: When can change when this Actor Tick() even takes place, by going into the blueprint, 
+	//* selecting the actor, and on the details, in the Actor Tick, click the dropdown and change it as required.
+	//* C++: In the constructor code:
+	PrimaryActorTick.TickGroup = TG_PostPhysics;												// Also do a if (GetWorld()->TickGroup == TG_PostPhysics) in the tick, to ensure it's correctly set.
+
 	
 	/// Add the Physics Constraint Component (SPRING)
 	SpringPhysicsConstraint = CreateDefaultSubobject<UPhysicsConstraintComponent>(FName("PhysicsConstraint(Spring)"));
@@ -56,6 +62,10 @@ void ASprungWheel::BeginPlay()
 {
 	Super::BeginPlay();
 
+	//1. Register our OnHit() Delegate, by calling the UE4 function on the mesh, names OnComponentHit.AddDynamic()
+	WheelMesh->SetNotifyRigidBodyCollision(true);												// This always turns on "Simulation Generates Hit Events" checkbox as default.  			
+	WheelMesh->OnComponentHit.AddDynamic(this, &ASprungWheel::OnHit);							// Remember that we're passing the '&'address of the function to the OnHitComponent, to call it WHEN it gets hit, and not calling it now.
+
 	SetupConstraint();   ///Sets up our Spring 
 	
 }
@@ -65,6 +75,14 @@ void ASprungWheel::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (GetWorld()->TickGroup == TG_PostPhysics)			// Check to ensure the group is correct, since we've changed it a the top and also before changing values at the wrong time.
+	{
+		CurrentDrivingForce = 0.0f;
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("SprungWheel has the incorrect TickGroup set! It needs to be TG_PostPhysics"));
+	}
 }
 
 void ASprungWheel::SetupConstraint()
@@ -93,8 +111,14 @@ void ASprungWheel::SetupConstraint()
 	}
 }
 
+void ASprungWheel::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
+{
+	//Apply Force
+	WheelMesh->AddForce(AxleMesh->GetForwardVector() * CurrentDrivingForce);     //Note: You can extract this as an "ApplyForce()" function, but why, its only 1 line.
+}
+
 void ASprungWheel::AddDrivingForce(float ForceMagnitude)
 {
-	WheelMesh->AddForce(AxleMesh->GetForwardVector() * ForceMagnitude);
+	CurrentDrivingForce += ForceMagnitude;
 }
 

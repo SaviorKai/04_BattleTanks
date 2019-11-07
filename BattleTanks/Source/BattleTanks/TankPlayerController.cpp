@@ -12,8 +12,9 @@ void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 	//Call the FoundAimingComponent Event and let it run.
-	auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();  /// IVAN NOTE! Used FINDcomponentByClass, not GET. !! This doesn't exist in blueprints.
-	if (!ensure(AimingComponent != nullptr)) { return; }  /// NULLPTR Protection.
+	if (!GetPawn()) { return; }															// NULLPTR Protection
+	auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();		// IVAN NOTE! Used FINDcomponentByClass, not GET. !! This doesn't exist in blueprints.
+	if (!ensure(AimingComponent != nullptr)) { return; }								// NULLPTR Protection.
 	
 	FoundAimingComponent(AimingComponent);
 }
