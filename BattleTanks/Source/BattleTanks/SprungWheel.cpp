@@ -78,6 +78,7 @@ void ASprungWheel::Tick(float DeltaTime)
 	if (GetWorld()->TickGroup == TG_PostPhysics)			// Check to ensure the group is correct, since we've changed it a the top and also before changing values at the wrong time.
 	{
 		CurrentDrivingForce = 0.0f;
+
 	}
 	else
 	{
@@ -114,11 +115,15 @@ void ASprungWheel::SetupConstraint()
 void ASprungWheel::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
 	//Apply Force
-	WheelMesh->AddForce(AxleMesh->GetForwardVector() * CurrentDrivingForce);     //Note: You can extract this as an "ApplyForce()" function, but why, its only 1 line.
+	WheelMesh->AddForce(AxleMesh->GetForwardVector() * (CurrentDrivingForce));     //Note: You can extract this as an "ApplyForce()" function, but why, its only 1 line.
 }
 
 void ASprungWheel::AddDrivingForce(float ForceMagnitude)
 {
 	CurrentDrivingForce += ForceMagnitude;
+	
 }
 
+//1 = AddDrivingForce()
+//2 = OnHit()
+//3 = Tick()

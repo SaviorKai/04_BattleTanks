@@ -35,6 +35,7 @@ private:
 	void SetupConstraint();
 
 	float CurrentDrivingForce = 0.0f;
+	
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 		UPhysicsConstraintComponent* SpringPhysicsConstraint = nullptr;

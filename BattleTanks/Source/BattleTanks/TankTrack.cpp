@@ -76,13 +76,13 @@ void UTankTrack::SetThrottle(float Amount)
 
 void UTankTrack::DriveTrack(float Throttle)
 {
-	auto ForceApplied = Throttle * TrackMaxDrivingForce * 1.5;
+	auto ForceApplied = Throttle * TrackMaxDrivingForce;
 	auto AllWheels = GetWheels();												// Gets all the wheels on the tank
 	
 	if (AllWheels.Num() != 0)													//NULLPTR Protection
 	{
 		auto ForcePerWheel = ForceApplied / AllWheels.Num();					// Figures out the driving force per wheel, by dividing the Force Applied by the Num of items in the array.
-
+		
 		for (ASprungWheel* Wheel : AllWheels)									// for (item in: WheelsArray) - We set the item type to be ASprungWheel type and made it a varible "Wheel"
 		{
 			Wheel->AddDrivingForce(ForcePerWheel);								// Calls the AddDrivingForce() on the SprungWheel Class object, and gives it the driving force.
