@@ -4,6 +4,7 @@
 #include "Tank.h"
 #include "TankTrack.h"
 #include "Engine/World.h"
+#include "Particles/ParticleSystemComponent.h"
 
 
 // Sets default values
@@ -11,7 +12,6 @@ ATank::ATank()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;    /// IVAN NOTE: We set this to false to improve performance! We don't need tick here.
-
 }
 
 // Called when the game starts or when spawned
@@ -22,6 +22,8 @@ void ATank::BeginPlay()
 	//Set the starting Health (This needs to be set here, since the health might be set in the Blueprint). 
 	MyHealth = StartingHealth;
 }
+
+
 
 /// Called by the Engine when Actor Damage is dealt.
 float ATank::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser)
@@ -34,6 +36,9 @@ float ATank::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, ACo
 	{
 		///[DMCD Step 3] Broadcast
 		OnDeath.Broadcast();
+		
+		//Death Effects
+		PlayDeathFx();
 	}
 	
 

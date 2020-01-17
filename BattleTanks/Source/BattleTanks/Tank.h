@@ -19,6 +19,7 @@ class UTankBarrel;
 class UTankTurret;
 class AProjectile;
 class UTankTrack;
+class UParticleSystemComponent;
 
 // Declare Delegate
 ///[DMCD Step 1] Create delegate type
@@ -50,6 +51,10 @@ public:
 protected:			
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+	
+	UFUNCTION(BlueprintImplementableEvent) // NOTE: We don't define BlueprintImplementableEvent in C++ (it's done in blueprint)
+	void PlayDeathFx();
+	
 	/* // OLD CODE //
 	UPROPERTY(BlueprintReadOnly) ///NOTE: This is moved here to protected, and as 'BlueprintReadOnly', since its called in the UI for 'MyFiringStatus' /// IVAN NOTE: If you don't set this as BlueprintReadOnly, you won't be able to drag the component into the blueprint. 
 		UTankAimingComponent* TankAimingComponent = nullptr;
@@ -63,6 +68,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 		UTankTrack* RightTankTrack = nullptr;
+	
+	UPROPERTY(VisibleAnywhere)
+		UParticleSystemComponent* DeathSmokeComponent;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Tank Setup")
 		int32 StartingHealth = 100;

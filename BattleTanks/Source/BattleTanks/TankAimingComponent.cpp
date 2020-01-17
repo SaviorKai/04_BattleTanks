@@ -3,7 +3,6 @@
 
 #include "TankAimingComponent.h"
 #include "Kismet/GameplayStatics.h"
-#include "Kismet/KismetMathLibrary.h"
 #include "TankBarrel.h" //Supporting the Forward Declaration
 #include "TankTurret.h" //Supporting the Forward Declaration
 #include "Projectile.h" //Supporting the Forward Declaration
