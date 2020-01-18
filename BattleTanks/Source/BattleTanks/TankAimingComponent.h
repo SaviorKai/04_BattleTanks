@@ -54,7 +54,7 @@ protected:
 
 	// Setup Ammo Count
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Firing") /// TODO: Note: In the lecture, we are told to use a getter method to find this value, instead of setting them up as blueprintreadonly. Perhaps the same can be done for the Firing State.
-		int32 MyAmmoCount = 3;											/// TODO: Test all the different types of things you can do (EditDefaultsOnly, BlueprintReadOnly) in protected, private, public, and also none used. Do the same for UFUNCTION.
+		int32 MyAmmoCount = 20;											/// TODO: Test all the different types of things you can do (EditDefaultsOnly, BlueprintReadOnly) in protected, private, public, and also none used. Do the same for UFUNCTION.
 
 	// Setup MyFiringStatus enum var, which can be called by the UI.  
 	UPROPERTY(BlueprintReadOnly, Category = "Setup") /// Why protected:? Remember that the parent of bp_TankAimingComponent is the C++ class TankAimingComponent.cpp. Thus, this needs to be in protected, so that the child classes can call it. 

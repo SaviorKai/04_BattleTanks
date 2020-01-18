@@ -61,7 +61,7 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& OutHitLocation) cons
 	/// Find the crosshair position
 	int32 ViewportSizeX, ViewportSizeY;
 	GetViewportSize(OUT ViewportSizeX, OUT ViewportSizeY); ///Out paramater
-	FVector2D ScreenLocation = FVector2D(ViewportSizeX * CrossHairLocationX, ViewportSizeY * CrossHairLocationY); /// IVAN NOTE: Yes, int32 can be multiplied by floats!
+	FVector2D ScreenLocation = FVector2D(ViewportSizeX * CrossHairLocationX, ViewportSizeY * CrossHairLocationY); /// IVAN NOTE: Yes, int32 can be multiplied by floats! But not always a good idea.
 
 	// "De-Project" the screen position of the crosshair to a world direction.
 	FVector CamLookDirection;
@@ -110,7 +110,8 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector CamLookDirection, F
 	if (GetWorld()->LineTraceSingleByChannel(
 		OUT HitResult, LineTraceStart,
 		LineTraceEnd,
-		ECollisionChannel::ECC_Camera				//Set to CAMERA, so that we don't clash with UI objects.
+		//ECollisionChannel::ECC_Camera				//Set to CAMERA, so that we don't clash with UI objects.
+		ECollisionChannel::ECC_WorldDynamic			//Set to World Dynamic to improve Aiming
 	))
 	{
 		HitLocationPoint = HitResult.Location;
