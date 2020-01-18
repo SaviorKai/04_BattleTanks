@@ -4,7 +4,9 @@
 #include "TankTrack.h"
 #include "Components/SceneComponent.h"
 #include "SprungWheel.h"								//for ASprungWheel
-#include "SpawnPoint.h"									//for ASpawnPoint
+#include "SpawnPoint.h"									//for USpawnPoint
+#include "Components/SphereComponent.h" //For USphereComponent type
+#include "GameFramework/Actor.h"
 
 UTankTrack::UTankTrack()
 {
@@ -34,6 +36,7 @@ UTankTrack::UTankTrack()
 void UTankTrack::BeginPlay()
 {
 	Super::BeginPlay();
+
 }
 
 TArray<class ASprungWheel*> UTankTrack::GetWheels() const
@@ -87,5 +90,57 @@ void UTankTrack::DriveTrack(float Throttle)
 		{
 			Wheel->AddDrivingForce(ForcePerWheel);								// Calls the AddDrivingForce() on the SprungWheel Class object, and gives it the driving force.
 		}
+		
+		RotateMeshWheels();
+	}
+}
+
+void UTankTrack::SetupMeshWheels()
+{
+	/// Setup My Main Wheel
+	auto MySpawnSpring = GetChildComponent(1);
+	if (!MySpawnSpring) { return; }
+
+	TArray<USceneComponent*> ChildrenComps;
+	MySpawnSpring->GetChildrenComponents(true, ChildrenComps);
+	if (ChildrenComps.Num() <= 0) { return; }
+
+	AActor* MyOwner = ChildrenComps[0]->GetOwner();
+	TArray<USphereComponent*> SpringChildrenComps;
+	MyOwner->GetComponents(SpringChildrenComps);
+	if (SpringChildrenComps.Num() <= 0) { return; }
+
+	MyMainWheel = Cast<USphereComponent>(SpringChildrenComps[1]);
+
+
+	/// Add Mesh Wheels to Array
+	TArray<USceneComponent*> TrackChildren;
+	GetChildrenComponents(false, TrackChildren);
+	if (TrackChildren.Num() <= 0) { return; }
+
+	for (auto i : TrackChildren)
+	{
+		auto Item = Cast<UStaticMeshComponent>(i);
+		if (Item)
+		{
+			MeshWheels.Add(Item);
+		}
+	}
+}
+
+void UTankTrack::RotateMeshWheels()
+{
+	if (!MyMainWheel) 
+	{ 
+		SetupMeshWheels();
+	}
+
+	if (!MyMainWheel) { return; }
+	
+	auto NewRotation = MyMainWheel->RelativeRotation;
+
+	for (auto i : MeshWheels)
+	{
+		i->RelativeRotation.Pitch = NewRotation.Roll;
 	}
 }

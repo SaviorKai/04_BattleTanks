@@ -8,6 +8,8 @@
 //Must be last Include
 #include "TankTrack.generated.h"
 
+class USphereComponent;
+
 /**
 * Tank Track is used to control the speed of the tank by setting the speed of each track individually.
 * [!]NOTES: The following must be set when adding a new track to a tank:
@@ -37,6 +39,12 @@ private:
 	virtual void BeginPlay() override;
 
 	TArray<class ASprungWheel*> GetWheels() const;						// Create a function that returns an array of ASprungWheel Pointers. //TODO: Revisit Arrays, and also, is this like making a forward Declaration? Test it.
-	
+
 	void DriveTrack(float Throttle);
+
+	void SetupMeshWheels();
+	void RotateMeshWheels();
+
+	USphereComponent* MyMainWheel = nullptr;
+	TArray<UStaticMeshComponent*> MeshWheels;
 };

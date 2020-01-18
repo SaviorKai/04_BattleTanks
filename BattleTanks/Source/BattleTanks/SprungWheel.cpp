@@ -54,7 +54,6 @@ ASprungWheel::ASprungWheel()
 	WheelMesh->SetSimulatePhysics(true);
 	WheelMesh->SetMassOverrideInKg(NAME_None, 1000.0f, true);									// Override and set mass.
 	//NOTE: In bp, set: PhysicsActor (collision)
-	
 }
 
 // Called when the game starts or when spawned
@@ -123,7 +122,3 @@ void ASprungWheel::AddDrivingForce(float ForceMagnitude)
 	CurrentDrivingForce += ForceMagnitude;
 	
 }
-
-//1 = AddDrivingForce()
-//2 = OnHit()
-//3 = Tick()

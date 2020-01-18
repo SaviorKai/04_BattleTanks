@@ -24,11 +24,11 @@ public:
 
 	void AddDrivingForce(float ForceMagnitude);
 
-
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
+	
 
 private:
 	/// Components
@@ -54,6 +54,6 @@ private:
 	UFUNCTION() //THIS MUST ALWAYS BE A UFUNCTION if you want to register OnHit. This does not need to be defined.																								
 		void OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit);   //TODO Document this better.
 
-
+	
 
 };
