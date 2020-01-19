@@ -5,6 +5,9 @@
 #include "TankTrack.h"
 #include "Engine/World.h"
 #include "Particles/ParticleSystemComponent.h"
+#include "Components/StaticMeshComponent.h"
+#include "DrawDebugHelpers.h"
+
 
 
 // Sets default values
@@ -49,4 +52,23 @@ float ATank::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, ACo
 float ATank::GetHealthPercent()
 {
 	return (float)MyHealth / (float)StartingHealth;			///NOTE: Remember that these values are not floats, they are ints. Thus, we cast them to (float) to ensure we get a float return. 
+}
+
+
+void ATank::CounterSliding()
+{
+	auto MyMeshComp = Cast<UStaticMeshComponent>(GetRootComponent());
+	if (!MyMeshComp) { return; }
+	
+	auto TankRightVector = MyMeshComp->GetRightVector().GetSafeNormal();
+	auto MyVelocity = GetVelocity().GetSafeNormal();
+
+	auto DotProductResult = FVector::DotProduct(TankRightVector, MyVelocity);
+
+	float CounterForce = -DotProductResult * (MyMeshComp->GetMass() *2000);
+	
+	auto CounterForceApplied = MyMeshComp->GetRightVector() * CounterForce;
+
+	MyMeshComp->AddForce(CounterForceApplied, NAME_None, false);
+	
 }

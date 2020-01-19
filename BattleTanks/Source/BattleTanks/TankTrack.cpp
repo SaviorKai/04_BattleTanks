@@ -7,6 +7,7 @@
 #include "SpawnPoint.h"									//for USpawnPoint
 #include "Components/SphereComponent.h" //For USphereComponent type
 #include "GameFramework/Actor.h"
+#include "Tank.h"
 
 UTankTrack::UTankTrack()
 {
@@ -92,6 +93,7 @@ void UTankTrack::DriveTrack(float Throttle)
 		}
 		
 		RotateMeshWheels();
+		Cast<ATank>(GetOwner())->CounterSliding();
 	}
 }
 
@@ -144,3 +146,5 @@ void UTankTrack::RotateMeshWheels()
 		i->RelativeRotation.Pitch = NewRotation.Roll;
 	}
 }
+
+

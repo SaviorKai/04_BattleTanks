@@ -10,8 +10,6 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
-
-///Must Be the last Include
 #include "Tank.generated.h"
 
 //Forward Declarations: 
@@ -47,6 +45,8 @@ public:
 	FTankDelegate OnDeath;
 
 	//virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override; //TODO: What was this used for? 
+
+	void CounterSliding();
 
 protected:			
 	// Called when the game starts or when spawned
