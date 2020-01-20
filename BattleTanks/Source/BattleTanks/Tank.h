@@ -66,6 +66,8 @@ protected:
 private:
 	ATank();
 
+	bool bHasDied = false;
+
 	UPROPERTY(VisibleAnywhere)
 		UTankTrack* LeftTankTrack = nullptr;                  /// TODO: Why is this visible on the tank properties at runtime? (It shows none). Think of fixing this.
 

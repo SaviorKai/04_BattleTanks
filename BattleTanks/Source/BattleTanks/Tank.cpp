@@ -42,8 +42,10 @@ float ATank::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, ACo
 	int32 ClampedDamage = FMath::Clamp<int32>(DamageAmount, 0, MyHealth);
 	MyHealth -= ClampedDamage;
 
-	if (MyHealth <= 0)
+	if (MyHealth <= 0 && bHasDied == false)
 	{
+		bHasDied = true;
+
 		///[DMCD Step 3] Broadcast
 		OnDeath.Broadcast();
 		
@@ -106,8 +108,6 @@ void ATank::PlayEngineMoveSound()
 			{
 				MyEngine_MovingSound = UGameplayStatics::SpawnSoundAttached(Sound_EngineMovement, GetRootComponent(), NAME_None);
 				MyEngine_MovingSound->FadeIn(0.1f, 1.0f);
-				UE_LOG(LogTemp, Warning, TEXT("Playing Engine Sound"));
-				
 			}
 	}
 }
@@ -121,7 +121,6 @@ void ATank::StopEngineMoveSound()
 		{
 			MyEngine_MovingSound->FadeOut(0.25f,0.0f);
 			MyEngine_MovingSound = nullptr;
-			UE_LOG(LogTemp, Warning, TEXT("Stopping Engine Sound"));
 		}
 	}
 }
