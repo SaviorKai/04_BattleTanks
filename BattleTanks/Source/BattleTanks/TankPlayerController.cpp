@@ -108,13 +108,17 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector CamLookDirection, F
 
 	FHitResult HitResult;
 	if (GetWorld()->LineTraceSingleByChannel(
-		OUT HitResult, LineTraceStart,
+		OUT HitResult, 
+		LineTraceStart,
 		LineTraceEnd,
 		//ECollisionChannel::ECC_Camera				//Set to CAMERA, so that we don't clash with UI objects.
-		ECollisionChannel::ECC_WorldDynamic			//Set to World Dynamic to improve Aiming
+		ECollisionChannel::ECC_Camera			//Set to World Dynamic to improve Aiming
 	))
 	{
 		HitLocationPoint = HitResult.Location;
+		
+		DrawDebugSphere(GetWorld(), HitLocationPoint, 32, 32, FColor::Green, false, 0, 0, 1);  // DEBUG
+		
 		return true;
 	}
 

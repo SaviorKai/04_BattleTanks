@@ -40,6 +40,7 @@ public:
 	
 	///Methods
 	void TurnAndAimAt(FVector TargetLocation);
+	
 	EFiringStatus GetFiringStatus() const;
 
 	UFUNCTION(BlueprintCallable, Category="Setup")
