@@ -3,6 +3,7 @@
 
 #include "TankMovementComponent.h"
 #include "TankTrack.h"
+#include "Tank.h"
 
 void UTankMovementComponent::InitialiseMoveComponent(UTankTrack* LeftTrack, UTankTrack* RightTrack) //IVAN NOTE!! THIS IS CALLED AND SETUP IN THE bp_Tank BeginPlay EventGraph
 {
@@ -44,6 +45,15 @@ void UTankMovementComponent::IntendMoveForward(float Amount)
 
 	MyLeftTrack->SetThrottle(Amount);
 	MyRightTrack->SetThrottle(Amount);
+
+	if (Amount <= -0.2f || Amount >= 0.2f)
+	{
+		Cast<ATank>(GetOwner())->PlayEngineMoveSound();
+	}
+	else
+	{
+		Cast<ATank>(GetOwner())->StopEngineMoveSound();
+	}
 }
 
 void UTankMovementComponent::IntendTurnRight(float Amount)

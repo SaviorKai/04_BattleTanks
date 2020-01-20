@@ -18,6 +18,7 @@ class UTankTurret;
 class AProjectile;
 class UTankTrack;
 class UParticleSystemComponent;
+class UAudioComponent;
 
 // Declare Delegate
 ///[DMCD Step 1] Create delegate type
@@ -47,6 +48,8 @@ public:
 	//virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override; //TODO: What was this used for? 
 
 	void CounterSliding();
+	void PlayEngineMoveSound();
+	void StopEngineMoveSound();
 
 protected:			
 	// Called when the game starts or when spawned
@@ -80,5 +83,15 @@ private:
 
 	// Called by the Engine when Actor Damage is dealt.
 	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	USoundBase* Sound_EngineIdle = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	USoundBase* Sound_EngineMovement = nullptr;
+
+	UAudioComponent* MyEngine_IdleSound = nullptr;
+	UAudioComponent* MyEngine_MovingSound = nullptr;
+
 
 };

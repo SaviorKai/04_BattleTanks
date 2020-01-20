@@ -7,7 +7,8 @@
 #include "Particles/ParticleSystemComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "DrawDebugHelpers.h"
-
+#include "Kismet/GameplayStatics.h"
+#include "Components/AudioComponent.h"
 
 
 // Sets default values
@@ -24,6 +25,12 @@ void ATank::BeginPlay()
 
 	//Set the starting Health (This needs to be set here, since the health might be set in the Blueprint). 
 	MyHealth = StartingHealth;
+
+	//Attach Engine Idle Sound
+	if (Sound_EngineIdle)
+	{
+		MyEngine_IdleSound = UGameplayStatics::SpawnSoundAttached(Sound_EngineIdle, GetRootComponent(), NAME_None);
+	}
 }
 
 
@@ -42,6 +49,17 @@ float ATank::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, ACo
 		
 		//Death Effects
 		PlayDeathFx();
+
+		//Stop Engine Idle Sounds
+		if (MyEngine_IdleSound)
+		{
+			MyEngine_IdleSound->FadeOut(3.0f,0.0f);
+			
+		}
+		if (MyEngine_MovingSound)
+		{
+			MyEngine_MovingSound->FadeOut(2.0f, 0.0f);
+		}
 	}
 	
 
@@ -71,4 +89,33 @@ void ATank::CounterSliding()
 
 	MyMeshComp->AddForce(CounterForceApplied, NAME_None, false);
 	
+}
+
+void ATank::PlayEngineMoveSound()
+{
+	//Attach Engine Idle Sound
+	if (Sound_EngineMovement)
+	{
+		if (!MyEngine_MovingSound)
+			{
+				MyEngine_MovingSound = UGameplayStatics::SpawnSoundAttached(Sound_EngineMovement, GetRootComponent(), NAME_None);
+				MyEngine_MovingSound->FadeIn(0.1f, 1.0f);
+				UE_LOG(LogTemp, Warning, TEXT("Playing Engine Sound"));
+				
+			}
+	}
+}
+
+void ATank::StopEngineMoveSound()
+{
+	//Attach Engine Idle Sound
+	if (Sound_EngineMovement)
+	{
+		if (MyEngine_MovingSound)
+		{
+			MyEngine_MovingSound->FadeOut(0.25f,0.0f);
+			MyEngine_MovingSound = nullptr;
+			UE_LOG(LogTemp, Warning, TEXT("Stopping Engine Sound"));
+		}
+	}
 }

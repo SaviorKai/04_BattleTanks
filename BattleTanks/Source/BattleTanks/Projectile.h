@@ -41,11 +41,24 @@ private:
 	UPROPERTY(VisibleAnywhere)
 		UStaticMeshComponent* ProjMesh = nullptr;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, Category = "Setup")
 		UParticleSystemComponent* LaunchBlast = nullptr;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, Category = "Setup")
 		UParticleSystemComponent* ImpactBlast = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, Category="Setup")
+		USoundBase* Sound_Spawn = nullptr;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+		USoundBase* Sound_Impact = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+		USoundBase* Sound_ProjectileTraveling = nullptr;
+
+	UAudioComponent* MyTravelingSound = nullptr;
+
+	
 	
 	UPROPERTY(VisibleAnywhere)
 		URadialForceComponent* ExplosionForce = nullptr;

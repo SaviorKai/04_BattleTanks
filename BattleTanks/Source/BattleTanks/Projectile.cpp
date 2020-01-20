@@ -10,6 +10,8 @@
 #include "TimerManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/DamageType.h"
+#include "Components/AudioComponent.h"
+
 
 
 #define OUT
@@ -52,6 +54,18 @@ void AProjectile::BeginPlay()
 	Super::BeginPlay();
 	///1. Register the OnHit() Event delegate:
 	ProjMesh->OnComponentHit.AddDynamic(this, &AProjectile::OnHit);     ///NOTE: This wasn't added on the core class, since this isn't a component class. BUT the static mesh we add, is.
+
+
+	//Play SpawnSound
+	if (Sound_Spawn)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, Sound_Spawn, GetActorLocation());
+	}
+	//Attach Traveling Sound
+	if (Sound_ProjectileTraveling)
+	{
+		MyTravelingSound = UGameplayStatics::SpawnSoundAttached(Sound_ProjectileTraveling, ProjMesh, NAME_None);
+	}
 }
 
 // Called every frame
@@ -72,6 +86,17 @@ void AProjectile::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, U
 	/// Particle Systems
 	LaunchBlast->Deactivate();
 	ImpactBlast->Activate();
+
+	///Play ImpactSound
+	if (Sound_Impact)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, Sound_Impact, GetActorLocation());
+	}
+	///StopSoundTraveling
+	if (MyTravelingSound)
+	{
+		MyTravelingSound->Stop();
+	}
 	
 	/// Explosion Radial Force for Physics.
 	ExplosionForce->FireImpulse(); 
