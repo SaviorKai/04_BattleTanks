@@ -90,6 +90,9 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	USoundBase* Sound_EngineMovement = nullptr;
 
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	USoundBase* Sound_TankDeathFlames = nullptr;
+
 	UAudioComponent* MyEngine_IdleSound = nullptr;
 	UAudioComponent* MyEngine_MovingSound = nullptr;
 

@@ -60,6 +60,12 @@ float ATank::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, ACo
 		{
 			MyEngine_MovingSound->FadeOut(2.0f, 0.0f);
 		}
+
+		//PlayTankFlame Sounds
+		if (Sound_TankDeathFlames)
+		{
+			UGameplayStatics::SpawnSoundAttached(Sound_TankDeathFlames, GetRootComponent(), NAME_None);
+		}
 	}
 	
 
