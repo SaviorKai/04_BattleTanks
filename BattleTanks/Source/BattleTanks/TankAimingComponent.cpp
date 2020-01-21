@@ -88,6 +88,7 @@ void UTankAimingComponent::TurnAndAimAt(FVector TargetLocation)
 		CurrentAimDirection = AimDirection;
 
 		// DEBUG
+		/*
 		if (Cast<APawn>(GetOwner())->IsPlayerControlled())
 		{
 			auto TempCompLocation = MyTankBarrel->GetComponentLocation();
@@ -100,7 +101,7 @@ void UTankAimingComponent::TurnAndAimAt(FVector TargetLocation)
 
 			DrawDebugLine(GetWorld(), TempCompLocation, TempTargetLocation, FColor::Green, false, 0, 0, 5); 
 		}
-		// DEBUG END
+		*/ // DEBUG END
 	}
 	else
 	{
