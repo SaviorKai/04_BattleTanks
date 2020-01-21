@@ -117,8 +117,6 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector CamLookDirection, F
 	{
 		HitLocationPoint = HitResult.Location;
 		
-		DrawDebugSphere(GetWorld(), HitLocationPoint, 32, 32, FColor::Green, false, 0, 0, 1);  // DEBUG
-		
 		return true;
 	}
 

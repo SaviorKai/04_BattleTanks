@@ -28,6 +28,6 @@ private:
 		float MaxDegreesElevation = 40.0f; //Sensible default.
 
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-		float MinDegreesElevation = 0.0f; //Sensible default.
+		float MinDegreesElevation = -20.0f; //Sensible default.
 	
 };

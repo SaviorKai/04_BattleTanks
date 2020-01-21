@@ -6,6 +6,7 @@
 #include "TankBarrel.h" //Supporting the Forward Declaration
 #include "TankTurret.h" //Supporting the Forward Declaration
 #include "Projectile.h" //Supporting the Forward Declaration
+#include "DrawDebugHelpers.h"
 
 #define OUT
 
@@ -55,12 +56,14 @@ void UTankAimingComponent::TurnAndAimAt(FVector TargetLocation)
 {
 	if (!ensure(MyTankBarrel != nullptr)) { return; }	 //NULLPTR Protection   
 
-	FVector TossVelocity(0); //Make sure you initialize vectors.
+	auto StartLocation = MyTankBarrel->GetSocketLocation(FName("ProjectileSpawn"));
 
+	FVector TossVelocity(0); //Make sure you initialize vectors.
+	
 	bool bHaveAimSolution = UGameplayStatics::SuggestProjectileVelocity(
 		this,			// World context object. Grabs the class we're currently in. In this case, TankAimingComponent.cpp.
 		OUT TossVelocity,
-		MyTankBarrel->GetSocketLocation(FName("ProjectileSpawn")),
+		StartLocation,
 		TargetLocation,
 		LaunchSpeed,
 		false,
@@ -68,7 +71,7 @@ void UTankAimingComponent::TurnAndAimAt(FVector TargetLocation)
 		0,
 		ESuggestProjVelocityTraceOption::DoNotTrace      /// IVAN NOTE! This argument is required for this function to work!
 	);
-
+	
 	if (bHaveAimSolution)
 	{
 		//Normalize the value of TossVelocity to a combined directional value of 1 with GetSafeNormal().
@@ -83,6 +86,21 @@ void UTankAimingComponent::TurnAndAimAt(FVector TargetLocation)
 
 		///Set the Private Var for use in other checks
 		CurrentAimDirection = AimDirection;
+
+		// DEBUG
+		if (Cast<APawn>(GetOwner())->IsPlayerControlled())
+		{
+			auto TempCompLocation = MyTankBarrel->GetComponentLocation();
+			auto TempForwardLocation = MyTankBarrel->GetSocketLocation(FName("ProjectileSpawn"));
+			auto TempDifference = (TempForwardLocation - TempCompLocation);
+			auto TempTargetLocation = (TempDifference * 10) + TempCompLocation;
+			
+			DrawDebugSphere(GetWorld(), TempCompLocation, 50, 32, FColor::Red, false, 0, 0, 1.0f);
+			DrawDebugSphere(GetWorld(), TempTargetLocation, 50, 32, FColor::Blue, false, 0, 0, 1.0f);
+
+			DrawDebugLine(GetWorld(), TempCompLocation, TempTargetLocation, FColor::Green, false, 0, 0, 5); 
+		}
+		// DEBUG END
 	}
 	else
 	{
