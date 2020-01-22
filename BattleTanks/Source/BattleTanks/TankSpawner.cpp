@@ -49,7 +49,6 @@ void ATankSpawner::SpawnTanks()
 
 	/// Restart Timer
 	GetWorldTimerManager().SetTimer(Timer_SpawnInterval, this, &ATankSpawner::SpawnTanks, SpawnInterval, false, SpawnInterval);
-	UE_LOG(LogTemp, Warning, TEXT("SpawnInterval = %f"), SpawnInterval);
 
 
 }

@@ -42,6 +42,9 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Health")		// BlueprintPure = makes this a read only function in the blueprint (like const for c++)
 		float GetHealthPercent();
 
+	UFUNCTION(BlueprintPure, Category = "Health")		// BlueprintPure = makes this a read only function in the blueprint (like const for c++)
+		float GetScore();
+
 	///[DMCD Step 2] Declare delegate.
 	FTankDelegate OnDeath;
 
@@ -57,6 +60,8 @@ protected:
 	
 	UFUNCTION(BlueprintImplementableEvent) // NOTE: We don't define BlueprintImplementableEvent in C++ (it's done in blueprint)
 	void PlayDeathFx();
+
+	void AddScore(int32 Amount);
 	
 	/* // OLD CODE //
 	UPROPERTY(BlueprintReadOnly) ///NOTE: This is moved here to protected, and as 'BlueprintReadOnly', since its called in the UI for 'MyFiringStatus' /// IVAN NOTE: If you don't set this as BlueprintReadOnly, you won't be able to drag the component into the blueprint. 
@@ -97,6 +102,8 @@ private:
 
 	UAudioComponent* MyEngine_IdleSound = nullptr;
 	UAudioComponent* MyEngine_MovingSound = nullptr;
+
+	int32 MyScore = 0;
 
 
 };

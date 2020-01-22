@@ -33,6 +33,11 @@ void ATank::BeginPlay()
 	}
 }
 
+void ATank::AddScore(int32 Amount)
+{
+	MyScore += Amount;
+}
+
 
 
 /// Called by the Engine when Actor Damage is dealt.
@@ -68,6 +73,11 @@ float ATank::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, ACo
 		{
 			UGameplayStatics::SpawnSoundAttached(Sound_TankDeathFlames, GetRootComponent(), NAME_None);
 		}
+
+		//Add Score if Killer is Player
+		auto MyTempPawn = UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetPawn();
+		Cast<ATank>(MyTempPawn)->AddScore(10);
+
 	}
 	
 
@@ -80,6 +90,11 @@ float ATank::GetHealthPercent()
 	return (float)MyHealth / (float)StartingHealth;			///NOTE: Remember that these values are not floats, they are ints. Thus, we cast them to (float) to ensure we get a float return. 
 }
 
+
+float ATank::GetScore()
+{
+	return MyScore;
+}
 
 void ATank::CounterSliding()
 {
