@@ -25,6 +25,7 @@ void ATankSpawner::BeginPlay()
 
 	GetWorldTimerManager().SetTimer(Timer_SpawnInterval, this, &ATankSpawner::SpawnTanks, SpawnInterval, false, SpawnInterval);
 
+	/// Needed to randomize the Seed.
 	FMath::GetRandSeed();
 
 }
