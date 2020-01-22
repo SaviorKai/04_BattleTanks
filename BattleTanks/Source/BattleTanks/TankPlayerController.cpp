@@ -30,6 +30,11 @@ void ATankPlayerController::Tick(float DeltaTime)
 
 }
 
+float ATankPlayerController::GetMyScore()
+{
+	return MyPlayerScore;
+}
+
 /* //OLD CODE 
 ATank* ATankPlayerController::GetControlledTank() const
 {
@@ -139,5 +144,6 @@ void ATankPlayerController::SetPawn(APawn* InPawn)
 
 void ATankPlayerController::OnPossesedTankDeath()
 {
+	MyPlayerScore = Cast<ATank>(GetPawn())->GetScore();
 	StartSpectatingOnly();			//Turns the player to a spectator on death.
 }

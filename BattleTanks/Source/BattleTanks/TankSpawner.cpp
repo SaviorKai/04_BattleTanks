@@ -11,6 +11,10 @@ ATankSpawner::ATankSpawner()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = false;
+	
+	
+
+	
 
 }
 
@@ -20,6 +24,9 @@ void ATankSpawner::BeginPlay()
 	Super::BeginPlay();
 
 	GetWorldTimerManager().SetTimer(Timer_SpawnInterval, this, &ATankSpawner::SpawnTanks, SpawnInterval, false, SpawnInterval);
+
+	FMath::GetRandSeed();
+
 }
 
 void ATankSpawner::SpawnTanks()
@@ -34,6 +41,7 @@ void ATankSpawner::SpawnTanks()
 	/// Select random spawn point from array
 	int32 SPointsCount = SpawnPoint_Array.Num();
 	int32 SelectedPoint = FMath::RandRange(0, SPointsCount - 1);			//We -1 here, since the array starts at 0 for accessing, but the .Num() count starts at 1.
+	UE_LOG(LogTemp, Warning, TEXT("SelectedPoint = %i"), FMath::RandRange(0, SPointsCount - 1));
 	auto SpawnLocation = SpawnPoint_Array[SelectedPoint]->GetActorLocation();
 
 	/// Spawn Tank

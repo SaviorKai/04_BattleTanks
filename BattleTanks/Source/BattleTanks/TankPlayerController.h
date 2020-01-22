@@ -20,6 +20,9 @@ public:
 	virtual void BeginPlay() override;				/// Called when the game starts or when spwned (Ivan added)
 	virtual void Tick(float DeltaTime) override;	/// Called every tick/step of the game (Ivan added)
 
+	UFUNCTION(BlueprintPure, Category = "Score")
+	float GetMyScore();
+
 protected:
 
 	UFUNCTION(BlueprintImplementableEvent, Category = "Setup")
@@ -47,5 +50,7 @@ private:
 	//[DMCD Step 4] Declare Delegate Listener (method to execute when delegate is called)
 	UFUNCTION()
 		void OnPossesedTankDeath();
+
+	float MyPlayerScore = 0.0f;
 	
 };

@@ -75,8 +75,19 @@ float ATank::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, ACo
 		}
 
 		//Add Score if Killer is Player
-		auto MyTempPawn = UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetPawn();
-		Cast<ATank>(MyTempPawn)->AddScore(10);
+		if (!IsPlayerControlled())
+		{
+			auto MyTempController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+			if (MyTempController) 
+			{ 
+				auto MyTempPawn = MyTempController->GetPawn();
+				if (MyTempPawn) 
+				{ 
+					Cast<ATank>(MyTempPawn)->AddScore(10);
+				}
+
+			}
+		}
 
 	}
 	
