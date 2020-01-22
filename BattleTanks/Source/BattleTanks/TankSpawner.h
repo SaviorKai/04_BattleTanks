@@ -22,11 +22,14 @@ protected:
 	virtual void BeginPlay() override;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-	TSubclassOf<ATank*> TankSpawned; 
+	TSubclassOf<ATank> TankSpawned; 
+
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	float SpawnInterval = 20.0f;
 
 private:
 	void SpawnTanks();
-	int32 SpawnInterval = 20;
+	
 	FTimerHandle Timer_SpawnInterval;
 
 };

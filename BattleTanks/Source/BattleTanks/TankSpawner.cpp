@@ -19,7 +19,7 @@ void ATankSpawner::BeginPlay()
 {
 	Super::BeginPlay();
 
-	SpawnTanks();
+	GetWorldTimerManager().SetTimer(Timer_SpawnInterval, this, &ATankSpawner::SpawnTanks, SpawnInterval, false, SpawnInterval);
 }
 
 void ATankSpawner::SpawnTanks()
@@ -31,16 +31,26 @@ void ATankSpawner::SpawnTanks()
 	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ATargetPoint::StaticClass(), SpawnPoint_Array);
 	if (SpawnPoint_Array.Num() < 1) { return; }
 
+	/// Select random spawn point from array
 	int32 SPointsCount = SpawnPoint_Array.Num();
-	int32 SelectedPoint = FMath::RandRange(1, SPointsCount);
+	int32 SelectedPoint = FMath::RandRange(0, SPointsCount - 1);			//We -1 here, since the array starts at 0 for accessing, but the .Num() count starts at 1.
 	auto SpawnLocation = SpawnPoint_Array[SelectedPoint]->GetActorLocation();
 
+	/// Spawn Tank
 	FActorSpawnParameters SpawnParams;
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
-
 	GetWorld()->SpawnActor<ATank>(TankSpawned, SpawnLocation, SpawnLocation.Rotation(), SpawnParams);
+
+	/// Reduce Spawntime for next Tank, and clamp to 5sec
+	if (SpawnInterval > 5.0f)
+	{
+		SpawnInterval -= 1.0f;
+	}
+
+	/// Restart Timer
+	GetWorldTimerManager().SetTimer(Timer_SpawnInterval, this, &ATankSpawner::SpawnTanks, SpawnInterval, false, SpawnInterval);
+	UE_LOG(LogTemp, Warning, TEXT("SpawnInterval = %f"), SpawnInterval);
+
+
 }
-
-
-
 

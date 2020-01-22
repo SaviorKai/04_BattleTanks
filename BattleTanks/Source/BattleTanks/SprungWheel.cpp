@@ -77,11 +77,11 @@ void ASprungWheel::Tick(float DeltaTime)
 	if (GetWorld()->TickGroup == TG_PostPhysics)			// Check to ensure the group is correct, since we've changed it a the top and also before changing values at the wrong time.
 	{
 		CurrentDrivingForce = 0.0f;
-
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("SprungWheel has the incorrect TickGroup set! It needs to be TG_PostPhysics"));
+		//UE_LOG(LogTemp, Warning, TEXT("SprungWheel has the incorrect TickGroup set! It needs to be TG_PostPhysics"));
+		PrimaryActorTick.TickGroup = TG_PostPhysics;
 	}
 }
 
