@@ -11,6 +11,7 @@
 
 UTankTrack::UTankTrack()
 {
+	/*
 	//Tick "Simulation Generates Overlap Events"
 	SetNotifyRigidBodyCollision(true);
 
@@ -18,6 +19,7 @@ UTankTrack::UTankTrack()
 	SetLinearDamping(0.0f);
 
 	//SetMesh
+	
 	UStaticMesh* TrackMesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Game/Units/Tank/Meshes/tank_fbx_Track.tank_fbx_Track"));
 	if (TrackMesh != nullptr)
 	{
@@ -26,11 +28,12 @@ UTankTrack::UTankTrack()
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Tank couldn't find the Track Mesh to add it. Check Tank.cpp file location."));
+		//UE_LOG(LogTemp, Warning, TEXT("Tank couldn't find the Track Mesh to add it. Check Tank.cpp file location."));
 	}
-
-
+	
+	*/
 	PrimaryComponentTick.bCanEverTick = false;
+	
 }
 
 // Called when the game starts

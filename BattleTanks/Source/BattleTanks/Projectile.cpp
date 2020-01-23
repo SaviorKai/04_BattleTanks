@@ -27,7 +27,6 @@ AProjectile::AProjectile()
 	SetRootComponent(ProjMesh);							//We set the Root component here, to ensure it doesn't accidentally make something else the root.
 	ProjMesh->SetNotifyRigidBodyCollision(true);		//This always turns on "Simulation Generates Hit Events" checkbox as default.  //TODO: do this for all your classes to avoid manual setup when created as new.
 	ProjMesh->SetVisibility(false);						//Turned this off by default, since we won't have a mesh. We'll be using particle smoke.
-	//ProjMesh->SetStaticMesh(LoadObject<UStaticMesh>(nullptr, TEXT("/Game/Units/Projectiles/mesh_Projectile.mesh_Projectile")));  //Code to apply a mesh to this object.
 
 	/// Add the Projectile particle system
 	LaunchBlast = CreateDefaultSubobject<UParticleSystemComponent>(FName("LaunchBlast"));					// IVAN NOTE: If we don't assign them to a var and make it a UPROPERTY(VisibleAnywhere), we can't see the details in the editor.

@@ -17,7 +17,7 @@ ASprungWheel::ASprungWheel()
 	//* BLUEPRINT: When can change when this Actor Tick() even takes place, by going into the blueprint, 
 	//* selecting the actor, and on the details, in the Actor Tick, click the dropdown and change it as required.
 	//* C++: In the constructor code:
-	PrimaryActorTick.TickGroup = TG_PostPhysics;												// Also do a if (GetWorld()->TickGroup == TG_PostPhysics) in the tick, to ensure it's correctly set.
+	PrimaryActorTick.TickGroup = TG_PostPhysics;
 
 	
 	/// Add the Physics Constraint Component (SPRING)
@@ -35,8 +35,8 @@ ASprungWheel::ASprungWheel()
 	/// Add the Axle Mesh component for the spring
 	AxleMesh = CreateDefaultSubobject<USphereComponent>(FName("AxleMesh"));						// We are using USphereComponenthere, as they can be invisible if we want (no mesh)
 	AxleMesh->SetupAttachment(SpringPhysicsConstraint);											// Better way of attaching components.
-	AxleMesh->SetSimulatePhysics(true);
-	AxleMesh->SetMassOverrideInKg(NAME_None, 10000.0f, true);									// Override and set mass.
+	//AxleMesh->SetSimulatePhysics(true);
+	//AxleMesh->SetMassOverrideInKg(NAME_None, 10000.0f, true);									// Override and set mass. /// NOTE! YOU CAN'T SET THIS IN CONSTRUCTOR, OR BUILD COOK will FAIL
 	//NOTE: In bp, set: -Collision Presets : Overlap All > Custom.Collisions Enabled(Query and Physics)
 	//NOTE: In bp, set: -Axel Mesh = Z: -75
 
@@ -51,15 +51,18 @@ ASprungWheel::ASprungWheel()
 	/// Add the Wheel Mesh component for the spring
 	WheelMesh = CreateDefaultSubobject<USphereComponent>(FName("WheelMesh"));					// We are using USphereComponenthere, as they can be invisible if we want (no mesh)
 	WheelMesh->SetupAttachment(AxleMesh);														// Better way of attaching components.
-	WheelMesh->SetSimulatePhysics(true);
-	WheelMesh->SetMassOverrideInKg(NAME_None, 1000.0f, true);									// Override and set mass.
+	//WheelMesh->SetSimulatePhysics(true);
+	//WheelMesh->SetMassOverrideInKg(NAME_None, 1000.0f, true);									// Override and set mass.  /// NOTE! YOU CAN'T SET THIS IN CONSTRUCTOR, OR BUILD COOK will FAIL
 	//NOTE: In bp, set: PhysicsActor (collision)
+
 }
 
 // Called when the game starts or when spawned
 void ASprungWheel::BeginPlay()
 {
 	Super::BeginPlay();
+
+												// Also do a if (GetWorld()->TickGroup == TG_PostPhysics) in the tick, to ensure it's correctly set.
 
 	//1. Register our OnHit() Delegate, by calling the UE4 function on the mesh, names OnComponentHit.AddDynamic()
 	WheelMesh->SetNotifyRigidBodyCollision(true);												// This always turns on "Simulation Generates Hit Events" checkbox as default.  			
