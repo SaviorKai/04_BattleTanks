@@ -23,11 +23,10 @@ void ATankSpawner::BeginPlay()
 {
 	Super::BeginPlay();
 
-	GetWorldTimerManager().SetTimer(Timer_SpawnInterval, this, &ATankSpawner::SpawnTanks, SpawnInterval, false, SpawnInterval);
-
 	/// Needed to randomize the Seed.
 	FMath::GetRandSeed();
 
+	GetWorldTimerManager().SetTimer(Timer_GameStart,this, &ATankSpawner::SpawnTanks, 5.0f, false, 5.0f);
 }
 
 void ATankSpawner::SpawnTanks()
@@ -42,7 +41,6 @@ void ATankSpawner::SpawnTanks()
 	/// Select random spawn point from array
 	int32 SPointsCount = SpawnPoint_Array.Num();
 	int32 SelectedPoint = FMath::RandRange(0, SPointsCount - 1);			//We -1 here, since the array starts at 0 for accessing, but the .Num() count starts at 1.
-	UE_LOG(LogTemp, Warning, TEXT("SelectedPoint = %i"), FMath::RandRange(0, SPointsCount - 1));
 	auto SpawnLocation = SpawnPoint_Array[SelectedPoint]->GetActorLocation();
 
 	/// Spawn Tank

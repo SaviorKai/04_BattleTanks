@@ -74,6 +74,11 @@ void ASprungWheel::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	if (!GetOwner())
+	{
+		Destroy();
+	}
+	
 	if (GetWorld()->TickGroup == TG_PostPhysics)			// Check to ensure the group is correct, since we've changed it a the top and also before changing values at the wrong time.
 	{
 		CurrentDrivingForce = 0.0f;

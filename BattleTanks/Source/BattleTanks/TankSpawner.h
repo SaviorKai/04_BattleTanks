@@ -30,6 +30,7 @@ protected:
 private:
 	void SpawnTanks();
 	
+	FTimerHandle Timer_GameStart;
 	FTimerHandle Timer_SpawnInterval;
 
 };

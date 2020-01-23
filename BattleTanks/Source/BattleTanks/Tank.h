@@ -45,6 +45,9 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Health")		// BlueprintPure = makes this a read only function in the blueprint (like const for c++)
 		float GetScore();
 
+	UFUNCTION(BlueprintPure, Category = "Health")		// BlueprintPure = makes this a read only function in the blueprint (like const for c++)
+		bool HasDied();
+
 	///[DMCD Step 2] Declare delegate.
 	FTankDelegate OnDeath;
 
@@ -105,5 +108,7 @@ private:
 
 	int32 MyScore = 0;
 
+	FTimerHandle Timer_DestroyMe;
+	void DestroyMe();
 
 };

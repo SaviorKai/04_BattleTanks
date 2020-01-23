@@ -9,6 +9,7 @@
 #include "DrawDebugHelpers.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/AudioComponent.h"
+#include "TimerManager.h"
 
 
 // Sets default values
@@ -74,7 +75,7 @@ float ATank::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, ACo
 			UGameplayStatics::SpawnSoundAttached(Sound_TankDeathFlames, GetRootComponent(), NAME_None);
 		}
 
-		//Add Score if Killer is Player
+		//Add Score if Killer is Player + Start DertoyTimer if victim is AI
 		if (!IsPlayerControlled())
 		{
 			auto MyTempController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
@@ -87,8 +88,10 @@ float ATank::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, ACo
 				}
 
 			}
-		}
 
+			// Start timer to remove obj from game if not
+			GetWorldTimerManager().SetTimer(Timer_DestroyMe, this, &ATank::DestroyMe, 10.0f, false, 10.0f);
+		}
 	}
 	
 
@@ -105,6 +108,11 @@ float ATank::GetHealthPercent()
 float ATank::GetScore()
 {
 	return MyScore;
+}
+
+bool ATank::HasDied()
+{
+	return bHasDied;
 }
 
 void ATank::CounterSliding()
@@ -149,4 +157,9 @@ void ATank::StopEngineMoveSound()
 			MyEngine_MovingSound = nullptr;
 		}
 	}
+}
+
+void ATank::DestroyMe()
+{
+	Destroy();
 }

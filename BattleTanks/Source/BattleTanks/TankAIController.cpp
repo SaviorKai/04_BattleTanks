@@ -23,7 +23,9 @@ void ATankAIController::Tick(float DeltaTime)
 	
 	//Use Cast to change the value of GetPawn which returns AActor, to ATank, and set the var pointers.
 	auto MyTank = GetPawn();     
-	auto EnemyTank = GetWorld()->GetFirstPlayerController()->GetPawn();
+	auto EnemyTankController = GetWorld()->GetFirstPlayerController();
+	if (!EnemyTankController) { return; }
+	auto EnemyTank = EnemyTankController->GetPawn();
 
 	if (MyTank != nullptr)  //NULLPTR Protection
 	{
