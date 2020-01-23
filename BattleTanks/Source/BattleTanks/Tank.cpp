@@ -167,8 +167,6 @@ void ATank::DestroyMe()
 
 	for (auto i : ChildrenArray)
 	{
-		//UE_LOG(LogTemp, Warning, TEXT("Item = %s"), *i->GetName());
-
 		auto TempSprungWheel = Cast<ASprungWheel>(i->GetOwner());
 
 		if (TempSprungWheel)
