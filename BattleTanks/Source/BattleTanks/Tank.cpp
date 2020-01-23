@@ -10,6 +10,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Components/AudioComponent.h"
 #include "TimerManager.h"
+#include "SprungWheel.h"
 
 
 // Sets default values
@@ -161,5 +162,19 @@ void ATank::StopEngineMoveSound()
 
 void ATank::DestroyMe()
 {
+	TArray<USceneComponent*> ChildrenArray;
+	GetRootComponent()->GetChildrenComponents(true, ChildrenArray);
+
+	for (auto i : ChildrenArray)
+	{
+		//UE_LOG(LogTemp, Warning, TEXT("Item = %s"), *i->GetName());
+
+		auto TempSprungWheel = Cast<ASprungWheel>(i->GetOwner());
+
+		if (TempSprungWheel)
+		{
+			TempSprungWheel->Destroy();
+		}
+	}
 	Destroy();
 }
