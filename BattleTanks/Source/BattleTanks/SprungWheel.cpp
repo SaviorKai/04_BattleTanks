@@ -36,7 +36,7 @@ ASprungWheel::ASprungWheel()
 	AxleMesh = CreateDefaultSubobject<USphereComponent>(FName("AxleMesh"));						// We are using USphereComponenthere, as they can be invisible if we want (no mesh)
 	AxleMesh->SetupAttachment(SpringPhysicsConstraint);											// Better way of attaching components.
 	//AxleMesh->SetSimulatePhysics(true);
-	//AxleMesh->SetMassOverrideInKg(NAME_None, 10000.0f, true);									// Override and set mass. /// NOTE! YOU CAN'T SET THIS IN CONSTRUCTOR, OR BUILD COOK will FAIL
+	//AxleMesh->SetMassOverrideInKg(NAME_None, 3000.0f, true);									// Override and set mass. /// NOTE! YOU CAN'T SET THIS IN CONSTRUCTOR, OR BUILD COOK will FAIL
 	//NOTE: In bp, set: -Collision Presets : Overlap All > Custom.Collisions Enabled(Query and Physics)
 	//NOTE: In bp, set: -Axel Mesh = Z: -75
 
@@ -52,7 +52,7 @@ ASprungWheel::ASprungWheel()
 	WheelMesh = CreateDefaultSubobject<USphereComponent>(FName("WheelMesh"));					// We are using USphereComponenthere, as they can be invisible if we want (no mesh)
 	WheelMesh->SetupAttachment(AxleMesh);														// Better way of attaching components.
 	//WheelMesh->SetSimulatePhysics(true);
-	//WheelMesh->SetMassOverrideInKg(NAME_None, 1000.0f, true);									// Override and set mass.  /// NOTE! YOU CAN'T SET THIS IN CONSTRUCTOR, OR BUILD COOK will FAIL
+	//WheelMesh->SetMassOverrideInKg(NAME_None, 3000.0f, true);									// Override and set mass.  /// NOTE! YOU CAN'T SET THIS IN CONSTRUCTOR, OR BUILD COOK will FAIL
 	//NOTE: In bp, set: PhysicsActor (collision)
 
 }
