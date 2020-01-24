@@ -38,6 +38,9 @@ class BATTLETANKS_API ATank : public APawn
 */
 
 public:
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+	
 	// Return current health as a percentage.
 	UFUNCTION(BlueprintPure, Category = "Health")		// BlueprintPure = makes this a read only function in the blueprint (like const for c++)
 		float GetHealthPercent();

@@ -9,7 +9,7 @@ void UTankTurret::RotateTurret(float RotationPosition)
 	RotationPosition = FMath::Clamp<float>(RotationPosition, -1, 1);
 	
 	//Calculate the final rotation amount per frame
-	auto RotationChangeSpeed = RotationPosition * MaxRotationPerSecond * GetWorld()->DeltaTimeSeconds;
+	auto RotationChangeSpeed = (RotationPosition * MaxRotationPerSecond) * GetWorld()->GetDeltaSeconds();
 	auto FinalRotation = RelativeRotation.Yaw + RotationChangeSpeed;
 	
 	//Rotate the turret

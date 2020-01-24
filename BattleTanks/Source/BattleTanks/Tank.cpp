@@ -35,6 +35,13 @@ void ATank::BeginPlay()
 	}
 }
 
+void ATank::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	//CounterSliding();
+}
+
 void ATank::AddScore(int32 Amount)
 {
 	MyScore += Amount;
@@ -126,12 +133,17 @@ void ATank::CounterSliding()
 
 	auto DotProductResult = FVector::DotProduct(TankRightVector, MyVelocity);
 
-	float CounterForce = -DotProductResult * (MyMeshComp->GetMass() *2000);
-	
-	auto CounterForceApplied = MyMeshComp->GetRightVector() * CounterForce;
+	/// Only Counter sliding at specific amounts.
+	if (GetVelocity().Size() < 1100) { return; }
 
-	MyMeshComp->AddForce(CounterForceApplied, NAME_None, false);
+	//if (DotProductResult > 0.2f || DotProductResult < -0.2f)
+	{
+		float CounterForce = -DotProductResult * (MyMeshComp->GetMass() * 900000);
 	
+		auto CounterForceApplied = (MyMeshComp->GetRightVector() * CounterForce) * GetWorld()->GetDeltaSeconds();
+
+		MyMeshComp->AddForce(CounterForceApplied, NAME_None, false);
+	}
 }
 
 void ATank::PlayEngineMoveSound()
