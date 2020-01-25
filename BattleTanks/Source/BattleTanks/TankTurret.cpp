@@ -11,7 +11,8 @@ void UTankTurret::RotateTurret(float RotationPosition)
 	//Calculate the final rotation amount per frame
 	auto RotationChangeSpeed = (RotationPosition * MaxRotationPerSecond) * GetWorld()->GetDeltaSeconds();
 	auto FinalRotation = RelativeRotation.Yaw + RotationChangeSpeed;
-	
+		
 	//Rotate the turret
 	SetRelativeRotation(FRotator(0, FinalRotation, 0));
+	
 }

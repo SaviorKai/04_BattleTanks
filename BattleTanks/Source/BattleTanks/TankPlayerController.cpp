@@ -111,13 +111,19 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector CamLookDirection, F
 	);
 	*/
 
+	FCollisionQueryParams QueryParams;
+	if (GetPawn())
+	{
+		QueryParams.AddIgnoredActor(GetPawn());
+	}
+
 	FHitResult HitResult;
 	if (GetWorld()->LineTraceSingleByChannel(
 		OUT HitResult, 
 		LineTraceStart,
 		LineTraceEnd,
-		//ECollisionChannel::ECC_Camera				//Set to CAMERA, so that we don't clash with UI objects.
-		ECollisionChannel::ECC_Camera			//Set to World Dynamic to improve Aiming
+		ECollisionChannel::ECC_Camera,				//Set to CAMERA, so that we don't clash with UI objects.
+		QueryParams
 	))
 	{
 		HitLocationPoint = HitResult.Location;

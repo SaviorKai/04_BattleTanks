@@ -58,8 +58,8 @@ void UTankAimingComponent::TurnAndAimAt(FVector TargetLocation)
 
 	auto StartLocation = MyTankBarrel->GetSocketLocation(FName("ProjectileSpawn"));
 
-	FVector TossVelocity(0); //Make sure you initialize vectors.
-	
+	FVector TossVelocity(0); //Make sure you initialize vectors. //OUT PARAM
+
 	bool bHaveAimSolution = UGameplayStatics::SuggestProjectileVelocity(
 		this,			// World context object. Grabs the class we're currently in. In this case, TankAimingComponent.cpp.
 		OUT TossVelocity,
@@ -151,9 +151,12 @@ void UTankAimingComponent::MoveBarrel(FVector AimDirection)
 	if (!ensure(MyTankBarrel != nullptr)) { return; } // NULLPTR protection.
 
 	//Work out the difference between the two points
-	FRotator CurrentBarrelRotation = MyTankBarrel->GetForwardVector().Rotation();
-	FRotator TargetRotation = AimDirection.Rotation();
-	FRotator RoationDifference = TargetRotation - CurrentBarrelRotation;
+	auto CurrentBarrelRotation = MyTankBarrel->GetForwardVector().Rotation();
+	auto TargetRotation = AimDirection.Rotation();
+	auto RoationDifference = TargetRotation - CurrentBarrelRotation;
+
+	// Skip Turret movement, if too small.
+	if (RoationDifference.Yaw < 0.1f && RoationDifference.Pitch > -0.1f) { return; }
 	
 	//Move the Barrel
 	MyTankBarrel->Elevate(RoationDifference.Pitch);
@@ -166,21 +169,23 @@ void UTankAimingComponent::MoveTurret(FVector AimDirection) //// TODO: Combine t
 	if (!ensure(MyTankTurret != nullptr)) { return; } // NULLPTR protection.
 	
 	//Calculate the difference between the two  points
-	FRotator CurrentTurretRotation = MyTankTurret->GetForwardVector().Rotation();
-	FRotator TargetRotation = AimDirection.Rotation();
-	FRotator RoationDifference = TargetRotation - CurrentTurretRotation;
+	auto CurrentTurretRotation = MyTankTurret->GetForwardVector().Rotation();
+	auto TargetRotation = AimDirection.Rotation();
+	auto RoationDifference = TargetRotation - CurrentTurretRotation;
+	
+	// Skip Turret movement, if too small.
+	UE_LOG(LogTemp, Warning, TEXT("RoationDifference = %f"), RoationDifference.Yaw);
+	if (RoationDifference.Yaw < 0.1f && RoationDifference.Yaw > -0.1f) { return; }
 
-	float FixedRotationDifference = 0;
+	float FixedRotationDifference = 0; //Used for Ivan Solution
 	
 	// LECTURE SOLUTION 
 	if (FMath::Abs(RoationDifference.Yaw) < 180) // if Positive value
 	{
-		//FixedRotationDifference = RoationDifference.Yaw;
 		MyTankTurret->RotateTurret(RoationDifference.Yaw);
 	}
 	else
 	{
-		//FixedRotationDifference = -RoationDifference.Yaw;
 		MyTankTurret->RotateTurret(-RoationDifference.Yaw);
 	}
 	
