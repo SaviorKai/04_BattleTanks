@@ -56,7 +56,8 @@ void UTankAimingComponent::TurnAndAimAt(FVector TargetLocation)
 {
 	if (!ensure(MyTankBarrel != nullptr)) { return; }	 //NULLPTR Protection   
 
-	auto StartLocation = MyTankBarrel->GetSocketLocation(FName("ProjectileSpawn"));
+	//auto StartLocation = MyTankBarrel->GetSocketLocation(FName("ProjectileSpawn"));
+	auto StartLocation = MyTankTurret->GetComponentLocation();
 
 	FVector TossVelocity(0); //Make sure you initialize vectors. //OUT PARAM
 
@@ -154,9 +155,6 @@ void UTankAimingComponent::MoveBarrel(FVector AimDirection)
 	auto CurrentBarrelRotation = MyTankBarrel->GetForwardVector().Rotation();
 	auto TargetRotation = AimDirection.Rotation();
 	auto RoationDifference = TargetRotation - CurrentBarrelRotation;
-
-	// Skip Turret movement, if too small.
-	if (RoationDifference.Yaw < 0.1f && RoationDifference.Pitch > -0.1f) { return; }
 	
 	//Move the Barrel
 	MyTankBarrel->Elevate(RoationDifference.Pitch);
@@ -172,10 +170,6 @@ void UTankAimingComponent::MoveTurret(FVector AimDirection) //// TODO: Combine t
 	auto CurrentTurretRotation = MyTankTurret->GetForwardVector().Rotation();
 	auto TargetRotation = AimDirection.Rotation();
 	auto RoationDifference = TargetRotation - CurrentTurretRotation;
-	
-	// Skip Turret movement, if too small.
-	UE_LOG(LogTemp, Warning, TEXT("RoationDifference = %f"), RoationDifference.Yaw);
-	if (RoationDifference.Yaw < 0.1f && RoationDifference.Yaw > -0.1f) { return; }
 
 	float FixedRotationDifference = 0; //Used for Ivan Solution
 	
