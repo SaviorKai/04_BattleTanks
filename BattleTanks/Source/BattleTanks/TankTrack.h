@@ -32,7 +32,7 @@ public:
 	/// Public Varibles
 	//Max force per track, in Newtons.
 	UPROPERTY(EditDefaultsOnly, Category = "TrackSetup")
-	float TrackMaxDrivingForce = 500000.0f;	//float TrackMaxDrivingForce = 40000000.0;  //Assume 10mp/s (1g accelleration)
+	float TrackMaxDrivingForce = 200000.0f;	//float TrackMaxDrivingForce = 40000000.0;  //Assume 10mp/s (1g accelleration)
 
 private: 
 	UTankTrack();
