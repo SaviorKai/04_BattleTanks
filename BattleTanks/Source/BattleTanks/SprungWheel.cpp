@@ -118,6 +118,15 @@ void ASprungWheel::OnHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, 
 {
 	//Apply Force
 	WheelMesh->AddForce((AxleMesh->GetForwardVector() * CurrentDrivingForce));     //Note: You can extract this as an "ApplyForce()" function, but why, its only 1 line.
+	
+	/* //// TEMP SOLUTION 
+	auto CurDeltaTime = GetWorld()->GetDeltaSeconds();
+	auto CurForceApplied = (AxleMesh->GetForwardVector().GetSafeNormal() * CurrentDrivingForce);
+	auto CurForceCombo = CurForceApplied / CurDeltaTime;
+	auto CurForceCombox1000 = (CurForceCombo * 1);
+
+	WheelMesh->AddForce(CurForceCombox1000,NAME_None,false);     //Note: You can extract this as an "ApplyForce()" function, but why, its only 1 line.
+	*/
 }
 
 void ASprungWheel::AddDrivingForce(float ForceMagnitude)
