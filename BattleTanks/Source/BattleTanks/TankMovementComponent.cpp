@@ -29,8 +29,8 @@ void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool
 	/// Turn the AI Tank
 	//Using the CrossProduct, get the speed we want to turn based on perpendicular length returned on the Z perp line.
 	auto CrossProductResult = FVector::CrossProduct(TankForwardDirection, AIMoveDirection).Z; /// IVAN NOTE: Remember that its the Z value we want. The Z value will grow or shrink based on the angle difference.
-	IntendTurnRight(CrossProductResult); 
-
+	IntendTurnRight(CrossProductResult);
+	
 	/* IVAN NOTE:
 	// This function 'RequestDirectMove()' is called by 'MoveToActor() UE4 function' used in the TankAIController.cpp file.
 	// (It seems the AAIActor::MoveToActor() function engine code, calls RequestDirectMove() as part of its function.

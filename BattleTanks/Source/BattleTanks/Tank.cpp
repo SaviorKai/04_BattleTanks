@@ -125,6 +125,9 @@ bool ATank::HasDied()
 
 void ATank::CounterSliding()
 {
+	//Skip if AI controlled
+	if (!IsPlayerControlled()) { return; }
+
 	auto MyMeshComp = Cast<UStaticMeshComponent>(GetRootComponent());
 	if (!MyMeshComp) { return; }
 	
@@ -136,14 +139,12 @@ void ATank::CounterSliding()
 	/// Only Counter sliding at specific amounts.
 	if (GetVelocity().Size() < 1100) { return; }
 
-	//if (DotProductResult > 0.2f || DotProductResult < -0.2f)
-	{
-		float CounterForce = -DotProductResult * (MyMeshComp->GetMass() * 900000);
+	float CounterForce = -DotProductResult * (MyMeshComp->GetMass() * 900000);
 	
-		auto CounterForceApplied = (MyMeshComp->GetRightVector() * CounterForce) * GetWorld()->GetDeltaSeconds();
+	auto CounterForceApplied = (MyMeshComp->GetRightVector() * CounterForce) * GetWorld()->GetDeltaSeconds();
 
-		MyMeshComp->AddForce(CounterForceApplied, NAME_None, false);
-	}
+	MyMeshComp->AddForce(CounterForceApplied, NAME_None, false);
+
 }
 
 void ATank::PlayEngineMoveSound()
